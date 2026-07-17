@@ -25,7 +25,7 @@ values (
   'The white-label AI & automation delivery partner for digital, marketing and technology agencies.',
   'Mavlers.ai — White-label AI & Automation Engineering',
   'Mavlers.ai is the engineering team behind agencies and brands. We architect, build, integrate and scale production-grade AI and automation — under your brand.',
-  $json$[{"label":"in","url":"https://www.linkedin.com/"},{"label":"YT","url":"https://www.youtube.com/"}]$json$::jsonb,
+  $json$[{"platform":"linkedin","label":"LinkedIn","url":"https://www.linkedin.com/"},{"platform":"youtube","label":"YouTube","url":"https://www.youtube.com/"}]$json$::jsonb,
   $json${"emails":["hello@mavlers.ai"],"phones":[{"region":"UK","number":"+44 20 0000 0000"},{"region":"US","number":"+1 000 000 0000"},{"region":"AUS","number":"+61 0 0000 0000"}]}$json$::jsonb,
   $json${"implementations_base":"implementations","insights_base":"insights"}$json$::jsonb,
   $json${"@context":"https://schema.org","@type":"Organization","name":"Mavlers.ai","description":"White-label AI & automation delivery partner for agencies and brands.","url":"https://mavlers.ai"}$json$::jsonb

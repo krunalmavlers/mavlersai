@@ -19,7 +19,7 @@ export interface SiteSettings {
   ga_id: string;
   gtm_id: string;
   fb_pixel_id: string;
-  social_links: { label: string; url: string }[];
+  social_links: { label: string; url: string; platform?: string }[];
   contact: { emails?: string[]; phones?: { region: string; number: string }[] };
   recaptcha_site_key: string;
   recaptcha_threshold: number;

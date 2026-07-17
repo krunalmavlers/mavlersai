@@ -2,24 +2,58 @@
 
 import { useState, useTransition } from 'react';
 import { saveSettings } from '@/app/admin/actions';
+import { PLATFORMS, SocialIcon } from '@/components/site/SocialIcon';
 import { Card, Field, inputCls } from './ui';
+
+type Social = { platform?: string; label: string; url: string };
+type Phone = { region: string; number: string };
 
 export function SettingsEditor({ settings }: { settings: any }) {
   const [f, setF] = useState<any>({
     ...settings,
-    social_links: JSON.stringify(settings.social_links || [], null, 2),
-    contact: JSON.stringify(settings.contact || {}, null, 2),
     url_config: JSON.stringify(settings.url_config || {}, null, 2),
     organization_schema: JSON.stringify(settings.organization_schema || {}, null, 2),
   });
+  const [social, setSocial] = useState<Social[]>(
+    Array.isArray(settings.social_links) ? settings.social_links : [],
+  );
+  const [phones, setPhones] = useState<Phone[]>(
+    Array.isArray(settings.contact?.phones) ? settings.contact.phones : [],
+  );
+  const [emails, setEmails] = useState<string>(
+    Array.isArray(settings.contact?.emails) ? settings.contact.emails.join(', ') : '',
+  );
   const [pending, start] = useTransition();
   const [msg, setMsg] = useState('');
   const set = (k: string, v: any) => setF((prev: any) => ({ ...prev, [k]: v }));
 
+  // ---- social links ----
+  const addSocial = () => setSocial((prev) => [...prev, { platform: 'linkedin', label: 'LinkedIn', url: '' }]);
+  const updateSocial = (i: number, patch: Partial<Social>) =>
+    setSocial((prev) => prev.map((s, idx) => (idx === i ? { ...s, ...patch } : s)));
+  const removeSocial = (i: number) => setSocial((prev) => prev.filter((_, idx) => idx !== i));
+
+  // ---- phones ----
+  const addPhone = () => setPhones((prev) => [...prev, { region: '', number: '' }]);
+  const updatePhone = (i: number, patch: Partial<Phone>) =>
+    setPhones((prev) => prev.map((p, idx) => (idx === i ? { ...p, ...patch } : p)));
+  const removePhone = (i: number) => setPhones((prev) => prev.filter((_, idx) => idx !== i));
+
   function save() {
     setMsg('');
+    const emailList = emails
+      .split(/[,\n]/)
+      .map((s) => s.trim())
+      .filter(Boolean);
+    const payload = {
+      ...f,
+      social_links: social
+        .filter((s) => s.url.trim())
+        .map((s) => ({ platform: s.platform || undefined, label: s.label || s.platform || '', url: s.url.trim() })),
+      contact: { ...(f.contact || {}), emails: emailList, phones: phones.filter((p) => p.number.trim()) },
+    };
     start(async () => {
-      await saveSettings(f);
+      await saveSettings(payload);
       setMsg('Settings saved.');
     });
   }
@@ -93,19 +127,120 @@ export function SettingsEditor({ settings }: { settings: any }) {
         </div>
       </Card>
 
+      {/* -------- Footer: social links -------- */}
       <Card>
-        <h2 className="m-0 mb-4 font-display text-[16px] font-bold text-white">Social, contact & schema (JSON)</h2>
-        <div className="grid grid-cols-1 gap-4">
-          <Field label="Social links" hint='[{"label":"in","url":"https://..."}]'>
-            <textarea className={`${inputCls} font-mono text-[12px]`} rows={4} value={f.social_links} onChange={(e) => set('social_links', e.target.value)} />
-          </Field>
-          <Field label="Contact" hint='{"emails":[],"phones":[{"region":"UK","number":"..."}]}'>
-            <textarea className={`${inputCls} font-mono text-[12px]`} rows={4} value={f.contact} onChange={(e) => set('contact', e.target.value)} />
-          </Field>
-          <Field label="Organization schema (JSON-LD)">
-            <textarea className={`${inputCls} font-mono text-[12px]`} rows={6} value={f.organization_schema} onChange={(e) => set('organization_schema', e.target.value)} />
+        <div className="mb-1 flex items-center justify-between">
+          <h2 className="m-0 font-display text-[16px] font-bold text-white">Footer social links</h2>
+          <button
+            type="button"
+            onClick={addSocial}
+            className="rounded-[9px] border border-white/12 px-3 py-1.5 text-[13px] font-semibold text-body-soft hover:border-brand hover:text-white"
+          >
+            + Add link
+          </button>
+        </div>
+        <p className="m-0 mb-4 text-[12.5px] text-body-dim">
+          Pick a platform to show its icon (e.g. LinkedIn, YouTube). Choose “Other” to show a text label instead.
+        </p>
+        {social.length === 0 && <p className="m-0 text-[13px] text-body-dim">No social links yet.</p>}
+        <div className="flex flex-col gap-3">
+          {social.map((s, i) => (
+            <div key={i} className="flex flex-wrap items-center gap-2.5 rounded-[12px] border border-white/8 bg-white/[0.02] p-3">
+              <span className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-[9px] border border-white/12 text-[11px] font-bold text-body-faint">
+                {s.platform ? <SocialIcon platform={s.platform} /> : (s.label || '?').slice(0, 2)}
+              </span>
+              <select
+                className={`${inputCls} w-auto min-w-[140px] flex-none`}
+                value={s.platform ?? ''}
+                onChange={(e) => {
+                  const platform = e.target.value;
+                  const preset = PLATFORMS.find((p) => p.value === platform);
+                  updateSocial(i, { platform, label: platform ? preset?.label ?? s.label : s.label });
+                }}
+              >
+                {PLATFORMS.map((p) => (
+                  <option key={p.value} value={p.value}>{p.label}</option>
+                ))}
+              </select>
+              {!s.platform && (
+                <input
+                  className={`${inputCls} w-[120px] flex-none`}
+                  placeholder="Label"
+                  value={s.label}
+                  onChange={(e) => updateSocial(i, { label: e.target.value })}
+                />
+              )}
+              <input
+                className={`${inputCls} min-w-[200px] flex-1`}
+                placeholder="https://…"
+                value={s.url}
+                onChange={(e) => updateSocial(i, { url: e.target.value })}
+              />
+              <button
+                type="button"
+                onClick={() => removeSocial(i)}
+                aria-label="Remove link"
+                className="rounded-[9px] border border-white/12 px-3 py-2 text-[13px] font-semibold text-red-300 hover:border-red-400/60 hover:bg-red-500/10"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      {/* -------- Footer: phone numbers -------- */}
+      <Card>
+        <div className="mb-1 flex items-center justify-between">
+          <h2 className="m-0 font-display text-[16px] font-bold text-white">Footer phone numbers</h2>
+          <button
+            type="button"
+            onClick={addPhone}
+            className="rounded-[9px] border border-white/12 px-3 py-1.5 text-[13px] font-semibold text-body-soft hover:border-brand hover:text-white"
+          >
+            + Add phone
+          </button>
+        </div>
+        <p className="m-0 mb-4 text-[12.5px] text-body-dim">Region label is optional (e.g. UK, US, AUS).</p>
+        {phones.length === 0 && <p className="m-0 text-[13px] text-body-dim">No phone numbers yet.</p>}
+        <div className="flex flex-col gap-3">
+          {phones.map((p, i) => (
+            <div key={i} className="flex flex-wrap items-center gap-2.5 rounded-[12px] border border-white/8 bg-white/[0.02] p-3">
+              <input
+                className={`${inputCls} w-[110px] flex-none`}
+                placeholder="Region"
+                value={p.region}
+                onChange={(e) => updatePhone(i, { region: e.target.value })}
+              />
+              <input
+                className={`${inputCls} min-w-[200px] flex-1`}
+                placeholder="+44 20 0000 0000"
+                value={p.number}
+                onChange={(e) => updatePhone(i, { number: e.target.value })}
+              />
+              <button
+                type="button"
+                onClick={() => removePhone(i)}
+                aria-label="Remove phone"
+                className="rounded-[9px] border border-white/12 px-3 py-2 text-[13px] font-semibold text-red-300 hover:border-red-400/60 hover:bg-red-500/10"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+        </div>
+        <div className="mt-5">
+          <Field label="Contact emails" hint="Comma or line separated.">
+            <textarea className={inputCls} rows={2} value={emails} onChange={(e) => setEmails(e.target.value)} />
           </Field>
         </div>
+      </Card>
+
+      <Card>
+        <h2 className="m-0 mb-4 font-display text-[16px] font-bold text-white">Organization schema (JSON-LD)</h2>
+        <Field label="Organization schema">
+          <textarea className={`${inputCls} font-mono text-[12px]`} rows={6} value={f.organization_schema} onChange={(e) => set('organization_schema', e.target.value)} />
+        </Field>
       </Card>
 
       <div className="flex items-center gap-3">

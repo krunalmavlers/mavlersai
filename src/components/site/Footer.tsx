@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { MenuItem, SiteSettings } from '@/lib/types';
 import { Logo } from './Logo';
+import { SocialIcon } from './SocialIcon';
 
 function groupByColumn(items: MenuItem[]) {
   const groups = new Map<string, MenuItem[]>();
@@ -35,13 +36,15 @@ export function Footer({
             <div className="flex gap-2.5">
               {settings.social_links.map((s) => (
                 <a
-                  key={s.label}
+                  key={s.platform || s.label}
                   href={s.url}
                   target="_blank"
                   rel="noreferrer"
+                  aria-label={s.label || s.platform}
+                  title={s.label || s.platform}
                   className="flex h-[34px] w-[34px] items-center justify-center rounded-[9px] border border-white/12 text-[12px] font-bold text-body-faint transition-colors hover:border-brand hover:text-white"
                 >
-                  {s.label}
+                  {s.platform ? <SocialIcon platform={s.platform} /> : s.label}
                 </a>
               ))}
             </div>
