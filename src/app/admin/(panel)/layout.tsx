@@ -12,7 +12,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
   const settings = await getSettings();
   return (
     <div className="flex min-h-screen bg-ink text-body">
-      <Sidebar email={admin.email} logoUrl={settings.logo_url} />
+      <Sidebar email={admin.email} role={admin.role} logoUrl={settings.logo_url} />
       <div className="flex-1 overflow-x-hidden">
         <div className="mx-auto max-w-[1000px] px-8 py-10">{children}</div>
       </div>

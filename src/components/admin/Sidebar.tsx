@@ -12,11 +12,14 @@ const NAV = [
   { href: '/admin/menus', label: 'Menus' },
   { href: '/admin/forms', label: 'Forms' },
   { href: '/admin/submissions', label: 'Submissions' },
-  { href: '/admin/settings', label: 'Settings' },
+  { href: '/admin/settings', label: 'Settings', adminOnly: true },
+  { href: '/admin/users', label: 'Users', adminOnly: true },
+  { href: '/admin/account', label: 'Account' },
 ];
 
-export function Sidebar({ email, logoUrl }: { email: string; logoUrl?: string }) {
+export function Sidebar({ email, role, logoUrl }: { email: string; role: string; logoUrl?: string }) {
   const pathname = usePathname();
+  const nav = NAV.filter((item) => !item.adminOnly || role === 'admin');
   return (
     <aside className="flex w-[250px] flex-shrink-0 flex-col border-r border-line bg-ink-900 p-4">
       <Link href="/admin" className="mb-6 flex items-center px-2">
@@ -30,7 +33,7 @@ export function Sidebar({ email, logoUrl }: { email: string; logoUrl?: string })
         )}
       </Link>
       <nav className="flex flex-1 flex-col gap-1">
-        {NAV.map((item) => {
+        {nav.map((item) => {
           const active = item.exact ? pathname === item.href : pathname.startsWith(item.href);
           return (
             <Link

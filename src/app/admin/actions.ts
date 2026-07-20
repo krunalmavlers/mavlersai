@@ -11,6 +11,14 @@ async function requireAdmin() {
   return createSupabaseAdminClient();
 }
 
+/** Guard for admin-only actions (settings, user management). Editors are blocked. */
+async function requireSuperAdmin() {
+  const admin = await getCurrentAdmin();
+  if (!admin) redirect('/admin/login');
+  if (admin.role !== 'admin') throw new Error('Not authorized: admin role required.');
+  return { db: createSupabaseAdminClient(), admin };
+}
+
 function revalidateSite() {
   // Public site is dynamic, but revalidate the common trees to be safe.
   revalidatePath('/', 'layout');
@@ -259,7 +267,7 @@ export async function deleteSubmission(id: string) {
 
 /* ------------------------------ SETTINGS -------------------------------- */
 export async function saveSettings(payload: any) {
-  const db = await requireAdmin();
+  const { db } = await requireSuperAdmin();
   const row = {
     id: 1,
     site_name: payload.site_name,
@@ -286,6 +294,88 @@ export async function saveSettings(payload: any) {
   await db.from('site_settings').upsert(row, { onConflict: 'id' });
   revalidateSite();
   revalidatePath('/admin/settings');
+}
+
+/* --------------------------- USER MANAGEMENT ---------------------------- */
+type UserResult = { ok: boolean; error?: string };
+
+/** Admin-only: create a new back-office user. Defaults to the content-only "editor" role. */
+export async function createUser(payload: {
+  email: string;
+  password: string;
+  full_name?: string;
+  role?: 'admin' | 'editor';
+}): Promise<UserResult> {
+  const { db } = await requireSuperAdmin();
+  const email = (payload.email || '').trim().toLowerCase();
+  const password = payload.password || '';
+  const role = payload.role === 'admin' ? 'admin' : 'editor';
+  if (!email || !password) return { ok: false, error: 'Email and password are required.' };
+  if (password.length < 8) return { ok: false, error: 'Password must be at least 8 characters.' };
+
+  const { data, error } = await db.auth.admin.createUser({
+    email,
+    password,
+    email_confirm: true,
+  });
+  if (error || !data.user) return { ok: false, error: error?.message || 'Could not create user.' };
+
+  const { error: pErr } = await db.from('admin_profiles').insert({
+    user_id: data.user.id,
+    full_name: payload.full_name?.trim() || email.split('@')[0],
+    role,
+  });
+  if (pErr) {
+    // Roll back the auth user so we don't leave an orphan login.
+    await db.auth.admin.deleteUser(data.user.id);
+    return { ok: false, error: pErr.message };
+  }
+  revalidatePath('/admin/users');
+  return { ok: true };
+}
+
+/** Admin-only: change a user's role. */
+export async function updateUserRole(userId: string, role: 'admin' | 'editor'): Promise<UserResult> {
+  const { db, admin } = await requireSuperAdmin();
+  const nextRole = role === 'admin' ? 'admin' : 'editor';
+  if (userId === admin.id && nextRole !== 'admin') {
+    return { ok: false, error: 'You cannot remove your own admin role.' };
+  }
+  const { error } = await db.from('admin_profiles').update({ role: nextRole }).eq('user_id', userId);
+  if (error) return { ok: false, error: error.message };
+  revalidatePath('/admin/users');
+  return { ok: true };
+}
+
+/** Admin-only: set a new password for another user. */
+export async function resetUserPassword(userId: string, password: string): Promise<UserResult> {
+  const { db } = await requireSuperAdmin();
+  if (!password || password.length < 8) return { ok: false, error: 'Password must be at least 8 characters.' };
+  const { error } = await db.auth.admin.updateUserById(userId, { password });
+  if (error) return { ok: false, error: error.message };
+  return { ok: true };
+}
+
+/** Admin-only: remove a back-office user entirely (profile + auth login). */
+export async function deleteUser(userId: string): Promise<UserResult> {
+  const { db, admin } = await requireSuperAdmin();
+  if (userId === admin.id) return { ok: false, error: 'You cannot delete your own account.' };
+  await db.from('admin_profiles').delete().eq('user_id', userId);
+  const { error } = await db.auth.admin.deleteUser(userId);
+  if (error) return { ok: false, error: error.message };
+  revalidatePath('/admin/users');
+  return { ok: true };
+}
+
+/** Any signed-in user: change their own password. */
+export async function changeOwnPassword(password: string): Promise<UserResult> {
+  const admin = await getCurrentAdmin();
+  if (!admin) redirect('/admin/login');
+  if (!password || password.length < 8) return { ok: false, error: 'Password must be at least 8 characters.' };
+  const db = createSupabaseAdminClient();
+  const { error } = await db.auth.admin.updateUserById(admin.id, { password });
+  if (error) return { ok: false, error: error.message };
+  return { ok: true };
 }
 
 /* ------------------------------ helpers --------------------------------- */

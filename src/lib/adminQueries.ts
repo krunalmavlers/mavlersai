@@ -109,6 +109,31 @@ export async function adminGetSettings(): Promise<SiteSettings | null> {
   return (data as SiteSettings) ?? null;
 }
 
+export interface AdminUserRow {
+  id: string;
+  email: string;
+  full_name: string;
+  role: 'admin' | 'editor';
+  created_at: string | null;
+}
+
+export async function adminListUsers(): Promise<AdminUserRow[]> {
+  const db = createSupabaseAdminClient();
+  const { data: profiles } = await db
+    .from('admin_profiles')
+    .select('user_id, full_name, role, created_at')
+    .order('created_at');
+  const { data: authData } = await db.auth.admin.listUsers({ page: 1, perPage: 1000 });
+  const emailById = new Map((authData?.users ?? []).map((u) => [u.id, u.email ?? '']));
+  return (profiles ?? []).map((p: any) => ({
+    id: p.user_id,
+    email: emailById.get(p.user_id) ?? '',
+    full_name: p.full_name ?? '',
+    role: p.role,
+    created_at: p.created_at ?? null,
+  }));
+}
+
 export async function adminCounts() {
   const db = createSupabaseAdminClient();
   const tables = ['pages', 'posts', 'menu_items', 'forms', 'form_submissions'] as const;

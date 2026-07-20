@@ -1,8 +1,16 @@
+import { redirect } from 'next/navigation';
+import { getCurrentAdmin } from '@/lib/auth';
 import { adminGetSettings } from '@/lib/adminQueries';
 import { PageHeader } from '@/components/admin/ui';
 import { SettingsEditor } from '@/components/admin/SettingsEditor';
 
+export const dynamic = 'force-dynamic';
+
 export default async function SettingsPage() {
+  const admin = await getCurrentAdmin();
+  if (!admin) redirect('/admin/login');
+  if (admin.role !== 'admin') redirect('/admin');
+
   const settings = await adminGetSettings();
   const data =
     settings ?? {
