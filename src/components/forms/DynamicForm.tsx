@@ -279,7 +279,10 @@ function Field({
         </select>
       ) : (
         <input
-          type={field.type === 'hidden' ? 'text' : field.type}
+          // `url` renders as plain text so entries like "mavlers.com" are accepted
+          // (no forced https:// scheme). email/tel keep their native validation.
+          type={field.type === 'hidden' || field.type === 'url' ? 'text' : field.type}
+          inputMode={field.type === 'url' ? 'url' : undefined}
           required={field.required}
           placeholder={field.placeholder}
           value={value || ''}
