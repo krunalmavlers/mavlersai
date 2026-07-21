@@ -5,16 +5,16 @@ import type { FormDef, FormField } from '@/lib/types';
 import { useRecaptcha } from './useRecaptcha';
 import { CalendlyEmbed } from './CalendlyEmbed';
 
-const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '';
-
-export function DynamicForm({ form }: { form: FormDef }) {
+export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string }) {
   const modes = form.settings?.modes || [];
   const [mode, setMode] = useState(modes[0]?.key || '');
   const [values, setValues] = useState<Record<string, any>>({});
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [error, setError] = useState('');
 
-  const executeRecaptcha = useRecaptcha(form.recaptcha_enabled ? SITE_KEY : '');
+  // Prefer the site key configured in admin Settings; fall back to the env var.
+  const resolvedSiteKey = siteKey || process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '';
+  const executeRecaptcha = useRecaptcha(form.recaptcha_enabled ? resolvedSiteKey : '');
 
   const activeMode = modes.find((m) => m.key === mode);
   const title = activeMode?.title || form.title;

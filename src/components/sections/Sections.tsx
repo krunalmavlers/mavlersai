@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { PageSection } from '@/lib/types';
-import { getForm } from '@/lib/queries';
+import { getForm, getSettings } from '@/lib/queries';
 import { DynamicForm } from '@/components/forms/DynamicForm';
 import { HeroVideo } from './HeroVideo';
 import { HeroRobot } from './HeroRobot';
@@ -810,9 +810,10 @@ async function FormSection({ c }: { c: any }) {
       </Section>
     );
   }
+  const settings = await getSettings();
   return (
     <Section theme="light">
-      <DynamicForm form={form} />
+      <DynamicForm form={form} siteKey={settings.recaptcha_site_key || undefined} />
     </Section>
   );
 }
