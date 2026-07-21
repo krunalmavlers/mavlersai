@@ -82,11 +82,11 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
   if (status === 'success') {
     const kind = activeMode?.kind || 'message';
     return (
-      <div className="mx-auto max-w-[560px] rounded-[20px] border border-brand/30 bg-brand/[0.06] p-10 text-center">
-        <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-brand text-2xl text-ink">
+      <div className="mx-auto max-w-[560px] rounded-[20px] border border-surface-line2 bg-surface-tint p-10 text-center">
+        <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-brand text-2xl text-black">
           ✓
         </div>
-        <h2 className="m-0 mb-3 font-display text-[28px] font-bold text-white">Thanks — we&apos;ve got it.</h2>
+        <h2 className="m-0 mb-3 font-display text-[28px] font-bold text-black">Thanks — we&apos;ve got it.</h2>
         <p className="m-0 mb-6 text-[16px] text-body-muted">
           We received your {kind} and our team will be in touch shortly.
         </p>
@@ -95,7 +95,7 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
             setValues({});
             setStatus('idle');
           }}
-          className="rounded-[10px] border border-white/16 bg-white/5 px-6 py-3 text-[14px] font-bold text-body hover:bg-white/10"
+          className="rounded-[10px] border border-surface-line2 bg-white px-6 py-3 text-[14px] font-bold text-black transition-colors hover:border-black"
         >
           Send another
         </button>
@@ -104,14 +104,14 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
   }
 
   const modeToggle = modes.length > 1 && (
-    <div className="mb-6 inline-flex rounded-[12px] border border-white/12 bg-white/[0.04] p-1">
+    <div className="mb-6 inline-flex rounded-[12px] border border-surface-line2 bg-surface-tint2 p-1">
       {modes.map((m) => (
         <button
           key={m.key}
           type="button"
           onClick={() => setMode(m.key)}
           className={`rounded-[9px] px-4 py-2 text-[13.5px] font-bold transition-colors ${
-            mode === m.key ? 'bg-brand text-ink' : 'text-body-soft hover:text-white'
+            mode === m.key ? 'bg-brand text-black shadow-sm' : 'text-body-soft hover:text-black'
           }`}
         >
           {m.label}
@@ -123,16 +123,16 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
   const supportPanel = (
     <aside className="flex flex-col gap-4">
       {hasNextSteps && (
-        <div className="rounded-[18px] border border-white/9 bg-white/[0.03] p-6">
-          <div className="mb-4 font-display text-[16px] font-bold text-white">What happens next</div>
+        <div className="rounded-[18px] border border-surface-line2 bg-surface-tint p-6">
+          <div className="mb-4 font-display text-[16px] font-bold text-black">What happens next</div>
           <div className="flex flex-col gap-4">
             {form.settings!.next_steps!.map((s, i) => (
               <div key={i} className="flex gap-3">
-                <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-brand/15 text-[13px] font-bold text-brand">
+                <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-brand text-[13px] font-bold text-black">
                   {i + 1}
                 </span>
                 <div>
-                  <div className="text-[14px] font-semibold text-white">{s.title}</div>
+                  <div className="text-[14px] font-semibold text-black">{s.title}</div>
                   <div className="text-[13px] text-body-faint">{s.body}</div>
                 </div>
               </div>
@@ -140,9 +140,9 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
           </div>
         </div>
       )}
-      <div className="rounded-[18px] border border-brand/25 bg-brand/[0.06] p-6">
-        <div className="mb-2 font-display text-[15px] font-bold text-white">White-label by design</div>
-        <p className="m-0 text-[13px] leading-relaxed text-body-faint">
+      <div className="rounded-[18px] border border-brand-ink/30 bg-brand/10 p-6">
+        <div className="mb-2 font-display text-[15px] font-bold text-black">White-label by design</div>
+        <p className="m-0 text-[13px] leading-relaxed text-body-soft">
           NDAs available on request. Your client relationship stays protected — we can operate
           entirely behind your brand.
         </p>
@@ -158,7 +158,7 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
         {modeToggle}
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.5fr_1fr]">
           <div>
-            {title && <h2 className="m-0 mb-1.5 font-display text-[24px] font-bold text-white">{title}</h2>}
+            {title && <h2 className="m-0 mb-1.5 font-display text-[24px] font-bold text-black">{title}</h2>}
             {subtitle && <p className="m-0 mb-5 text-[14.5px] text-body-faint">{subtitle}</p>}
             <CalendlyEmbed url={calendly!.url!} note={calendly?.note} height={700} />
           </div>
@@ -173,8 +173,8 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
     <div>
       {modeToggle}
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.6fr_1fr]">
-        <div className="rounded-[20px] border border-white/9 bg-white/[0.03] p-6 md:p-9">
-          {title && <h2 className="m-0 mb-1.5 font-display text-[24px] font-bold text-white">{title}</h2>}
+        <div className="rounded-[20px] border border-surface-line2 bg-surface-tint p-6 md:p-9">
+          {title && <h2 className="m-0 mb-1.5 font-display text-[24px] font-bold text-black">{title}</h2>}
           {subtitle && <p className="m-0 mb-6 text-[14.5px] text-body-faint">{subtitle}</p>}
 
           <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -244,7 +244,7 @@ function Field({
 }) {
   const span = field.col_span === 2 ? 'sm:col-span-2' : '';
   const base =
-    'w-full rounded-[10px] border border-white/12 bg-white/5 px-4 py-3 text-[14px] text-white placeholder:text-body-dim focus:border-brand focus:outline-none';
+    'w-full rounded-[10px] border border-surface-line2 bg-white px-4 py-3 text-[14px] text-black placeholder:text-body-dim focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/30';
 
   return (
     <div className={span}>
@@ -272,7 +272,7 @@ function Field({
         >
           <option value="">Select…</option>
           {(field.options || []).map((o) => (
-            <option key={o} value={o} className="bg-ink">
+            <option key={o} value={o} className="bg-white text-black">
               {o}
             </option>
           ))}
@@ -329,14 +329,14 @@ function FileField({
 
   if (value?.__file) {
     return (
-      <div className="flex items-center justify-between rounded-[10px] border border-brand/30 bg-brand/[0.06] px-4 py-3 text-[13px]">
+      <div className="flex items-center justify-between rounded-[10px] border border-brand-ink/30 bg-brand/10 px-4 py-3 text-[13px]">
         <span className="truncate text-body-soft">
           📎 {value.name} <span className="text-body-dim">({Math.round((value.size || 0) / 1024)} KB)</span>
         </span>
         <button
           type="button"
           onClick={() => onChange(null)}
-          className="ml-3 text-[13px] font-semibold text-body-faint hover:text-white"
+          className="ml-3 text-[13px] font-semibold text-body-faint hover:text-black"
         >
           Remove
         </button>
@@ -345,7 +345,7 @@ function FileField({
   }
 
   return (
-    <label className="flex cursor-pointer flex-col items-center justify-center rounded-[10px] border border-dashed border-white/20 bg-white/[0.03] px-4 py-6 text-center text-[13px] text-body-faint hover:border-brand/50">
+    <label className="flex cursor-pointer flex-col items-center justify-center rounded-[10px] border border-dashed border-surface-line2 bg-white px-4 py-6 text-center text-[13px] text-body-faint hover:border-brand">
       <input
         type="file"
         className="hidden"
