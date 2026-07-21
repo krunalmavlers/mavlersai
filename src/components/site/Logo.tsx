@@ -25,8 +25,20 @@ export function Logo({
   return (
     <Link href={href} aria-label={settings.site_name} style={{ display: 'inline-flex', alignItems: 'baseline' }}>
       {settings.logo_url ? (
+        // The brand logo asset is white-on-transparent. On light surfaces we
+        // invert it to solid black (brightness(0)); on dark it stays white —
+        // so the one asset adapts to any background, per the brand guide.
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={settings.logo_url} alt={settings.site_name} style={{ height, width: 'auto', display: 'block' }} />
+        <img
+          src={settings.logo_url}
+          alt={settings.site_name}
+          style={{
+            height,
+            width: 'auto',
+            display: 'block',
+            filter: variant === 'dark' ? undefined : 'brightness(0)',
+          }}
+        />
       ) : (
         <span
           style={{

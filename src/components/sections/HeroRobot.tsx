@@ -101,25 +101,14 @@ export function HeroRobot({ compact }: { compact?: boolean }) {
         <Robot scale={0.78} />
       </div>
       {/* input chips (left) */}
-      <div style={{ animation: 'heroFloat 4s ease-in-out infinite' }}>
-        <Chip label="Raw Data" style={{ top: '8%', left: -26 }} />
-      </div>
-      <div style={{ animation: 'heroFloat 4.3s ease-in-out infinite .4s' }}>
-        <Chip label="Documents" style={{ top: '44%', left: -26 }} />
-      </div>
-      <div style={{ animation: 'heroFloat 4.6s ease-in-out infinite .8s' }}>
-        <Chip label="CRM & ERP" style={{ top: '80%', left: -26 }} />
-      </div>
+      <Chip label="Raw Data" style={{ top: '8%', left: -26, animation: 'heroFloat 4s ease-in-out infinite' }} />
+      <Chip label="Documents" style={{ top: '44%', left: -26, animation: 'heroFloat 4.3s ease-in-out infinite .4s' }} />
+      <Chip label="CRM & ERP" style={{ top: '80%', left: -26, animation: 'heroFloat 4.6s ease-in-out infinite .8s' }} />
       {/* output chips (right) */}
-      <div style={{ animation: 'heroFloat 4.2s ease-in-out infinite .3s' }}>
-        <Chip label="AI Agents" dark style={{ top: '8%', right: -26 }} />
-      </div>
-      <div style={{ animation: 'heroFloat 4.5s ease-in-out infinite .7s' }}>
-        <Chip label="Automation" dark style={{ top: '44%', right: -26 }} />
-      </div>
-      <div style={{ animation: 'heroFloat 4.8s ease-in-out infinite 1.1s' }}>
-        <Chip label="Integrations" dark style={{ top: '80%', right: -26 }} />
-      </div>
+      <Chip label="AI Agents" dark style={{ top: '8%', right: -26, animation: 'heroFloat 4.2s ease-in-out infinite .3s' }} />
+      <Chip label="Automation" dark style={{ top: '44%', right: -26, animation: 'heroFloat 4.5s ease-in-out infinite .7s' }} />
+      <Chip label="Integrations" dark style={{ top: '80%', right: -26, animation: 'heroFloat 4.8s ease-in-out infinite 1.1s' }} />
+
       {/* caption */}
       <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-brand px-[18px] py-2.5 text-[12.5px] font-extrabold tracking-[-0.01em] text-black shadow-[0_12px_30px_rgba(255,219,45,0.35)]">
         One engine for all your AI &amp; automation
