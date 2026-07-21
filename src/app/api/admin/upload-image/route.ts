@@ -5,8 +5,17 @@ import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 
 export const runtime = 'nodejs';
 
-const MAX_BYTES = 8 * 1024 * 1024; // 8 MB
-const ALLOWED = new Set(['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/svg+xml', 'image/avif']);
+const MAX_IMAGE_BYTES = 8 * 1024 * 1024; // 8 MB
+const MAX_PDF_BYTES = 25 * 1024 * 1024; // 25 MB
+const ALLOWED = new Set([
+  'image/png',
+  'image/jpeg',
+  'image/webp',
+  'image/gif',
+  'image/svg+xml',
+  'image/avif',
+  'application/pdf',
+]);
 
 function safeName(name: string): string {
   return name.replace(/[^a-zA-Z0-9._-]/g, '_').slice(-80) || 'image';
@@ -33,11 +42,16 @@ export async function POST(req: Request) {
   if (!(file instanceof File)) {
     return NextResponse.json({ ok: false, error: 'No file provided.' }, { status: 400 });
   }
-  if (file.size > MAX_BYTES) {
-    return NextResponse.json({ ok: false, error: 'Image is larger than 8 MB.' }, { status: 400 });
-  }
   if (file.type && !ALLOWED.has(file.type)) {
-    return NextResponse.json({ ok: false, error: 'Unsupported image type.' }, { status: 400 });
+    return NextResponse.json({ ok: false, error: 'Unsupported file type.' }, { status: 400 });
+  }
+  const isPdf = file.type === 'application/pdf';
+  const maxBytes = isPdf ? MAX_PDF_BYTES : MAX_IMAGE_BYTES;
+  if (file.size > maxBytes) {
+    return NextResponse.json(
+      { ok: false, error: `File is larger than ${isPdf ? '25' : '8'} MB.` },
+      { status: 400 },
+    );
   }
 
   const db = createSupabaseAdminClient();

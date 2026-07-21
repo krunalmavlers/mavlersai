@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react';
 import { Card } from './ui';
 
-type Uploaded = { path: string; fullUrl: string; name: string };
+type Uploaded = { path: string; fullUrl: string; name: string; isPdf: boolean };
 
 export function MediaUploader() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -31,7 +31,10 @@ export function MediaUploader() {
         const path: string = json.path || json.url;
         const fullUrl =
           typeof window !== 'undefined' ? `${window.location.origin}${path}` : path;
-        setItems((prev) => [{ path, fullUrl, name: file.name }, ...prev]);
+        setItems((prev) => [
+          { path, fullUrl, name: file.name, isPdf: file.type === 'application/pdf' },
+          ...prev,
+        ]);
       }
     } finally {
       setBusy(false);
@@ -66,13 +69,15 @@ export function MediaUploader() {
           }`}
         >
           <span className="text-[15px] font-semibold text-white">
-            {busy ? 'Uploading…' : 'Drop an image here, or click to choose'}
+            {busy ? 'Uploading…' : 'Drop a file here, or click to choose'}
           </span>
-          <span className="text-[12.5px] text-body-dim">PNG, JPG, WEBP, GIF, SVG, AVIF · up to 8 MB</span>
+          <span className="text-[12.5px] text-body-dim">
+            Images (PNG, JPG, WEBP, GIF, SVG, AVIF) up to 8 MB · PDF up to 25 MB
+          </span>
           <input
             ref={inputRef}
             type="file"
-            accept="image/*"
+            accept="image/*,application/pdf"
             multiple
             hidden
             onChange={(e) => e.target.files && upload(e.target.files)}
@@ -90,12 +95,23 @@ export function MediaUploader() {
                 key={it.path}
                 className="flex items-center gap-4 rounded-[12px] border border-white/9 bg-white/[0.02] p-3"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={it.path}
-                  alt={it.name}
-                  className="h-16 w-16 flex-shrink-0 rounded-[8px] border border-white/10 object-cover"
-                />
+                {it.isPdf ? (
+                  <a
+                    href={it.path}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-[8px] border border-white/10 bg-black/40 text-[11px] font-bold text-brand-200"
+                  >
+                    PDF
+                  </a>
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={it.path}
+                    alt={it.name}
+                    className="h-16 w-16 flex-shrink-0 rounded-[8px] border border-white/10 object-cover"
+                  />
+                )}
                 <div className="min-w-0 flex-1">
                   <div className="mb-1 truncate text-[13px] font-semibold text-body-soft">{it.name}</div>
                   <code className="block truncate rounded-[7px] bg-black/40 px-2.5 py-1.5 text-[12.5px] text-brand-200">

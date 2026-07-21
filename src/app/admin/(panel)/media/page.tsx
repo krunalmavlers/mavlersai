@@ -13,7 +13,7 @@ export default async function MediaPage() {
     <div>
       <PageHeader
         title="Media"
-        subtitle="Upload images and copy their public URL (served from /images on your own domain)."
+        subtitle="Upload images and PDFs and copy their public URL (served from /images on your own domain)."
       />
       <MediaUploader />
     </div>
