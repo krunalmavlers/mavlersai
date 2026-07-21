@@ -10,6 +10,7 @@ const NAV = [
   { href: '/admin/posts', label: 'Insights & Implementations' },
   { href: '/admin/taxonomies', label: 'Categories & Tags' },
   { href: '/admin/menus', label: 'Menus' },
+  { href: '/admin/media', label: 'Media' },
   { href: '/admin/forms', label: 'Forms' },
   { href: '/admin/submissions', label: 'Submissions' },
   { href: '/admin/settings', label: 'Settings', adminOnly: true },

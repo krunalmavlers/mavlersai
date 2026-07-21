@@ -53,5 +53,12 @@ export async function POST(req: Request) {
   }
 
   const { data } = db.storage.from('media').getPublicUrl(path);
-  return NextResponse.json({ ok: true, url: data.publicUrl });
+  // Serve through our own domain (mavlers.ai/images/...) instead of the raw
+  // Supabase URL. `supabaseUrl` is kept as a fallback / reference.
+  return NextResponse.json({
+    ok: true,
+    url: `/images/${path}`,
+    path: `/images/${path}`,
+    supabaseUrl: data.publicUrl,
+  });
 }
