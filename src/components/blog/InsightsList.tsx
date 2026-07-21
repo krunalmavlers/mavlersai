@@ -39,7 +39,7 @@ export function InsightsList({ posts, base }: { posts: Post[]; base: string }) {
               <span className="rounded-full bg-brand px-3 py-1 font-bold text-black">Featured</span>
               <span className="text-body-dim">{firstCat(featured)}</span>
             </div>
-            <h2 className="m-0 mb-3 font-display text-[26px] font-extrabold leading-tight tracking-[-0.02em] text-black md:text-[32px]">
+            <h2 className="m-0 mb-3 font-display text-[26px] font-extrabold leading-tight tracking-[-0.02em] text-black transition-colors group-hover:text-brand-ink md:text-[32px]">
               {featured.title}
             </h2>
             <p className="m-0 mb-4 text-[15px] leading-relaxed text-body-faint">{featured.excerpt}</p>
@@ -89,7 +89,9 @@ export function InsightsList({ posts, base }: { posts: Post[]; base: string }) {
             className="svc-card group flex flex-col rounded-[18px] border border-surface-line2 bg-surface-tint p-6"
           >
             <div className="mb-3 text-[12px] font-bold uppercase tracking-[0.06em] text-brand-ink">{firstCat(p)}</div>
-            <h3 className="m-0 mb-2.5 font-display text-[18px] font-bold leading-snug text-black">{p.title}</h3>
+            <h3 className="m-0 mb-2.5 font-display text-[18px] font-bold leading-snug text-black transition-colors group-hover:text-brand-ink">
+              {p.title}
+            </h3>
             <p className="m-0 mb-4 flex-1 text-[13.5px] leading-relaxed text-body-faint">{p.excerpt}</p>
             <div className="flex items-center gap-2 text-[12px] text-body-dim">
               <span>{formatDate(p.published_at)}</span>

@@ -90,7 +90,9 @@ export function ImplementationsList({
                 )}
                 {badge && <span className="text-[11.5px] text-body-dim">{badge}</span>}
               </div>
-              <h3 className="m-0 mb-2.5 font-display text-[18px] font-bold leading-snug text-black">{p.title}</h3>
+              <h3 className="m-0 mb-2.5 font-display text-[18px] font-bold leading-snug text-black transition-colors group-hover:text-brand-ink">
+                {p.title}
+              </h3>
               <p className="m-0 mb-4 flex-1 text-[13.5px] leading-relaxed text-body-faint">{p.excerpt}</p>
               <div className="flex flex-wrap gap-1.5">
                 {(p.meta?.stack || []).slice(0, 4).map((t) => (
