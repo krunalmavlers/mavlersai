@@ -1,14 +1,18 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import type { Post } from '@/lib/types';
 import { formatDate } from '@/lib/utils';
+import { Pagination } from './Pagination';
+
+const PAGE_SIZE = 9;
 
 export function InsightsList({ posts, base }: { posts: Post[]; base: string }) {
   const featured = posts.find((p) => p.is_featured);
   const rest = posts.filter((p) => !p.is_featured);
   const [active, setActive] = useState('All');
+  const [page, setPage] = useState(1);
 
   const pills = useMemo(() => {
     const set = new Set<string>();
@@ -22,6 +26,17 @@ export function InsightsList({ posts, base }: { posts: Post[]; base: string }) {
     if (active === 'All') return rest;
     return rest.filter((p) => (p.categories || []).some((c) => c.name === active));
   }, [rest, active]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+
+  useEffect(() => {
+    setPage(1);
+  }, [active]);
+
+  const paged = useMemo(
+    () => filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
+    [filtered, page],
+  );
 
   function firstCat(p: Post) {
     return (p.categories || []).find((c) => c.taxonomy === 'category')?.name || '';
@@ -77,12 +92,12 @@ export function InsightsList({ posts, base }: { posts: Post[]; base: string }) {
           ))}
         </div>
         <span className="text-[13px] text-body-dim">
-          Showing {filtered.length} of {rest.length} articles
+          Showing {paged.length} of {filtered.length} articles
         </span>
       </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {filtered.map((p) => (
+        {paged.map((p) => (
           <Link
             key={p.id}
             href={`${base}/${p.slug}`}
@@ -101,6 +116,8 @@ export function InsightsList({ posts, base }: { posts: Post[]; base: string }) {
           </Link>
         ))}
       </div>
+
+      <Pagination page={page} totalPages={totalPages} onChange={setPage} />
     </div>
   );
 }

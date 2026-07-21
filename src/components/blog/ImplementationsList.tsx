@@ -1,8 +1,11 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import type { Category, Post } from '@/lib/types';
+import { Pagination } from './Pagination';
+
+const PAGE_SIZE = 9;
 
 export function ImplementationsList({
   posts,
@@ -13,6 +16,7 @@ export function ImplementationsList({
 }) {
   const [dimension, setDimension] = useState<'industry' | 'lifecycle'>('industry');
   const [active, setActive] = useState('All');
+  const [page, setPage] = useState(1);
 
   const pills = useMemo(() => {
     const set = new Set<string>();
@@ -28,6 +32,17 @@ export function ImplementationsList({
       (p.categories || []).some((c) => c.taxonomy === dimension && c.name === active),
     );
   }, [posts, dimension, active]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+
+  useEffect(() => {
+    setPage(1);
+  }, [dimension, active]);
+
+  const paged = useMemo(
+    () => filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
+    [filtered, page],
+  );
 
   function catName(p: Post, tax: Category['taxonomy']) {
     return (p.categories || []).find((c) => c.taxonomy === tax)?.name || '';
@@ -53,7 +68,7 @@ export function ImplementationsList({
           ))}
         </div>
         <span className="text-[13px] text-body-dim">
-          Showing {filtered.length} of {posts.length} implementations
+          Showing {paged.length} of {filtered.length} implementations
         </span>
       </div>
 
@@ -74,7 +89,7 @@ export function ImplementationsList({
       </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {filtered.map((p) => {
+        {paged.map((p) => {
           const badge = dimension === 'industry' ? catName(p, 'lifecycle') : catName(p, 'industry');
           return (
             <Link
@@ -105,6 +120,8 @@ export function ImplementationsList({
           );
         })}
       </div>
+
+      <Pagination page={page} totalPages={totalPages} onChange={setPage} />
     </div>
   );
 }
