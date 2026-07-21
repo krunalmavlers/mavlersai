@@ -13,7 +13,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
   ]);
 
   return (
-    <div className="min-h-screen bg-ink text-body">
+    <div className="min-h-screen bg-white text-body">
       <UtilityBanner items={utility} />
       <Header settings={settings} items={header} />
       <main>{children}</main>

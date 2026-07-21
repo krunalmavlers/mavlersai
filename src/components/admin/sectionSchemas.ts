@@ -65,6 +65,7 @@ export const SECTION_SCHEMAS: Record<string, FieldDesc[]> = {
       kind: 'objectList',
       itemFields: [
         { key: 'n', label: 'Number (optional)', kind: 'text' },
+        { key: 'tag', label: 'Eyebrow tag (optional)', kind: 'text' },
         { key: 'title', label: 'Title', kind: 'text' },
         { key: 'body', label: 'Body', kind: 'textarea' },
       ],
@@ -107,6 +108,12 @@ export const SECTION_SCHEMAS: Record<string, FieldDesc[]> = {
     heading,
     { key: 'subhead', label: 'Subhead', kind: 'textarea' },
     { key: 'items', label: 'Items', kind: 'stringList' },
+  ],
+  implementations: [
+    eyebrow,
+    heading,
+    { key: 'subhead', label: 'Subhead', kind: 'textarea' },
+    { key: 'cta', label: 'Button', kind: 'cta' },
   ],
   services_detail: [
     eyebrow,

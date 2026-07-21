@@ -90,6 +90,16 @@ export async function reorderSection(id: string, pageId: string, sortOrder: numb
   revalidatePath(`/admin/pages/${pageId}`);
 }
 
+/** Persist a full drag-and-drop ordering — assigns sort_order by array index. */
+export async function reorderSections(pageId: string, orderedIds: string[]) {
+  const db = await requireAdmin();
+  await Promise.all(
+    orderedIds.map((id, i) => db.from('page_sections').update({ sort_order: i }).eq('id', id)),
+  );
+  revalidateSite();
+  revalidatePath(`/admin/pages/${pageId}`);
+}
+
 /* ------------------------------- POSTS ---------------------------------- */
 export async function savePost(payload: any) {
   const db = await requireAdmin();

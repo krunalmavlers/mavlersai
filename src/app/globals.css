@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 * {
@@ -17,61 +17,117 @@ body {
 }
 
 body {
-  background: #0a0e1a;
-  color: #e7ecf3;
-  font-family: var(--font-manrope), Manrope, system-ui, sans-serif;
+  background: #ffffff;
+  color: #111111;
+  font-family: var(--font-montserrat), Montserrat, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
 /* Base link color for un-classed links only. Uses :not() so Tailwind text-*
-   utilities on buttons/nav always win (avoids invisible text on hover). */
+   utilities on buttons/nav always win. */
 a {
   text-decoration: none;
 }
 a:not([class]) {
-  color: #ffcb2e;
+  color: #111111;
 }
 a:not([class]):hover {
-  color: #ffd75c;
+  color: #000000;
 }
 
 ::selection {
-  background: rgba(255, 203, 46, 0.3);
+  background: rgba(255, 219, 45, 0.4);
 }
 
-/* ---- Rich text (WYSIWYG output) ---- */
+/* ---- Reference design: shared animations & hover effects ---- */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes heroFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes botFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(-1.2deg); }
+}
+@keyframes botBlink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  96% { transform: scaleY(0.1); }
+}
+@keyframes botAntenna {
+  0%, 100% { opacity: .5; transform: scale(.8); }
+  50% { opacity: 1; transform: scale(1.25); }
+}
+@keyframes botShadow {
+  0%, 100% { transform: translateX(-50%) scaleX(1); opacity: .18; }
+  50% { transform: translateX(-50%) scaleX(.82); opacity: .1; }
+}
+@keyframes implWork {
+  0%, 100% { transform: scaleX(0.32); }
+  50% { transform: scaleX(1); }
+}
+@keyframes implDot {
+  0%, 100% { opacity: .3; }
+  50% { opacity: 1; }
+}
+
+/* Card hover treatments (mirrors the reference design) */
+.opp-card { transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease; }
+.opp-card:hover { transform: translateY(-6px); border-color: rgba(255,219,45,0.55) !important; box-shadow: 0 20px 50px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,219,45,0.25); }
+.opp-num { transition: color .35s ease; }
+.opp-card:hover .opp-num { color: rgba(255,219,45,0.28) !important; }
+.svc-card { transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease, background .28s ease; }
+.svc-card:hover { transform: translateY(-6px); border-color: #000 !important; box-shadow: 0 22px 44px rgba(0,0,0,0.10); }
+.svc-ico { transition: background .28s ease, color .28s ease, transform .28s ease; }
+.svc-card:hover .svc-ico { background: #FFDB2D !important; color: #000 !important; transform: rotate(-6deg); }
+.svc-card:hover .svc-arrow { opacity: 1 !important; transform: translateX(0) !important; }
+.conn-tile { transition: transform .25s ease, border-color .25s ease, background .25s ease; }
+.conn-tile:hover { transform: translateY(-4px); border-color: rgba(255,219,45,0.6) !important; background: #171717 !important; }
+.conn-ico { transition: background .25s ease, color .25s ease; }
+.conn-tile:hover .conn-ico { background: #FFDB2D !important; color: #000 !important; }
+.rm-row .rm-card { transition: border-color .25s ease, background .25s ease, transform .25s ease; }
+.rm-row:hover .rm-card { border-color: rgba(255,219,45,0.5); background: #171717; transform: translateX(6px); }
+.rm-node { transition: box-shadow .25s ease; }
+.rm-row:hover .rm-node { box-shadow: 0 0 0 6px rgba(255,219,45,0.14); }
+.hero-learn-ico { transition: transform .25s ease; }
+.hero-learn:hover .hero-learn-ico { transform: translateX(4px); }
+
+/* ---- Rich text (WYSIWYG output) — dark-on-light to match the site ---- */
 .prose-mavlers {
-  color: #aeb9cc;
-  font-size: 17px;
-  line-height: 1.75;
+  color: #4a4a4a;
+  font-size: 16.5px;
+  line-height: 1.7;
 }
 .prose-mavlers > * + * {
-  margin-top: 1.15em;
+  margin-top: 1.1em;
 }
 .prose-mavlers h2 {
-  font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif;
-  color: #fff;
+  color: #000;
   font-size: 30px;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-  margin-top: 1.8em;
-  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  margin-top: 1.6em;
+  font-weight: 800;
 }
 .prose-mavlers h3 {
-  font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif;
-  color: #fff;
-  font-size: 22px;
-  line-height: 1.25;
-  margin-top: 1.5em;
-  font-weight: 600;
+  color: #000;
+  font-size: 21px;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  margin-top: 1.4em;
+  font-weight: 700;
 }
 .prose-mavlers p {
   margin: 0;
 }
 .prose-mavlers a {
-  color: #ffd166;
+  color: #111;
   text-decoration: underline;
+  text-decoration-color: #FFDB2D;
+  text-decoration-thickness: 2px;
   text-underline-offset: 3px;
 }
 .prose-mavlers ul,
@@ -82,24 +138,24 @@ a:not([class]):hover {
   margin: 0.4em 0;
 }
 .prose-mavlers blockquote {
-  border-left: 3px solid #ffcb2e;
-  padding: 8px 0 8px 22px;
-  margin: 1.6em 0;
-  color: #fff;
-  font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif;
-  font-size: 22px;
+  border-left: 4px solid #FFDB2D;
+  padding: 6px 0 6px 22px;
+  margin: 1.5em 0;
+  color: #000;
+  font-size: 21px;
   line-height: 1.4;
-  font-weight: 600;
+  font-weight: 700;
 }
 .prose-mavlers strong {
-  color: #e7ecf3;
+  color: #111;
+  font-weight: 700;
 }
 .prose-mavlers img {
   max-width: 100%;
   border-radius: 14px;
 }
 
-/* ---- TipTap editor chrome (admin) ---- */
+/* ---- TipTap editor chrome (admin) — white editing surface = true WYSIWYG ---- */
 .tiptap {
   outline: none;
   min-height: 180px;
@@ -107,11 +163,10 @@ a:not([class]):hover {
 .tiptap p.is-editor-empty:first-child::before {
   content: attr(data-placeholder);
   float: left;
-  color: #6b7688;
+  color: #9a9a9a;
   pointer-events: none;
   height: 0;
 }
-/* Inline images inside the editor */
 .tiptap img {
   display: block;
   max-width: 100%;
@@ -120,10 +175,9 @@ a:not([class]):hover {
   margin: 1em auto;
 }
 .tiptap img.ProseMirror-selectednode {
-  outline: 2px solid #ffcb2e;
+  outline: 2px solid #FFDB2D;
   outline-offset: 2px;
 }
-/* Make the gap-cursor (click above/below a block image to type there) visible */
 .tiptap .ProseMirror-gapcursor:after {
-  border-top: 2px solid #ffcb2e;
+  border-top: 2px solid #FFDB2D;
 }

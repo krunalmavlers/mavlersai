@@ -19,6 +19,8 @@ export function RichEditor({
   placeholder?: string;
 }) {
   const [uploading, setUploading] = useState(false);
+  const [source, setSource] = useState(false);
+  const [html, setHtml] = useState(value || '');
 
   const editor = useEditor({
     extensions: [
@@ -31,9 +33,25 @@ export function RichEditor({
     editorProps: {
       attributes: { class: 'tiptap prose-mavlers max-w-none px-4 py-3' },
     },
-    onUpdate: ({ editor }) => onChange(editor.getHTML()),
+    onUpdate: ({ editor }) => {
+      const h = editor.getHTML();
+      setHtml(h);
+      onChange(h);
+    },
     immediatelyRender: false,
   });
+
+  // Toggle between WYSIWYG and raw-HTML source. Leaving source mode parses the
+  // edited HTML back into the editor (so pasted markup renders correctly).
+  function toggleSource() {
+    if (source) {
+      editor?.commands.setContent(html || '', true);
+      onChange(html || '');
+    } else {
+      setHtml(editor?.getHTML() || '');
+    }
+    setSource((s) => !s);
+  }
 
   if (!editor) return null;
 
@@ -127,8 +145,31 @@ export function RichEditor({
         <button type="button" className={btn(false)} onClick={() => editor.chain().focus().undo().run()}>
           Undo
         </button>
+        <button
+          type="button"
+          className={`${btn(source)} ml-auto font-mono`}
+          onClick={toggleSource}
+          title="Edit / paste raw HTML"
+        >
+          &lt;/&gt; HTML
+        </button>
       </div>
-      <EditorContent editor={editor} />
+      {source ? (
+        <textarea
+          value={html}
+          onChange={(e) => {
+            setHtml(e.target.value);
+            onChange(e.target.value);
+          }}
+          spellCheck={false}
+          className="block max-h-[420px] min-h-[220px] w-full resize-y bg-[#0d1117] px-4 py-3 font-mono text-[12.5px] leading-relaxed text-[#c9d1d9] focus:outline-none"
+          placeholder="<p>Paste or edit HTML…</p>"
+        />
+      ) : (
+        <div className="rounded-b-[10px] bg-white">
+          <EditorContent editor={editor} />
+        </div>
+      )}
     </div>
   );
 }

@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useEffect, useRef, useState, useTransition } from 'react';
 import type { PageSection } from '@/lib/types';
-import { saveSection, reorderSection } from '@/app/admin/actions';
+import { saveSection, reorderSection, reorderSections } from '@/app/admin/actions';
 import { SectionEditor } from './SectionEditor';
 import { Card } from './ui';
 
@@ -14,6 +14,7 @@ const SECTION_TYPES = [
   'service_capabilities',
   'services_detail',
   'connect_grid',
+  'implementations',
   'cta_band',
   'process_timeline',
   'engagement_models',
@@ -38,6 +39,7 @@ const TEMPLATES: Record<string, any> = {
   process_timeline: { eyebrow: '', heading: '', steps: [{ n: '1', title: 'Step' }] },
   stats_bar: { stats: [{ num: '10+', label: 'label' }], logos: [] },
   connect_grid: { eyebrow: '', heading: '', items: ['Item'] },
+  implementations: { eyebrow: 'Implementations', heading: 'AI in action across industries', subhead: '', cta: { label: 'Explore Our Implementations', href: '/implementations' } },
   partnership: { eyebrow: '', heading: '', left_title: 'You bring', left_items: [], right_title: 'We deliver', right_items: [] },
   service_capabilities: { eyebrow: '', heading: '', items: [{ mono: 'AI', title: 'Service', body: '' }] },
   services_detail: {
@@ -59,6 +61,19 @@ export function SectionManager({ pageId, sections }: { pageId: string; sections:
   const [newType, setNewType] = useState('rich_text');
   const [pending, start] = useTransition();
 
+  const byId = new Map(sections.map((s) => [s.id, s]));
+  const serverOrder = [...sections].sort((a, b) => a.sort_order - b.sort_order).map((s) => s.id);
+  // Local ordering so drag-and-drop feels instant; re-syncs when the server data changes.
+  const [order, setOrder] = useState<string[]>(serverOrder);
+  const serverKey = serverOrder.join(',');
+  useEffect(() => {
+    setOrder(serverOrder);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [serverKey]);
+
+  const dragId = useRef<string | null>(null);
+  const [dragOver, setDragOver] = useState<string | null>(null);
+
   const maxOrder = sections.reduce((m, s) => Math.max(m, s.sort_order), 0);
 
   function addSection() {
@@ -73,15 +88,28 @@ export function SectionManager({ pageId, sections }: { pageId: string; sections:
     });
   }
 
-  function move(section: PageSection, dir: -1 | 1) {
-    const sorted = [...sections].sort((a, b) => a.sort_order - b.sort_order);
-    const idx = sorted.findIndex((s) => s.id === section.id);
-    const target = sorted[idx + dir];
-    if (!target) return;
-    start(async () => {
-      await reorderSection(section.id, pageId, target.sort_order);
-      await reorderSection(target.id, pageId, section.sort_order);
-    });
+  function persist(next: string[]) {
+    setOrder(next);
+    start(() => reorderSections(pageId, next) as any);
+  }
+
+  function reindex(fromId: string, toId: string) {
+    if (fromId === toId) return;
+    const next = [...order];
+    const from = next.indexOf(fromId);
+    const to = next.indexOf(toId);
+    if (from < 0 || to < 0) return;
+    next.splice(to, 0, next.splice(from, 1)[0]);
+    persist(next);
+  }
+
+  function move(id: string, dir: -1 | 1) {
+    const idx = order.indexOf(id);
+    const target = idx + dir;
+    if (target < 0 || target >= order.length) return;
+    const next = [...order];
+    [next[idx], next[target]] = [next[target], next[idx]];
+    persist(next);
   }
 
   function toggleVisible(s: PageSection) {
@@ -91,7 +119,9 @@ export function SectionManager({ pageId, sections }: { pageId: string; sections:
   return (
     <Card>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <h2 className="m-0 font-display text-[18px] font-bold text-white">Sections</h2>
+        <h2 className="m-0 font-display text-[18px] font-bold text-white">
+          Sections <span className="ml-1 text-[12px] font-normal text-body-dim">— drag to reorder</span>
+        </h2>
         <div className="flex items-center gap-2">
           <select
             value={newType}
@@ -115,36 +145,63 @@ export function SectionManager({ pageId, sections }: { pageId: string; sections:
       </div>
 
       <div className="flex flex-col gap-2">
-        {[...sections]
-          .sort((a, b) => a.sort_order - b.sort_order)
-          .map((s) => (
-            <div key={s.id} className="rounded-[12px] border border-white/9 bg-white/[0.02] p-3">
+        {order.map((id) => byId.get(id)).filter(Boolean).map((s) => {
+          const sec = s as PageSection;
+          return (
+            <div
+              key={sec.id}
+              draggable
+              onDragStart={() => {
+                dragId.current = sec.id;
+              }}
+              onDragOver={(e) => {
+                e.preventDefault();
+                if (dragOver !== sec.id) setDragOver(sec.id);
+              }}
+              onDrop={(e) => {
+                e.preventDefault();
+                if (dragId.current) reindex(dragId.current, sec.id);
+                dragId.current = null;
+                setDragOver(null);
+              }}
+              onDragEnd={() => {
+                dragId.current = null;
+                setDragOver(null);
+              }}
+              className={`rounded-[12px] border bg-white/[0.02] p-3 transition-colors ${
+                dragOver === sec.id ? 'border-brand' : 'border-white/9'
+              }`}
+            >
               <div className="flex items-center gap-3">
-                <span className="font-display text-[14px] font-semibold text-white">{s.type}</span>
-                {!s.is_visible && (
+                <span className="cursor-grab select-none text-body-dim active:cursor-grabbing" title="Drag to reorder">
+                  ⠿
+                </span>
+                <span className="font-display text-[14px] font-semibold text-white">{sec.type}</span>
+                {!sec.is_visible && (
                   <span className="rounded bg-white/10 px-2 py-0.5 text-[11px] text-body-dim">hidden</span>
                 )}
                 <div className="ml-auto flex items-center gap-1.5">
-                  <button onClick={() => move(s, -1)} className="rounded border border-white/12 px-2 py-1 text-[12px] text-body-faint hover:bg-white/5">
+                  <button onClick={() => move(sec.id, -1)} className="rounded border border-white/12 px-2 py-1 text-[12px] text-body-faint hover:bg-white/5">
                     ↑
                   </button>
-                  <button onClick={() => move(s, 1)} className="rounded border border-white/12 px-2 py-1 text-[12px] text-body-faint hover:bg-white/5">
+                  <button onClick={() => move(sec.id, 1)} className="rounded border border-white/12 px-2 py-1 text-[12px] text-body-faint hover:bg-white/5">
                     ↓
                   </button>
-                  <button onClick={() => toggleVisible(s)} className="rounded border border-white/12 px-2 py-1 text-[12px] text-body-faint hover:bg-white/5">
-                    {s.is_visible ? 'Hide' : 'Show'}
+                  <button onClick={() => toggleVisible(sec)} className="rounded border border-white/12 px-2 py-1 text-[12px] text-body-faint hover:bg-white/5">
+                    {sec.is_visible ? 'Hide' : 'Show'}
                   </button>
                   <button
-                    onClick={() => setEditing(editing === s.id ? null : s.id)}
+                    onClick={() => setEditing(editing === sec.id ? null : sec.id)}
                     className="rounded bg-white/10 px-2.5 py-1 text-[12px] font-semibold text-white hover:bg-white/15"
                   >
-                    {editing === s.id ? 'Close' : 'Edit'}
+                    {editing === sec.id ? 'Close' : 'Edit'}
                   </button>
                 </div>
               </div>
-              {editing === s.id && <SectionEditor section={s} onDone={() => setEditing(null)} />}
+              {editing === sec.id && <SectionEditor section={sec} onDone={() => setEditing(null)} />}
             </div>
-          ))}
+          );
+        })}
       </div>
     </Card>
   );

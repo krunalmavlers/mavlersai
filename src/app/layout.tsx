@@ -1,21 +1,16 @@
 import type { Metadata } from 'next';
-import { Space_Grotesk, Manrope } from 'next/font/google';
+import { Montserrat } from 'next/font/google';
 import './globals.css';
 import { getSettings } from '@/lib/queries';
 import { Scripts } from '@/components/site/Scripts';
 import { JsonLd } from '@/components/site/JsonLd';
 import { siteUrl } from '@/lib/seo';
 
-const spaceGrotesk = Space_Grotesk({
+// Mavlers.ai brand typeface — Montserrat across the whole site (display + body).
+const montserrat = Montserrat({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-space-grotesk',
-  display: 'swap',
-});
-const manrope = Manrope({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-manrope',
+  weight: ['400', '500', '600', '700', '800', '900'],
+  variable: '--font-montserrat',
   display: 'swap',
 });
 
@@ -35,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const settings = await getSettings();
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${manrope.variable}`}>
+    <html lang="en" className={montserrat.variable}>
       <body>
         <Scripts settings={settings} position="body-start" />
         {children}
