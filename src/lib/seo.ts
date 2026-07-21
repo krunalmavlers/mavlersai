@@ -21,8 +21,17 @@ interface SeoInput {
   };
 }
 
+/** Absolute site origin. Prefers NEXT_PUBLIC_SITE_URL; falls back to the
+ *  production domain when deployed, and localhost only in local dev. */
+export function siteOrigin(): string {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (explicit) return explicit.replace(/\/$/, '');
+  if (process.env.NODE_ENV === 'production') return 'https://mavlers.ai';
+  return 'http://localhost:3000';
+}
+
 export function siteUrl(path = ''): string {
-  const base = (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000').replace(/\/$/, '');
+  const base = siteOrigin();
   const clean = path.startsWith('/') ? path : `/${path}`;
   return `${base}${clean === '/' ? '' : clean}`;
 }

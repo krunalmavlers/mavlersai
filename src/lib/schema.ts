@@ -8,7 +8,9 @@ const isEmpty = (o?: Json | null) => !o || Object.keys(o).length === 0;
 /** Organization node — prefers the CMS-managed schema, enriched with logo + social profiles. */
 export function organizationSchema(settings: SiteSettings): Json {
   const sameAs = (settings.social_links || []).map((s) => s.url).filter(Boolean);
-  const logo = absUrl(settings.logo_url) || absUrl(settings.default_og_image);
+  // Prefer a raster square for the org logo (knowledge-panel friendly);
+  // the transparent SVG wordmark is a poor fit there.
+  const logo = absUrl(settings.default_og_image) || absUrl(settings.logo_url);
 
   if (!isEmpty(settings.organization_schema)) {
     return {
