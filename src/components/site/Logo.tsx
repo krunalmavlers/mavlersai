@@ -1,9 +1,5 @@
 import Link from 'next/link';
 import type { SiteSettings } from '@/lib/types';
-import { LogoMark } from './LogoMark';
-
-// Brand logo assets ship in /public; any other logo_url is a custom upload.
-const BRAND_LOGOS = new Set(['', '/mavlers-ai-logo.svg', '/mavlers-ai-logo.png']);
 
 /**
  * Mavlers.ai wordmark. Adapts to the surface it sits on:
@@ -25,20 +21,23 @@ export function Logo({
 }) {
   const wordColor = variant === 'dark' ? '#FFFFFF' : '#000000';
   const size = height * 0.92;
-  const isBrand = BRAND_LOGOS.has(settings.logo_url || '');
 
   return (
-    <Link href={href} aria-label={settings.site_name} style={{ display: 'inline-flex', alignItems: 'baseline', color: wordColor }}>
-      {isBrand ? (
-        // Vector brand logo — inherits `color` (black on light, white on dark).
-        <LogoMark height={height} title={settings.site_name} />
-      ) : settings.logo_url ? (
-        // Custom uploaded logo.
+    <Link href={href} aria-label={settings.site_name} style={{ display: 'inline-flex', alignItems: 'baseline' }}>
+      {settings.logo_url ? (
+        // The brand logo asset is white-on-transparent. On light surfaces we
+        // invert it to solid black (brightness(0)); on dark it stays white —
+        // so the one asset adapts to any background, per the brand guide.
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={settings.logo_url}
           alt={settings.site_name}
-          style={{ height, width: 'auto', display: 'block' }}
+          style={{
+            height,
+            width: 'auto',
+            display: 'block',
+            filter: variant === 'dark' ? undefined : 'brightness(0)',
+          }}
         />
       ) : (
         <span

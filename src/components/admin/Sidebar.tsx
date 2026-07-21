@@ -3,9 +3,6 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { SignOutButton } from './SignOutButton';
-import { LogoMark } from '@/components/site/LogoMark';
-
-const BRAND_LOGOS = new Set(['', '/mavlers-ai-logo.svg', '/mavlers-ai-logo.png']);
 
 const NAV = [
   { href: '/admin', label: 'Dashboard', exact: true },
@@ -26,10 +23,8 @@ export function Sidebar({ email, role, logoUrl }: { email: string; role: string;
   const nav = NAV.filter((item) => !item.adminOnly || role === 'admin');
   return (
     <aside className="flex w-[250px] flex-shrink-0 flex-col border-r border-line bg-ink-900 p-4">
-      <Link href="/admin" className="mb-6 flex items-center px-2 text-white">
-        {BRAND_LOGOS.has(logoUrl || '') ? (
-          <LogoMark height={26} title="Mavlers.ai" />
-        ) : logoUrl ? (
+      <Link href="/admin" className="mb-6 flex items-center px-2">
+        {logoUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={logoUrl} alt="Mavlers.ai" style={{ height: 26, width: 'auto', display: 'block' }} />
         ) : (
