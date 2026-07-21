@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  a { color: #111111; text-decoration: none; }
+  a:hover { color: #000000; }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .opp-card { transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease; }
+  .opp-card:hover { transform: translateY(-6px); border-color: rgba(255,219,45,0.55) !important; box-shadow: 0 20px 50px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,219,45,0.25); }
+  .opp-num { transition: color .35s ease; }
+  .opp-card:hover .opp-num { color: rgba(255,219,45,0.28) !important; }
+  .svc-card { transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease, background .28s ease; }
+  .svc-card:hover { transform: translateY(-6px); border-color: #000 !important; box-shadow: 0 22px 44px rgba(0,0,0,0.10); }
+  .svc-ico { transition: background .28s ease, color .28s ease, transform .28s ease; }
+  .svc-card:hover .svc-ico { background: #FFDB2D !important; color: #000 !important; transform: rotate(-6deg); }
+  .svc-card:hover .svc-arrow { opacity: 1 !important; transform: translateX(0) !important; }
+  .svc-card .svc-ico svg { width: 22px; height: 22px; }
+  .svc-card .svc-arrow svg { width: 18px; height: 18px; }
+  .conn-tile { transition: transform .25s ease, border-color .25s ease, background .25s ease; }
+  .conn-tile:hover { transform: translateY(-4px); border-color: rgba(255,219,45,0.6) !important; background: #171717 !important; }
+  .conn-ico { transition: background .25s ease, color .25s ease; }
+  .conn-tile:hover .conn-ico { background: #FFDB2D !important; color: #000 !important; }
+  .conn-ico svg { width: 20px; height: 20px; }
+  .rm-row .rm-card { transition: border-color .25s ease, background .25s ease, transform .25s ease; }
+  .rm-row:hover .rm-card { border-color: rgba(255,219,45,0.5); background: #171717; transform: translateX(6px); }
+  .rm-node { transition: box-shadow .25s ease; }
+  .rm-row:hover .rm-node { box-shadow: 0 0 0 6px rgba(255,219,45,0.14); }
+  .rm-card .rm-ico svg { width: 22px; height: 22px; }
+  .hero-learn-ico { transition: transform .25s ease; }
+  .hero-learn-ico svg { width: 18px; height: 18px; }
+  .hero-learn:hover .hero-learn-ico { transform: translateX(4px); }
+  @keyframes heroPulse { 0%,100% { transform: scale(1); opacity: .55; } 50% { transform: scale(1.12); opacity: 1; } }
+  @keyframes heroRing { 0% { transform: scale(.6); opacity: .6; } 100% { transform: scale(1.6); opacity: 0; } }
+  @keyframes heroFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  @keyframes heroDash { to { stroke-dashoffset: -36; } }
+  @keyframes heroSpin { to { transform: rotate(360deg); } }
+  @keyframes heroBar { 0%,100% { transform: scaleY(.4); } 50% { transform: scaleY(1); } }
+  .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 48px; align-items: center; }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } .hero-visual { display: none !important; } }
+  @keyframes botFloat { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-14px) rotate(-1.2deg); } }
+  @keyframes botBlink { 0%,92%,100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
+  @keyframes botAntenna { 0%,100% { opacity: .5; transform: scale(.8); } 50% { opacity: 1; transform: scale(1.25); } }
+  @keyframes botScan { 0%,100% { top: 18%; } 50% { top: 70%; } }
+  @keyframes botShadow { 0%,100% { transform: translateX(-50%) scaleX(1); opacity: .18; } 50% { transform: translateX(-50%) scaleX(.82); opacity: .1; } }
+  @keyframes botOrbit { from { transform: rotate(0deg) translateX(150px) rotate(0deg); } to { transform: rotate(360deg) translateX(150px) rotate(-360deg); } }
+  @keyframes implWork { 0%,100% { transform: scaleX(0.32); } 50% { transform: scaleX(1); } }
+  @keyframes implDot { 0%,100% { opacity: .3; } 50% { opacity: 1; } }
+  @media (max-width: 860px) { .main-nav-links { display: none !important; } }
+  @media (max-width: 560px) { .deliver-grid { grid-template-columns: 1fr !important; } .nav-cta { padding: 9px 16px !important; font-size: 13.5px !important; } }
+  @media (max-width: 420px) { .hero-cta-row { gap: 12px !important; } .hero-cta-row a { width: 100%; text-align: center; } }
+</style>
+</helmet>
+
+<div style="font-family: 'Montserrat', system-ui, sans-serif; color: #111111; background: #FFFFFF; -webkit-font-smoothing: antialiased;">
+
+  <!-- Group bar -->
+  <div style="background: #000000; color: #B8B8B8; font-size: 12.5px; letter-spacing: 0.01em;">
+    <div style="max-width: 1220px; margin: 0 auto; padding: 9px 24px; display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; justify-content: center;">
+      <span>Part of the Mavlers group</span>
+      <span style="opacity: 0.4;">·</span>
+      <a href="https://mavlers.com" style="color: #FFDB2D;">mavlers.com</a>
+      <span style="opacity: 0.4;">·</span>
+      <a href="https://mavlers.agency" style="color: #FFDB2D;">mavlers.agency</a>
+    </div>
+  </div>
+
+  <!-- Nav -->
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); border-bottom: 1px solid #EDEDED;">
+    <nav style="max-width: 1220px; margin: 0 auto; padding: 15px 24px; display: flex; align-items: center; gap: 20px;">
+      <a href="#top" style="display: flex; align-items: baseline; gap: 1px; color: #000000; font-weight: 800; font-size: 24px; letter-spacing: -0.03em;">
+        mavlers<span style="color: #000; background: #FFDB2D; padding: 0 5px; border-radius: 4px; margin-left: 3px; font-weight: 800;">.ai</span>
+      </a>
+      <div style="flex: 1;"></div>
+      <div class="main-nav-links" style="display: flex; align-items: center; gap: 26px; font-size: 15px; font-weight: 600; color: #333333;">
+        <a href="#services" style="color: #333;">Services</a>
+        <a href="#implementations" style="color: #333;">Implementations</a>
+        <a href="#engagement" style="color: #333;">Engagement</a>
+        <a href="#why" style="color: #333;">About</a>
+      </div>
+      <a href="#contact" class="nav-cta" style="background: #FFDB2D; color: #000000; padding: 11px 22px; border-radius: 999px; font-size: 14.5px; font-weight: 700; white-space: nowrap;">Book a Call</a>
+    </nav>
+  </header>
+
+  <!-- Hero (white) -->
+  <section id="top" style="background: #FFFFFF; position: relative; overflow: hidden;">
+    <div style="max-width: 1220px; margin: 0 auto; padding: clamp(56px, 8vw, 108px) 24px clamp(44px, 5vw, 76px); position: relative;">
+     <div class="hero-grid">
+      <div>
+      <div style="display: inline-flex; align-items: center; gap: 9px; padding: 7px 15px; border: 1.5px solid #000000; border-radius: 999px; font-size: 12.5px; font-weight: 700; color: #000; letter-spacing: 0.01em; text-transform: uppercase;">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: #FFDB2D; box-shadow: 0 0 0 3px rgba(255,219,45,0.35);"></span>
+        AI &amp; automation engineering
+      </div>
+      <h1 style="font-weight: 800; font-size: clamp(34px, 4.6vw, 54px); line-height: 1.06; letter-spacing: -0.03em; margin: 24px 0 0; max-width: 17ch; text-wrap: balance;">
+        Turn deep industry expertise into <span style="background: linear-gradient(180deg, transparent 62%, #FFDB2D 62%);">working AI solutions.</span>
+      </h1>
+      <p style="font-size: clamp(16px, 1.5vw, 19px); line-height: 1.6; color: #4A4A4A; max-width: 54ch; margin: 26px 0 0;">
+        You bring the industry expertise and the opportunity — we architect, build and scale production-grade AI and automation with your team. Backed by 15+ years of digital delivery.
+      </p>
+      <div class="hero-cta-row" style="display: flex; flex-wrap: wrap; align-items: center; gap: 20px; margin-top: 34px;">
+        <a href="#contact" style="background: #000000; color: #FFFFFF; padding: 16px 30px; border-radius: 999px; font-size: 15.5px; font-weight: 700;">Book a Call</a>
+        <a href="#services" class="hero-learn" style="display: inline-flex; align-items: center; gap: 9px; color: #000; font-size: 15.5px; font-weight: 700;">Learn more <span class="hero-learn-ico" style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: #FFDB2D; color: #000;"><i data-lucide="arrow-right"></i></span></a>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px;">
+        <span style="font-size: 13px; font-weight: 600; color: #222; background: #F6F6F4; border: 1px solid #EAEAE6; padding: 8px 14px; border-radius: 999px;">Agencies &amp; brands</span>
+        <span style="font-size: 13px; font-weight: 600; color: #222; background: #F6F6F4; border: 1px solid #EAEAE6; padding: 8px 14px; border-radius: 999px;">Production-ready engineering</span>
+        <span style="font-size: 13px; font-weight: 600; color: #222; background: #F6F6F4; border: 1px solid #EAEAE6; padding: 8px 14px; border-radius: 999px;">Flexible teams</span>
+        <span style="font-size: 13px; font-weight: 600; color: #222; background: #F6F6F4; border: 1px solid #EAEAE6; padding: 8px 14px; border-radius: 999px;">Secure by default</span>
+      </div>
+      </div>
+
+      <div class="hero-visual" style="position: relative;">
+        <div style="position: relative; aspect-ratio: 1/1; width: 100%; max-width: 560px; margin: 0 auto;">
+          <!-- soft brand glow -->
+          <div style="position: absolute; inset: 6%; border-radius: 50%; background: radial-gradient(circle at 50% 42%, rgba(255,219,45,0.32), rgba(255,219,45,0.10) 55%, transparent 72%); filter: blur(6px);"></div>
+          <!-- dotted orbit ring -->
+          <div style="position: absolute; top: 50%; left: 50%; width: 260px; height: 260px; transform: translate(-50%,-50%); border: 2px dashed rgba(0,0,0,0.09); border-radius: 50%;"></div>
+          <!-- ground shadow -->
+          <div style="position: absolute; bottom: 12%; left: 50%; width: 180px; height: 26px; background: #000; border-radius: 50%; filter: blur(9px); animation: botShadow 3.6s ease-in-out infinite;"></div>
+
+          <!-- flow connectors (behind mascot) -->
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position: absolute; inset: 0; width: 100%; height: 100%;">
+            <g stroke="#E6E6E6" stroke-width="1.3" fill="none" vector-effect="non-scaling-stroke">
+              <path d="M22 18 L47 47"></path><path d="M22 50 L47 47"></path><path d="M22 82 L47 47"></path>
+              <path d="M53 47 L78 18"></path><path d="M53 47 L78 50"></path><path d="M53 47 L78 82"></path>
+            </g>
+            <g fill="#FFDB2D">
+              <polygon points="0,-1.7 3.6,0 0,1.7"><animateMotion dur="4.2s" repeatCount="indefinite" rotate="auto" path="M22 18 L47 47"></animateMotion></polygon>
+              <polygon points="0,-1.7 3.6,0 0,1.7"><animateMotion dur="4.6s" repeatCount="indefinite" rotate="auto" path="M22 50 L47 47"></animateMotion></polygon>
+              <polygon points="0,-1.7 3.6,0 0,1.7"><animateMotion dur="5s" repeatCount="indefinite" rotate="auto" path="M22 82 L47 47"></animateMotion></polygon>
+              <polygon points="0,-1.7 3.6,0 0,1.7"><animateMotion dur="4.4s" repeatCount="indefinite" rotate="auto" path="M53 47 L78 18"></animateMotion></polygon>
+              <polygon points="0,-1.7 3.6,0 0,1.7"><animateMotion dur="4.8s" repeatCount="indefinite" rotate="auto" path="M53 47 L78 50"></animateMotion></polygon>
+              <polygon points="0,-1.7 3.6,0 0,1.7"><animateMotion dur="5.2s" repeatCount="indefinite" rotate="auto" path="M53 47 L78 82"></animateMotion></polygon>
+            </g>
+          </svg>
+
+          <!-- flow labels -->
+          <div style="position: absolute; top: 2px; left: 4px; font-size: 10.5px; font-weight: 800; letter-spacing: 0.14em; color: #9A9A9A; text-transform: uppercase;">Data in →</div>
+          <div style="position: absolute; top: 2px; right: 4px; font-size: 10.5px; font-weight: 800; letter-spacing: 0.14em; color: #9A9A9A; text-transform: uppercase;">→ Solutions out</div>
+
+          <!-- the robot -->
+          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) scale(0.78);">
+          <div style="width: 230px; animation: botFloat 3.6s ease-in-out infinite;">
+            <!-- antenna -->
+            <div style="width: 3px; height: 26px; background: #111; margin: 0 auto; border-radius: 3px;"></div>
+            <div style="width: 16px; height: 16px; border-radius: 50%; background: #FFDB2D; margin: -6px auto 0; box-shadow: 0 0 14px rgba(255,219,45,0.9); animation: botAntenna 1.6s ease-in-out infinite;"></div>
+            <!-- head -->
+            <div style="position: relative; width: 230px; height: 176px; margin: 10px auto 0; background: linear-gradient(160deg, #1E1E1E, #050505); border-radius: 40px; box-shadow: inset 0 3px 0 rgba(255,255,255,0.08), 0 22px 44px rgba(0,0,0,0.22);">
+              <!-- ears -->
+              <div style="position: absolute; top: 58px; left: -14px; width: 16px; height: 48px; background: #FFDB2D; border-radius: 8px;"></div>
+              <div style="position: absolute; top: 58px; right: -14px; width: 16px; height: 48px; background: #FFDB2D; border-radius: 8px;"></div>
+              <!-- face screen -->
+              <div style="position: absolute; inset: 26px 24px; background: #FFFFFF; border-radius: 26px; border: 1px solid #EAEAEA; overflow: hidden;">
+                <!-- eyes -->
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); display: flex; gap: 30px;">
+                  <span style="width: 30px; height: 44px; background: #FFDB2D; border-radius: 16px; animation: botBlink 4s ease-in-out infinite;"></span>
+                  <span style="width: 30px; height: 44px; background: #FFDB2D; border-radius: 16px; animation: botBlink 4s ease-in-out infinite;"></span>
+                </div>
+                <!-- smile -->
+                <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 40px; height: 16px; border: 3px solid #FFDB2D; border-top: none; border-radius: 0 0 20px 20px;"></div>
+              </div>
+            </div>
+            <!-- neck + body hint -->
+            <div style="width: 60px; height: 12px; background: #111; margin: 6px auto 0; border-radius: 4px;"></div>
+            <div style="width: 150px; height: 30px; background: linear-gradient(160deg, #1E1E1E, #0A0A0A); margin: 0 auto; border-radius: 18px 18px 14px 14px;"></div>
+          </div>
+          </div>
+
+          <!-- input sources (left) -->
+          <div style="position: absolute; top: 8%; left: -26px; display: flex; align-items: center; gap: 9px; background: #fff; border: 1px solid #EDEDED; border-radius: 13px; padding: 9px 13px; color: #000; font-size: 12.5px; font-weight: 700; box-shadow: 0 12px 30px rgba(0,0,0,0.10); animation: heroFloat 4s ease-in-out infinite;"><span style="display:inline-flex;width:26px;height:26px;border-radius:8px;background:#F4F4F2;align-items:center;justify-content:center;"><i data-lucide="database" style="width:15px;height:15px;color:#000;"></i></span>Raw Data</div>
+          <div style="position: absolute; top: 44%; left: -26px; display: flex; align-items: center; gap: 9px; background: #fff; border: 1px solid #EDEDED; border-radius: 13px; padding: 9px 13px; color: #000; font-size: 12.5px; font-weight: 700; box-shadow: 0 12px 30px rgba(0,0,0,0.10); animation: heroFloat 4.3s ease-in-out infinite 0.4s;"><span style="display:inline-flex;width:26px;height:26px;border-radius:8px;background:#F4F4F2;align-items:center;justify-content:center;"><i data-lucide="file-text" style="width:15px;height:15px;color:#000;"></i></span>Documents</div>
+          <div style="position: absolute; top: 80%; left: -26px; display: flex; align-items: center; gap: 9px; background: #fff; border: 1px solid #EDEDED; border-radius: 13px; padding: 9px 13px; color: #000; font-size: 12.5px; font-weight: 700; box-shadow: 0 12px 30px rgba(0,0,0,0.10); animation: heroFloat 4.6s ease-in-out infinite 0.8s;"><span style="display:inline-flex;width:26px;height:26px;border-radius:8px;background:#F4F4F2;align-items:center;justify-content:center;"><i data-lucide="users" style="width:15px;height:15px;color:#000;"></i></span>CRM &amp; ERP</div>
+
+          <!-- AI solutions (right) -->
+          <div style="position: absolute; top: 8%; right: -26px; display: flex; align-items: center; gap: 9px; background: #000; border-radius: 13px; padding: 9px 13px; color: #fff; font-size: 12.5px; font-weight: 700; box-shadow: 0 12px 30px rgba(0,0,0,0.14); animation: heroFloat 4.2s ease-in-out infinite 0.3s;"><span style="display:inline-flex;width:26px;height:26px;border-radius:8px;background:#FFDB2D;align-items:center;justify-content:center;"><i data-lucide="bot" style="width:15px;height:15px;color:#000;"></i></span>AI Agents</div>
+          <div style="position: absolute; top: 44%; right: -26px; display: flex; align-items: center; gap: 9px; background: #000; border-radius: 13px; padding: 9px 13px; color: #fff; font-size: 12.5px; font-weight: 700; box-shadow: 0 12px 30px rgba(0,0,0,0.14); animation: heroFloat 4.5s ease-in-out infinite 0.7s;"><span style="display:inline-flex;width:26px;height:26px;border-radius:8px;background:#FFDB2D;align-items:center;justify-content:center;"><i data-lucide="workflow" style="width:15px;height:15px;color:#000;"></i></span>Automation</div>
+          <div style="position: absolute; top: 80%; right: -26px; display: flex; align-items: center; gap: 9px; background: #000; border-radius: 13px; padding: 9px 13px; color: #fff; font-size: 12.5px; font-weight: 700; box-shadow: 0 12px 30px rgba(0,0,0,0.14); animation: heroFloat 4.8s ease-in-out infinite 1.1s;"><span style="display:inline-flex;width:26px;height:26px;border-radius:8px;background:#FFDB2D;align-items:center;justify-content:center;"><i data-lucide="share-2" style="width:15px;height:15px;color:#000;"></i></span>Integrations</div>
+
+          <!-- solution caption -->
+          <div style="position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%); white-space: nowrap; background: #FFDB2D; color: #000; font-size: 12.5px; font-weight: 800; letter-spacing: -0.01em; padding: 9px 18px; border-radius: 999px; box-shadow: 0 12px 30px rgba(255,219,45,0.35);">One engine for all your AI &amp; automation</div>
+        </div>
+      </div>
+     </div>
+    </div>
+  </section>
+
+  <!-- Stats (black) -->
+  <section style="background: #000000; color: #FFFFFF;">
+    <div style="max-width: 1220px; margin: 0 auto; padding: clamp(46px, 5vw, 66px) 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 34px 24px;">
+      <div>
+        <div style="font-weight: 800; font-size: clamp(36px, 4vw, 50px); letter-spacing: -0.03em; color: #FFDB2D;">15+</div>
+        <div style="font-size: 13.5px; color: #A6A6A6; margin-top: 6px; font-weight: 500;">years of digital delivery</div>
+      </div>
+      <div>
+        <div style="font-weight: 800; font-size: clamp(36px, 4vw, 50px); letter-spacing: -0.03em; color: #FFDB2D;">500+</div>
+        <div style="font-size: 13.5px; color: #A6A6A6; margin-top: 6px; font-weight: 500;">agency relationships</div>
+      </div>
+      <div>
+        <div style="font-weight: 800; font-size: clamp(36px, 4vw, 50px); letter-spacing: -0.03em; color: #FFDB2D;">52+</div>
+        <div style="font-size: 13.5px; color: #A6A6A6; margin-top: 6px; font-weight: 500;">countries served</div>
+      </div>
+      <div>
+        <div style="font-weight: 800; font-size: clamp(36px, 4vw, 50px); letter-spacing: -0.03em; color: #FFDB2D;">80+</div>
+        <div style="font-size: 13.5px; color: #A6A6A6; margin-top: 6px; font-weight: 500;">AI-enabled developers</div>
+      </div>
+      <div>
+        <div style="font-weight: 800; font-size: clamp(36px, 4vw, 50px); letter-spacing: -0.03em; color: #FFDB2D;">10</div>
+        <div style="font-size: 13.5px; color: #A6A6A6; margin-top: 6px; font-weight: 500;">AI technology consultants</div>
+      </div>
+      <div>
+        <div style="font-weight: 800; font-size: clamp(36px, 4vw, 50px); letter-spacing: -0.03em; color: #FFDB2D;">1000s</div>
+        <div style="font-size: 13.5px; color: #A6A6A6; margin-top: 6px; font-weight: 500;">projects delivered</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Platforms marquee (white) -->
+  <section style="background: #FFFFFF; border-bottom: 1px solid #EDEDED;">
+    <div style="max-width: 1220px; margin: 0 auto; padding: clamp(40px, 5vw, 58px) 24px;">
+      <p style="text-align: center; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #999; margin: 0 0 28px;">The platforms agencies already build on</p>
+      <div style="overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);">
+        <div style="display: flex; gap: 52px; width: max-content; animation: marquee 26s linear infinite; font-weight: 700; font-size: 22px; color: #1A1A1A; letter-spacing: -0.02em;">
+          <span>Salesforce</span><span>HubSpot</span><span>Marketo</span><span>Braze</span><span>Microsoft</span><span>Zendesk</span><span>Shopify</span><span>n8n</span>
+          <span>Salesforce</span><span>HubSpot</span><span>Marketo</span><span>Braze</span><span>Microsoft</span><span>Zendesk</span><span>Shopify</span><span>n8n</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The agency opportunity (dark) -->
+  <section style="background: radial-gradient(1200px 500px at 78% -10%, rgba(255,219,45,0.14), transparent 60%), #0A0A0A; color: #FFFFFF;">
+    <div style="max-width: 1220px; margin: 0 auto; padding: clamp(64px, 8vw, 108px) 24px;">
+      <div style="display: inline-flex; align-items: center; gap: 11px; padding: 9px 20px; border: 1px solid rgba(255,219,45,0.4); border-radius: 999px; font-size: 13px; font-weight: 700; color: #FFDB2D; letter-spacing: 0.14em; text-transform: uppercase;">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: #FFDB2D; box-shadow: 0 0 10px 1px rgba(255,219,45,0.7);"></span>
+        The agency opportunity
+      </div>
+      <h2 style="font-weight: 800; font-size: clamp(27px, 3vw, 40px); letter-spacing: -0.03em; line-height: 1.1; margin: 26px 0 0; max-width: 20ch;">AI opportunities are everywhere.<br>The capability to build them <span style="color: #FFDB2D;">isn't.</span></h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; margin-top: 56px;">
+        <div class="opp-card" style="position: relative; overflow: hidden; background: linear-gradient(180deg, #121212, #0D0D0D); border: 1px solid #232323; border-radius: 20px; padding: 34px 32px;">
+          <span class="opp-num" style="position: absolute; top: 14px; right: 22px; font-weight: 800; font-size: 130px; line-height: 1; letter-spacing: -0.04em; color: rgba(255,255,255,0.035); pointer-events: none;">01</span>
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <span style="font-size: 12.5px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: #FFDB2D; white-space: nowrap;">The demand</span>
+          </div>
+          <h3 style="font-weight: 700; font-size: 20px; letter-spacing: -0.015em; line-height: 1.2; margin: 22px 0 14px; color: #fff;">Demand is moving faster than internal capability</h3>
+          <p style="font-size: 15px; line-height: 1.65; color: #9A9A9A; margin: 0;">Teams are spotting valuable AI use cases every week — but rarely have the specialized engineers to actually ship them into production.</p>
+          <div style="display: flex; align-items: center; gap: 14px; margin-top: 34px;">
+            <span style="width: 40px; height: 2px; background: #FFDB2D;"></span>
+            <span style="flex: 1;"></span>
+            <span style="font-size: 13.5px; font-weight: 600; color: #B98D1E;">Speed gap</span>
+          </div>
+        </div>
+        <div class="opp-card" style="position: relative; overflow: hidden; background: linear-gradient(180deg, #121212, #0D0D0D); border: 1px solid #232323; border-radius: 20px; padding: 34px 32px;">
+          <span class="opp-num" style="position: absolute; top: 14px; right: 22px; font-weight: 800; font-size: 130px; line-height: 1; letter-spacing: -0.04em; color: rgba(255,255,255,0.035); pointer-events: none;">02</span>
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <span style="font-size: 12.5px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: #FFDB2D; white-space: nowrap;">The cost</span>
+          </div>
+          <h3 style="font-weight: 700; font-size: 20px; letter-spacing: -0.015em; line-height: 1.2; margin: 22px 0 14px; color: #fff;">Building an internal AI team is expensive</h3>
+          <p style="font-size: 15px; line-height: 1.65; color: #9A9A9A; margin: 0;">Recruitment, experimentation, architecture, security and ongoing model changes all demand serious, sustained investment few can justify.</p>
+          <div style="display: flex; align-items: center; gap: 14px; margin-top: 34px;">
+            <span style="width: 40px; height: 2px; background: #FFDB2D;"></span>
+            <span style="flex: 1;"></span>
+            <span style="font-size: 13.5px; font-weight: 600; color: #B98D1E;">Cost gap</span>
+          </div>
+        </div>
+        <div class="opp-card" style="position: relative; overflow: hidden; background: linear-gradient(180deg, #121212, #0D0D0D); border: 1px solid #232323; border-radius: 20px; padding: 34px 32px;">
+          <span class="opp-num" style="position: absolute; top: 14px; right: 22px; font-weight: 800; font-size: 130px; line-height: 1; letter-spacing: -0.04em; color: rgba(255,255,255,0.035); pointer-events: none;">03</span>
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <span style="font-size: 12.5px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: #FFDB2D; white-space: nowrap;">The fit</span>
+          </div>
+          <h3 style="font-weight: 700; font-size: 20px; letter-spacing: -0.015em; line-height: 1.2; margin: 22px 0 14px; color: #fff;">Most AI vendors don't understand your context</h3>
+          <p style="font-size: 15px; line-height: 1.65; color: #9A9A9A; margin: 0;">You need a delivery partner that respects your domain, your standards and — when relevant — your client relationships.</p>
+          <div style="display: flex; align-items: center; gap: 14px; margin-top: 34px;">
+            <span style="width: 40px; height: 2px; background: #FFDB2D;"></span>
+            <span style="flex: 1;"></span>
+            <span style="font-size: 13.5px; font-weight: 600; color: #B98D1E;">Context gap</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 44px; background: #FFDB2D; border-radius: 22px; padding: clamp(30px, 4vw, 48px); display: flex; flex-wrap: wrap; align-items: center; gap: 24px; justify-content: space-between;">
+        <p style="font-weight: 700; font-size: clamp(19px, 2.2vw, 27px); line-height: 1.25; color: #000; margin: 0; max-width: 40ch; letter-spacing: -0.02em;">Mavlers.ai gives agencies and brands the engineering capability to ship AI — without building a separate team.</p>
+        <a href="#contact" style="background: #000; color: #FFDB2D; padding: 15px 28px; border-radius: 999px; font-size: 15px; font-weight: 700; white-space: nowrap;">Start the conversation</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Partnership model (white) -->
+  <section style="background: #FFFFFF; color: #111111;">
+    <div style="max-width: 1220px; margin: 0 auto; padding: clamp(64px, 8vw, 108px) 24px;">
+      <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #000; margin: 0; display: inline-block; border-bottom: 3px solid #FFDB2D; padding-bottom: 4px;">The partnership model</p>
+      <h2 style="font-weight: 800; font-size: clamp(27px, 3vw, 40px); letter-spacing: -0.03em; line-height: 1.1; margin: 22px 0 0; color: #000;">Your expertise. Our engineering. One solution.</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; margin-top: 48px;">
+        <div style="background: #141414; border: 1px solid #262626; border-radius: 22px; padding: 36px;">
+          <h3 style="font-weight: 700; font-size: 20px; letter-spacing: -0.015em; margin: 0 0 22px; color: #fff;">You bring</h3>
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div style="display: flex; align-items: center; gap: 12px; font-size: 15.5px; color: #D2D2D2;"><span style="color: #666;">◇</span>Industry knowledge</div>
+            <div style="display: flex; align-items: center; gap: 12px; font-size: 15.5px; color: #D2D2D2;"><span style="color: #666;">◇</span>Business context</div>
+            <div style="display: flex; align-items: center; gap: 12px; font-size: 15.5px; color: #D2D2D2;"><span style="color: #666;">◇</span>The opportunity</div>
+            <div style="display: flex; align-items: center; gap: 12px; font-size: 15.5px; color: #D2D2D2;"><span style="color: #666;">◇</span>Strategic direction</div>
+            <div style="display: flex; align-items: center; gap: 12px; font-size: 15.5px; color: #D2D2D2;"><span style="color: #666;">◇</span>Client &amp; brand ownership</div>
+          </div>
+        </div>
+        <div style="background: #FFDB2D; border: 1px solid #FFDB2D; border-radius: 22px; padding: 36px;">
+          <h3 style="font-weight: 700; font-size: 20px; letter-spacing: -0.015em; margin: 0 0 22px; color: #000;">Mavlers.ai delivers</h3>
+          <div class="deliver-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px;">
+            <div style="display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; color: #000;"><span>✓</span>Opportunity validation</div>
+            <div style="display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; color: #000;"><span>✓</span>Solution architecture</div>
+            <div style="display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; color: #000;"><span>✓</span>UX &amp; prototyping</div>
+            <div style="display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; color: #000;"><span>✓</span>AI engineering</div>
+            <div style="display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; color: #000;"><span>✓</span>Automation workflows</div>
+            <div style="display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; color: #000;"><span>✓</span>System integration</div>
+            <div style="display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; color: #000;"><span>✓</span>QA &amp; deployment</div>
+            <div style="display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; color: #000;"><span>✓</span>Maintenance &amp; scaling</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What we build / services (white) -->
+  <section id="services" style="background: #FFFFFF;">
+    <div style="max-width: 1220px; margin: 0 auto; padding: clamp(64px, 8vw, 108px) 24px;">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px;">
+        <div>
+          <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #000; margin: 0; display: inline-block; border-bottom: 3px solid #FFDB2D; padding-bottom: 4px;">What we build</p>
+          <h2 style="font-weight: 800; font-size: clamp(27px, 3vw, 40px); letter-spacing: -0.03em; line-height: 1.1; margin: 22px 0 0; max-width: 22ch; text-wrap: balance;">Engineering capabilities, ready to deploy under your brand</h2>
+        </div>
+        <a href="#implementations" style="font-size: 15px; font-weight: 700; border-bottom: 2px solid #FFDB2D; padding-bottom: 2px;">Explore all services →</a>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(258px, 1fr)); gap: 16px; margin-top: 48px;">
+        <div class="svc-card" style="position: relative; background: #FAFAF8; border: 1px solid #ECECE8; border-radius: 18px; padding: 24px 22px;">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+            <div class="svc-ico" style="width: 46px; height: 46px; border-radius: 12px; background: #000; color: #FFDB2D; display: flex; align-items: center; justify-content: center;"><i data-lucide="sparkles"></i></div>
+            <span class="svc-arrow" style="opacity: 0; transform: translateX(-6px); color: #000; display: inline-flex;"><i data-lucide="arrow-up-right"></i></span>
+          </div>
+          <h3 style="font-weight: 800; font-size: 16.5px; letter-spacing: -0.01em; margin: 18px 0 7px;">Custom AI Development</h3>
+          <p style="font-size: 13.5px; line-height: 1.5; color: #565656; margin: 0;">Bespoke AI applications, copilots and intelligent interfaces built for your client.</p>
+        </div>
+        <div class="svc-card" style="position: relative; background: #FAFAF8; border: 1px solid #ECECE8; border-radius: 18px; padding: 24px 22px;">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+            <div class="svc-ico" style="width: 46px; height: 46px; border-radius: 12px; background: #000; color: #FFDB2D; display: flex; align-items: center; justify-content: center;"><i data-lucide="database"></i></div>
+            <span class="svc-arrow" style="opacity: 0; transform: translateX(-6px); color: #000; display: inline-flex;"><i data-lucide="arrow-up-right"></i></span>
+          </div>
+          <h3 style="font-weight: 800; font-size: 16.5px; letter-spacing: -0.01em; margin: 18px 0 7px;">RAG &amp; Knowledge Systems</h3>
+          <p style="font-size: 13.5px; line-height: 1.5; color: #565656; margin: 0;">Retrieval-augmented assistants grounded in your client's own trusted content.</p>
+        </div>
+        <div class="svc-card" style="position: relative; background: #FAFAF8; border: 1px solid #ECECE8; border-radius: 18px; padding: 24px 22px;">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+            <div class="svc-ico" style="width: 46px; height: 46px; border-radius: 12px; background: #000; color: #FFDB2D; display: flex; align-items: center; justify-content: center;"><i data-lucide="bot"></i></div>
+            <span class="svc-arrow" style="opacity: 0; transform: translateX(-6px); color: #000; display: inline-flex;"><i data-lucide="arrow-up-right"></i></span>
+          </div>
+          <h3 style="font-weight: 800; font-size: 16.5px; letter-spacing: -0.01em; margin: 18px 0 7px;">AI Agents</h3>
+          <p style="font-size: 13.5px; line-height: 1.5; color: #565656; margin: 0;">Tool-enabled agents that complete real business tasks end to end.</p>
+        </div>
+        <div class="svc-card" style="position: relative; background: #FAFAF8; border: 1px solid #ECECE8; border-radius: 18px; padding: 24px 22px;">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+            <div class="svc-ico" style="width: 46px; height: 46px; border-radius: 12px; background: #000; color: #FFDB2D; display: flex; align-items: center; justify-content: center;"><i data-lucide="workflow"></i></div>
+            <span class="svc-arrow" style="opacity: 0; transform: translateX(-6px); color: #000; display: inline-flex;"><i data-lucide="arrow-up-right"></i></span>
+          </div>
+          <h3 style="font-weight: 800; font-size: 16.5px; letter-spacing: -0.01em; margin: 18px 0 7px;">Workflow Automation</h3>
+          <p style="font-size: 13.5px; line-height: 1.5; color: #565656; margin: 0;">n8n, Make and Langflow automations that remove manual, repetitive work.</p>
+        </div>
+        <div class="svc-card" style="position: relative; background: #FAFAF8; border: 1px solid #ECECE8; border-radius: 18px; padding: 24px 22px;">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+            <div class="svc-ico" style="width: 46px; height: 46px; border-radius: 12px; background: #000; color: #FFDB2D; display: flex; align-items: center; justify-content: center;"><i data-lucide="git-merge"></i></div>
+            <span class="svc-arrow" style="opacity: 0; transform: translateX(-6px); color: #000; display: inline-flex;"><i data-lucide="arrow-up-right"></i></span>
+          </div>
+          <h3 style="font-weight: 800; font-size: 16.5px; letter-spacing: -0.01em; margin: 18px 0 7px;">AI Orchestration</h3>
+          <p style="font-size: 13.5px; line-height: 1.5; color: #565656; margin: 0;">Coordinated multi-agent and multi-model workflows with observability.</p>
+        </div>
+        <div class="svc-card" style="position: relative; background: #FAFAF8; border: 1px solid #ECECE8; border-radius: 18px; padding: 24px 22px;">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+            <div class="svc-ico" style="width: 46px; height: 46px; border-radius: 12px; background: #000; color: #FFDB2D; display: flex; align-items: center; justify-content: center;"><i data-lucide="plug"></i></div>
+            <span class="svc-arrow" style="opacity: 0; transform: translateX(-6px); color: #000; display: inline-flex;"><i data-lucide="arrow-up-right"></i></span>
+          </div>
+          <h3 style="font-weight: 800; font-size: 16.5px; letter-spacing: -0.01em; margin: 18px 0 7px;">MCP Development</h3>
+          <p style="font-size: 13.5px; line-height: 1.5; color: #565656; margin: 0;">Custom Model Context Protocol servers and connectors for secure tool access.</p>
+        </div>
+        <div class="svc-card" style="position: relative; background: #FAFAF8; border: 1px solid #ECECE8; border-radius: 18px; padding: 24px 22px;">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+            <div class="svc-ico" style="width: 46px; height: 46px; border-radius: 12px; background: #000; color: #FFDB2D; display: flex; align-items: center; justify-content: center;"><i data-lucide="share-2"></i></div>
+            <span class="svc-arrow" style="opacity: 0; transform: translateX(-6px); color: #000; display: inline-flex;"><i data-lucide="arrow-up-right"></i></span>
+          </div>
+          <h3 style="font-weight: 800; font-size: 16.5px; letter-spacing: -0.01em; margin: 18px 0 7px;">API &amp; Platform Integration</h3>
+          <p style="font-size: 13.5px; line-height: 1.5; color: #565656; margin: 0;">Connect CRMs, ERPs, LLMs and custom APIs into one orchestrated system.</p>
+        </div>
+        <div class="svc-card" style="position: relative; background: #FAFAF8; border: 1px solid #ECECE8; border-radius: 18px; padding: 24px 22px;">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+            <div class="svc-ico" style="width: 46px; height: 46px; border-radius: 12px; background: #000; color: #FFDB2D; display: flex; align-items: center; justify-content: center;"><i data-lucide="rocket"></i></div>
+            <span class="svc-arrow" style="opacity: 0; transform: translateX(-6px); color: #000; display: inline-flex;"><i data-lucide="arrow-up-right"></i></span>
+          </div>
+          <h3 style="font-weight: 800; font-size: 16.5px; letter-spacing: -0.01em; margin: 18px 0 7px;">AI-Powered MVP Development</h3>
+          <p style="font-size: 13.5px; line-height: 1.5; color: #565656; margin: 0;">Validate and launch AI products faster with disciplined engineering.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What we can connect (black) -->
+  <section style="background: #000000; color: #FFFFFF;">
+    <div style="max-width: 1220px; margin: 0 auto; padding: clamp(64px, 8vw, 108px) 24px;">
+      <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #FFDB2D; margin: 0;">What we can connect</p>
+      <h2 style="font-weight: 800; font-size: clamp(27px, 3vw, 40px); letter-spacing: -0.03em; line-height: 1.1; margin: 18px 0 0; color: #fff;">Every system your client already runs</h2>
+      <p style="font-size: 16px; line-height: 1.6; color: #A6A6A6; max-width: 60ch; margin: 18px 0 0;">We orchestrate data and workflows across the tools your clients depend on — turning disconnected platforms into one intelligent ecosystem.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-top: 44px;">
+        <div class="conn-tile" style="display: flex; align-items: center; gap: 14px; background: #0F0F0F; border: 1px solid #262626; border-radius: 16px; padding: 18px 20px; font-size: 15px; font-weight: 600; color: #E4E4E4;"><span class="conn-ico" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 11px; background: #1C1C1C; color: #FFDB2D; flex-shrink: 0;"><i data-lucide="globe"></i></span>Websites</div>
+        <div class="conn-tile" style="display: flex; align-items: center; gap: 14px; background: #0F0F0F; border: 1px solid #262626; border-radius: 16px; padding: 18px 20px; font-size: 15px; font-weight: 600; color: #E4E4E4;"><span class="conn-ico" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 11px; background: #1C1C1C; color: #FFDB2D; flex-shrink: 0;"><i data-lucide="users"></i></span>CRMs</div>
+        <div class="conn-tile" style="display: flex; align-items: center; gap: 14px; background: #0F0F0F; border: 1px solid #262626; border-radius: 16px; padding: 18px 20px; font-size: 15px; font-weight: 600; color: #E4E4E4;"><span class="conn-ico" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 11px; background: #1C1C1C; color: #FFDB2D; flex-shrink: 0;"><i data-lucide="package"></i></span>ERPs</div>
+        <div class="conn-tile" style="display: flex; align-items: center; gap: 14px; background: #0F0F0F; border: 1px solid #262626; border-radius: 16px; padding: 18px 20px; font-size: 15px; font-weight: 600; color: #E4E4E4;"><span class="conn-ico" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 11px; background: #1C1C1C; color: #FFDB2D; flex-shrink: 0;"><i data-lucide="megaphone"></i></span>Marketing Automation</div>
+        <div class="conn-tile" style="display: flex; align-items: center; gap: 14px; background: #0F0F0F; border: 1px solid #262626; border-radius: 16px; padding: 18px 20px; font-size: 15px; font-weight: 600; color: #E4E4E4;"><span class="conn-ico" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 11px; background: #1C1C1C; color: #FFDB2D; flex-shrink: 0;"><i data-lucide="bar-chart-3"></i></span>Analytics</div>
+        <div class="conn-tile" style="display: flex; align-items: center; gap: 14px; background: #0F0F0F; border: 1px solid #262626; border-radius: 16px; padding: 18px 20px; font-size: 15px; font-weight: 600; color: #E4E4E4;"><span class="conn-ico" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 11px; background: #1C1C1C; color: #FFDB2D; flex-shrink: 0;"><i data-lucide="headphones"></i></span>Customer Support</div>
+        <div class="conn-tile" style="display: flex; align-items: center; gap: 14px; background: #0F0F0F; border: 1px solid #262626; border-radius: 16px; padding: 18px 20px; font-size: 15px; font-weight: 600; color: #E4E4E4;"><span class="conn-ico" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 11px; background: #1C1C1C; color: #FFDB2D; flex-shrink: 0;"><i data-lucide="mail"></i></span>Email Platforms</div>
+        <div class="conn-tile" style="display: flex; align-items: center; gap: 14px; background: #0F0F0F; border: 1px solid #262626; border-radius: 16px; padding: 18px 20px; font-size: 15px; font-weight: 600; color: #E4E4E4;"><span class="conn-ico" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 11px; background: #1C1C1C; color: #FFDB2D; flex-shrink: 0;"><i data-lucide="cloud"></i></span>Cloud Storage</div>
+        <div class="conn-tile" style="display: flex; align-items: center; gap: 14px; background: #0F0F0F; border: 1px solid #262626; border-radius: 16px; padding: 18px 20px; font-size: 15px; font-weight: 600; color: #E4E4E4;"><span class="conn-ico" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 11px; background: #1C1C1C; color: #FFDB2D; flex-shrink: 0;"><i data-lucide="book-open"></i></span>Knowledge Bases</div>
+        <div class="conn-tile" style="display: flex; align-items: center; gap: 14px; background: #0F0F0F; border: 1px solid #262626; border-radius: 16px; padding: 18px 20px; font-size: 15px; font-weight: 600; color: #E4E4E4;"><span class="conn-ico" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 11px; background: #1C1C1C; color: #FFDB2D; flex-shrink: 0;"><i data-lucide="database"></i></span>Databases</div>
+        <div class="conn-tile" style="display: flex; align-items: center; gap: 14px; background: #0F0F0F; border: 1px solid #262626; border-radius: 16px; padding: 18px 20px; font-size: 15px; font-weight: 600; color: #E4E4E4;"><span class="conn-ico" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 11px; background: #1C1C1C; color: #FFDB2D; flex-shrink: 0;"><i data-lucide="brain"></i></span>LLM Providers</div>
+        <div class="conn-tile" style="display: flex; align-items: center; gap: 14px; background: #0F0F0F; border: 1px solid #262626; border-radius: 16px; padding: 18px 20px; font-size: 15px; font-weight: 600; color: #E4E4E4;"><span class="conn-ico" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 11px; background: #1C1C1C; color: #FFDB2D; flex-shrink: 0;"><i data-lucide="webhook"></i></span>Custom APIs</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Implementations (white) -->
+  <section id="implementations" style="background: #FFFFFF;">
+    <div style="max-width: 1220px; margin: 0 auto; padding: clamp(64px, 8vw, 108px) 24px;">
+      <div style="background: #FAFAF8; border: 1px solid #ECECE8; border-radius: 26px; padding: clamp(32px, 5vw, 62px); display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 44px; align-items: center;">
+        <div>
+          <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #000; margin: 0; display: inline-block; border-bottom: 3px solid #FFDB2D; padding-bottom: 4px;">Implementations</p>
+          <h2 style="font-weight: 800; font-size: clamp(27px, 3vw, 40px); letter-spacing: -0.03em; line-height: 1.1; margin: 22px 0 0; text-wrap: balance;">AI in action across industries and the digital lifecycle</h2>
+          <p style="font-size: 16px; line-height: 1.6; color: #565656; margin: 20px 0 0;">Explore the workflows, agents and integrations we build for agency clients — from marketing and sales to support, operations and internal productivity.</p>
+          <a href="#contact" style="display: inline-block; margin-top: 28px; background: #000; color: #FFDB2D; padding: 15px 28px; border-radius: 999px; font-size: 15px; font-weight: 700;">Explore Our Implementations →</a>
+        </div>
+        <div style="position: relative; aspect-ratio: 4/3; border-radius: 20px; background: radial-gradient(120% 120% at 30% 20%, #FFFDF4, #FFFFFF); border: 1px solid #EFECE0; overflow: hidden; display: flex; align-items: center; gap: 10px; padding: 22px;">
+          <!-- mascot (same design, compact) -->
+          <div style="flex-shrink: 0; width: 150px; display: flex; align-items: center; justify-content: center;">
+            <div style="transform: scale(0.62); transform-origin: center;">
+              <div style="width: 230px; animation: botFloat 3.8s ease-in-out infinite;">
+                <div style="width: 3px; height: 26px; background: #111; margin: 0 auto; border-radius: 3px;"></div>
+                <div style="width: 16px; height: 16px; border-radius: 50%; background: #FFDB2D; margin: -6px auto 0; box-shadow: 0 0 14px rgba(255,219,45,0.9); animation: botAntenna 1.6s ease-in-out infinite;"></div>
+                <div style="position: relative; width: 230px; height: 176px; margin: 10px auto 0; background: linear-gradient(160deg, #1E1E1E, #050505); border-radius: 40px; box-shadow: inset 0 3px 0 rgba(255,255,255,0.08), 0 22px 44px rgba(0,0,0,0.22);">
+                  <div style="position: absolute; top: 58px; left: -14px; width: 16px; height: 48px; background: #FFDB2D; border-radius: 8px;"></div>
+                  <div style="position: absolute; top: 58px; right: -14px; width: 16px; height: 48px; background: #FFDB2D; border-radius: 8px;"></div>
+                  <div style="position: absolute; inset: 26px 24px; background: #FFFFFF; border-radius: 26px; border: 1px solid #EAEAEA; overflow: hidden;">
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); display: flex; gap: 30px;">
+                      <span style="width: 30px; height: 44px; background: #FFDB2D; border-radius: 16px; animation: botBlink 4s ease-in-out infinite;"></span>
+                      <span style="width: 30px; height: 44px; background: #FFDB2D; border-radius: 16px; animation: botBlink 4s ease-in-out infinite;"></span>
+                    </div>
+                    <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 40px; height: 16px; border: 3px solid #FFDB2D; border-top: none; border-radius: 0 0 20px 20px;"></div>
+                  </div>
+                </div>
+                <div style="width: 60px; height: 12px; background: #111; margin: 6px auto 0; border-radius: 4px;"></div>
+                <div style="width: 150px; height: 30px; background: linear-gradient(160deg, #1E1E1E, #0A0A0A); margin: 0 auto; border-radius: 18px 18px 14px 14px;"></div>
+              </div>
+            </div>
+          </div>
+          <!-- workflow board -->
+          <div style="flex: 1; align-self: stretch; background: #fff; border: 1px solid #EDEBE3; border-radius: 16px; padding: 16px 16px 18px; display: flex; flex-direction: column; box-shadow: 0 16px 40px rgba(0,0,0,0.06);">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px;">
+              <span style="width: 8px; height: 8px; border-radius: 50%; background: #FFDB2D; animation: implDot 1.4s ease-in-out infinite;"></span>
+              <span style="font-size: 12px; font-weight: 800; letter-spacing: 0.04em; color: #111;">Agents at work</span>
+              <span style="margin-left: auto; font-size: 10.5px; font-weight: 700; color: #9A9A9A; text-transform: uppercase; letter-spacing: 0.08em;">Live</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="flex-shrink:0; width: 30px; height: 30px; border-radius: 9px; background: #F4F4F2; display: flex; align-items: center; justify-content: center; color:#111;"><i data-lucide="megaphone" style="width:15px;height:15px;"></i></span>
+                <div style="flex: 1;"><div style="font-size: 12px; font-weight: 700; color:#222; margin-bottom: 5px;">Marketing</div><div style="height: 6px; border-radius: 4px; background: #F0EEE6; overflow: hidden;"><div style="height: 100%; width: 100%; background: #FFDB2D; border-radius: 4px; transform-origin: left; animation: implWork 2.6s ease-in-out infinite;"></div></div></div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="flex-shrink:0; width: 30px; height: 30px; border-radius: 9px; background: #F4F4F2; display: flex; align-items: center; justify-content: center; color:#111;"><i data-lucide="trending-up" style="width:15px;height:15px;"></i></span>
+                <div style="flex: 1;"><div style="font-size: 12px; font-weight: 700; color:#222; margin-bottom: 5px;">Sales</div><div style="height: 6px; border-radius: 4px; background: #F0EEE6; overflow: hidden;"><div style="height: 100%; width: 100%; background: #FFDB2D; border-radius: 4px; transform-origin: left; animation: implWork 2.6s ease-in-out infinite 0.5s;"></div></div></div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="flex-shrink:0; width: 30px; height: 30px; border-radius: 9px; background: #F4F4F2; display: flex; align-items: center; justify-content: center; color:#111;"><i data-lucide="headphones" style="width:15px;height:15px;"></i></span>
+                <div style="flex: 1;"><div style="font-size: 12px; font-weight: 700; color:#222; margin-bottom: 5px;">Support</div><div style="height: 6px; border-radius: 4px; background: #F0EEE6; overflow: hidden;"><div style="height: 100%; width: 100%; background: #FFDB2D; border-radius: 4px; transform-origin: left; animation: implWork 2.6s ease-in-out infinite 1s;"></div></div></div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="flex-shrink:0; width: 30px; height: 30px; border-radius: 9px; background: #F4F4F2; display: flex; align-items: center; justify-content: center; color:#111;"><i data-lucide="settings-2" style="width:15px;height:15px;"></i></span>
+                <div style="flex: 1;"><div style="font-size: 12px; font-weight: 700; color:#222; margin-bottom: 5px;">Operations</div><div style="height: 6px; border-radius: 4px; background: #F0EEE6; overflow: hidden;"><div style="height: 100%; width: 100%; background: #FFDB2D; border-radius: 4px; transform-origin: left; animation: implWork 2.6s ease-in-out infinite 1.5s;"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Engagement models (light tint) -->
+  <section id="engagement" style="background: #F6F6F4;">
+    <div style="max-width: 1220px; margin: 0 auto; padding: clamp(64px, 8vw, 108px) 24px;">
+      <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #000; margin: 0; display: inline-block; border-bottom: 3px solid #FFDB2D; padding-bottom: 4px;">Engagement models</p>
+      <h2 style="font-weight: 800; font-size: clamp(27px, 3vw, 40px); letter-spacing: -0.03em; line-height: 1.1; margin: 22px 0 0;">Start where it makes sense for your agency</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 48px;">
+        <div style="background: #fff; border: 1px solid #E7E7E3; border-radius: 18px; padding: 30px;">
+          <div style="font-weight: 800; font-size: 15px; color: #000; background: #FFDB2D; width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">01</div>
+          <h3 style="font-weight: 700; font-size: 20px; letter-spacing: -0.015em; margin: 16px 0 10px;">Discovery &amp; Feasibility</h3>
+          <p style="font-size: 14.5px; line-height: 1.55; color: #565656; margin: 0;">For agencies with an opportunity or client problem that needs validation.</p>
+        </div>
+        <div style="background: #fff; border: 1px solid #E7E7E3; border-radius: 18px; padding: 30px;">
+          <div style="font-weight: 800; font-size: 15px; color: #000; background: #FFDB2D; width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">02</div>
+          <h3 style="font-weight: 700; font-size: 20px; letter-spacing: -0.015em; margin: 16px 0 10px;">Proof of Concept</h3>
+          <p style="font-size: 14.5px; line-height: 1.55; color: #565656; margin: 0;">For quickly validating the technical and business feasibility of a solution.</p>
+        </div>
+        <div style="background: #fff; border: 1px solid #E7E7E3; border-radius: 18px; padding: 30px;">
+          <div style="font-weight: 800; font-size: 15px; color: #000; background: #FFDB2D; width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">03</div>
+          <h3 style="font-weight: 700; font-size: 20px; letter-spacing: -0.015em; margin: 16px 0 10px;">Project-Based Implementation</h3>
+          <p style="font-size: 14.5px; line-height: 1.55; color: #565656; margin: 0;">For defined AI, automation or integration requirements.</p>
+        </div>
+        <div style="position: relative; background: #000; border: 1px solid #000; border-radius: 18px; padding: 30px;">
+          <span style="position: absolute; top: -11px; left: 30px; background: #FFDB2D; color: #000; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px;">Most popular</span>
+          <div style="font-weight: 800; font-size: 15px; color: #000; background: #FFDB2D; width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">04</div>
+          <h3 style="font-weight: 700; font-size: 20px; letter-spacing: -0.015em; margin: 16px 0 10px; color: #fff;">Dedicated AI Delivery Pod</h3>
+          <p style="font-size: 14.5px; line-height: 1.55; color: #A6A6A6; margin: 0;">For agencies that want an embedded, scalable white-label delivery team.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Delivery process — roadmap (black) -->
+  <section style="background: #000000; color: #FFFFFF;">
+    <div style="max-width: 980px; margin: 0 auto; padding: clamp(64px, 8vw, 108px) 24px;">
+      <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #FFDB2D; margin: 0;">Delivery process</p>
+      <h2 style="font-weight: 800; font-size: clamp(27px, 3vw, 40px); letter-spacing: -0.03em; line-height: 1.1; margin: 18px 0 0; color: #fff;">From client opportunity to production deployment</h2>
+      <p style="font-size: 16px; line-height: 1.6; color: #A6A6A6; max-width: 60ch; margin: 18px 0 0;">A clear, milestone-based roadmap — from first conversation to a live, supported deployment under your brand.</p>
+
+      <div style="position: relative; margin-top: 56px;">
+        <div style="position: absolute; left: 27px; top: 26px; bottom: 26px; width: 2px; background: linear-gradient(180deg, #FFDB2D, rgba(255,219,45,0.12)); border-radius: 2px;"></div>
+        <div style="display: flex; flex-direction: column; gap: 18px;">
+
+          <div class="rm-row" style="display: flex; gap: 22px; align-items: center;">
+            <div class="rm-node" style="flex-shrink: 0; width: 56px; height: 56px; border-radius: 50%; background: #FFDB2D; color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; z-index: 1;">1</div>
+            <div class="rm-card" style="flex: 1; display: flex; align-items: center; gap: 18px; background: #0F0F0F; border: 1px solid #262626; border-radius: 16px; padding: 20px 24px;">
+              <div class="rm-ico" style="flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px; background: #1C1C1C; color: #FFDB2D; display: flex; align-items: center; justify-content: center;"><i data-lucide="message-circle"></i></div>
+              <div><div style="font-weight: 800; font-size: 12px; letter-spacing: 0.1em; color: #FFDB2D; text-transform: uppercase;">Step 1</div><div style="font-weight: 700; font-size: 18px; margin-top: 4px; color: #fff;">Opportunity discussion</div></div>
+            </div>
+          </div>
+
+          <div class="rm-row" style="display: flex; gap: 22px; align-items: center;">
+            <div class="rm-node" style="flex-shrink: 0; width: 56px; height: 56px; border-radius: 50%; background: #FFDB2D; color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; z-index: 1;">2</div>
+            <div class="rm-card" style="flex: 1; display: flex; align-items: center; gap: 18px; background: #0F0F0F; border: 1px solid #262626; border-radius: 16px; padding: 20px 24px;">
+              <div class="rm-ico" style="flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px; background: #1C1C1C; color: #FFDB2D; display: flex; align-items: center; justify-content: center;"><i data-lucide="search"></i></div>
+              <div><div style="font-weight: 800; font-size: 12px; letter-spacing: 0.1em; color: #FFDB2D; text-transform: uppercase;">Step 2</div><div style="font-weight: 700; font-size: 18px; margin-top: 4px; color: #fff;">Business &amp; technical discovery</div></div>
+            </div>
+          </div>
+
+          <div class="rm-row" style="display: flex; gap: 22px; align-items: center;">
+            <div class="rm-node" style="flex-shrink: 0; width: 56px; height: 56px; border-radius: 50%; background: #FFDB2D; color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; z-index: 1;">3</div>
+            <div class="rm-card" style="flex: 1; display: flex; align-items: center; gap: 18px; background: #0F0F0F; border: 1px solid #262626; border-radius: 16px; padding: 20px 24px;">
+              <div class="rm-ico" style="flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px; background: #1C1C1C; color: #FFDB2D; display: flex; align-items: center; justify-content: center;"><i data-lucide="pen-tool"></i></div>
+              <div><div style="font-weight: 800; font-size: 12px; letter-spacing: 0.1em; color: #FFDB2D; text-transform: uppercase;">Step 3</div><div style="font-weight: 700; font-size: 18px; margin-top: 4px; color: #fff;">Solution blueprint</div></div>
+            </div>
+          </div>
+
+          <div class="rm-row" style="display: flex; gap: 22px; align-items: center;">
+            <div class="rm-node" style="flex-shrink: 0; width: 56px; height: 56px; border-radius: 50%; background: #FFDB2D; color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; z-index: 1;">4</div>
+            <div class="rm-card" style="flex: 1; display: flex; align-items: center; gap: 18px; background: #0F0F0F; border: 1px solid #262626; border-radius: 16px; padding: 20px 24px;">
+              <div class="rm-ico" style="flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px; background: #1C1C1C; color: #FFDB2D; display: flex; align-items: center; justify-content: center;"><i data-lucide="flask-conical"></i></div>
+              <div><div style="font-weight: 800; font-size: 12px; letter-spacing: 0.1em; color: #FFDB2D; text-transform: uppercase;">Step 4</div><div style="font-weight: 700; font-size: 18px; margin-top: 4px; color: #fff;">Prototype / proof of concept</div></div>
+            </div>
+          </div>
+
+          <div class="rm-row" style="display: flex; gap: 22px; align-items: center;">
+            <div class="rm-node" style="flex-shrink: 0; width: 56px; height: 56px; border-radius: 50%; background: #FFDB2D; color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; z-index: 1;">5</div>
+            <div class="rm-card" style="flex: 1; display: flex; align-items: center; gap: 18px; background: #0F0F0F; border: 1px solid #262626; border-radius: 16px; padding: 20px 24px;">
+              <div class="rm-ico" style="flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px; background: #1C1C1C; color: #FFDB2D; display: flex; align-items: center; justify-content: center;"><i data-lucide="code-2"></i></div>
+              <div><div style="font-weight: 800; font-size: 12px; letter-spacing: 0.1em; color: #FFDB2D; text-transform: uppercase;">Step 5</div><div style="font-weight: 700; font-size: 18px; margin-top: 4px; color: #fff;">Implementation</div></div>
+            </div>
+          </div>
+
+          <div class="rm-row" style="display: flex; gap: 22px; align-items: center;">
+            <div class="rm-node" style="flex-shrink: 0; width: 56px; height: 56px; border-radius: 50%; background: #FFDB2D; color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; z-index: 1;">6</div>
+            <div class="rm-card" style="flex: 1; display: flex; align-items: center; gap: 18px; background: #0F0F0F; border: 1px solid #262626; border-radius: 16px; padding: 20px 24px;">
+              <div class="rm-ico" style="flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px; background: #1C1C1C; color: #FFDB2D; display: flex; align-items: center; justify-content: center;"><i data-lucide="check-check"></i></div>
+              <div><div style="font-weight: 800; font-size: 12px; letter-spacing: 0.1em; color: #FFDB2D; text-transform: uppercase;">Step 6</div><div style="font-weight: 700; font-size: 18px; margin-top: 4px; color: #fff;">Integration &amp; testing</div></div>
+            </div>
+          </div>
+
+          <div class="rm-row" style="display: flex; gap: 22px; align-items: center;">
+            <div class="rm-node" style="flex-shrink: 0; width: 56px; height: 56px; border-radius: 50%; background: #FFDB2D; color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; z-index: 1;">7</div>
+            <div class="rm-card" style="flex: 1; display: flex; align-items: center; gap: 18px; background: #0F0F0F; border: 1px solid #262626; border-radius: 16px; padding: 20px 24px;">
+              <div class="rm-ico" style="flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px; background: #1C1C1C; color: #FFDB2D; display: flex; align-items: center; justify-content: center;"><i data-lucide="rocket"></i></div>
+              <div><div style="font-weight: 800; font-size: 12px; letter-spacing: 0.1em; color: #FFDB2D; text-transform: uppercase;">Step 7</div><div style="font-weight: 700; font-size: 18px; margin-top: 4px; color: #fff;">White-label launch</div></div>
+            </div>
+          </div>
+
+          <div class="rm-row" style="display: flex; gap: 22px; align-items: center;">
+            <div class="rm-node" style="flex-shrink: 0; width: 56px; height: 56px; border-radius: 50%; background: #FFDB2D; color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; z-index: 1;">8</div>
+            <div class="rm-card" style="flex: 1; display: flex; align-items: center; gap: 18px; background: #0F0F0F; border: 1px solid #262626; border-radius: 16px; padding: 20px 24px;">
+              <div class="rm-ico" style="flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px; background: #1C1C1C; color: #FFDB2D; display: flex; align-items: center; justify-content: center;"><i data-lucide="trending-up"></i></div>
+              <div><div style="font-weight: 800; font-size: 12px; letter-spacing: 0.1em; color: #FFDB2D; text-transform: uppercase;">Step 8</div><div style="font-weight: 700; font-size: 18px; margin-top: 4px; color: #fff;">Optimization &amp; support</div></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why choose (white) -->
+  <section id="why" style="background: #FFFFFF;">
+    <div style="max-width: 1220px; margin: 0 auto; padding: clamp(64px, 8vw, 108px) 24px;">
+      <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #000; margin: 0; display: inline-block; border-bottom: 3px solid #FFDB2D; padding-bottom: 4px;">Why teams choose Mavlers.ai</p>
+      <h2 style="font-weight: 800; font-size: clamp(27px, 3vw, 40px); letter-spacing: -0.03em; line-height: 1.1; margin: 22px 0 0; max-width: 24ch; text-wrap: balance;">A delivery partner built around how you actually work</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 48px;">
+        <div style="background: #FAFAF8; border: 1px solid #ECECE8; border-radius: 18px; padding: 28px;">
+          <div style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 9px; background: #FFDB2D; color: #000; font-weight: 800;">✓</div>
+          <h3 style="font-weight: 700; font-size: 20px; letter-spacing: -0.015em; margin: 18px 0 9px;">Senior AI engineering</h3>
+          <p style="font-size: 14.5px; line-height: 1.55; color: #565656; margin: 0;">A team of AI-enabled developers and technology consultants, not generalists learning on your dime.</p>
+        </div>
+        <div style="background: #FAFAF8; border: 1px solid #ECECE8; border-radius: 18px; padding: 28px;">
+          <div style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 9px; background: #FFDB2D; color: #000; font-weight: 800;">✓</div>
+          <h3 style="font-weight: 700; font-size: 20px; letter-spacing: -0.015em; margin: 18px 0 9px;">White-label ready</h3>
+          <p style="font-size: 14.5px; line-height: 1.55; color: #565656; margin: 0;">Work with us directly or as a behind-the-scenes delivery partner under your brand.</p>
+        </div>
+        <div style="background: #FAFAF8; border: 1px solid #ECECE8; border-radius: 18px; padding: 28px;">
+          <div style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 9px; background: #FFDB2D; color: #000; font-weight: 800;">✓</div>
+          <h3 style="font-weight: 700; font-size: 20px; letter-spacing: -0.015em; margin: 18px 0 9px;">Secure by default</h3>
+          <p style="font-size: 14.5px; line-height: 1.55; color: #565656; margin: 0;">Security, privacy and compliance considered from architecture through deployment.</p>
+        </div>
+        <div style="background: #FAFAF8; border: 1px solid #ECECE8; border-radius: 18px; padding: 28px;">
+          <div style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 9px; background: #FFDB2D; color: #000; font-weight: 800;">✓</div>
+          <h3 style="font-weight: 700; font-size: 20px; letter-spacing: -0.015em; margin: 18px 0 9px;">Flexible engagement</h3>
+          <p style="font-size: 14.5px; line-height: 1.55; color: #565656; margin: 0;">From a single proof of concept to an embedded, scalable AI delivery pod.</p>
+        </div>
+        <div style="background: #FAFAF8; border: 1px solid #ECECE8; border-radius: 18px; padding: 28px;">
+          <div style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 9px; background: #FFDB2D; color: #000; font-weight: 800;">✓</div>
+          <h3 style="font-weight: 700; font-size: 20px; letter-spacing: -0.015em; margin: 18px 0 9px;">Global delivery scale</h3>
+          <p style="font-size: 14.5px; line-height: 1.55; color: #565656; margin: 0;">15+ years serving 500+ agencies across 52+ countries, with thousands of projects delivered.</p>
+        </div>
+        <div style="background: #FAFAF8; border: 1px solid #ECECE8; border-radius: 18px; padding: 28px;">
+          <div style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 9px; background: #FFDB2D; color: #000; font-weight: 800;">✓</div>
+          <h3 style="font-weight: 700; font-size: 20px; letter-spacing: -0.015em; margin: 18px 0 9px;">Ongoing support</h3>
+          <p style="font-size: 14.5px; line-height: 1.55; color: #565656; margin: 0;">Optimization, maintenance and scaling as models, tools and your clients evolve.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA (yellow) -->
+  <section id="contact" style="background: #FFDB2D;">
+    <div style="max-width: 1220px; margin: 0 auto; padding: clamp(64px, 8vw, 108px) 24px; text-align: center;">
+      <h2 style="font-weight: 800; font-size: clamp(30px, 4.4vw, 58px); letter-spacing: -0.035em; line-height: 1.02; margin: 0; color: #000; max-width: 18ch; margin-left: auto; margin-right: auto; text-wrap: balance;">Have an AI opportunity? Let's build it.</h2>
+      <p style="font-size: clamp(16px, 1.6vw, 19px); line-height: 1.6; color: #1A1A1A; max-width: 56ch; margin: 22px auto 0;">Book a call with our team to validate your idea, scope a proof of concept, or plan a dedicated AI delivery pod for your agency.</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-top: 34px;">
+        <a href="#top" style="background: #000; color: #FFDB2D; padding: 16px 34px; border-radius: 999px; font-size: 16px; font-weight: 700;">Book a Call</a>
+        <a href="#services" style="background: transparent; color: #000; border: 1.5px solid #000; padding: 16px 34px; border-radius: 999px; font-size: 16px; font-weight: 700;">Explore Services</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer (black) -->
+  <footer style="background: #000000; color: #9A9A9A;">
+    <div style="max-width: 1220px; margin: 0 auto; padding: clamp(52px, 6vw, 76px) 24px 40px;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 40px 24px;">
+        <div style="grid-column: span 1; min-width: 200px;">
+          <div style="display: flex; align-items: baseline; color: #fff; font-weight: 800; font-size: 24px; letter-spacing: -0.03em;">mavlers<span style="color: #000; background: #FFDB2D; padding: 0 5px; border-radius: 4px; margin-left: 3px;">.ai</span></div>
+          <p style="font-size: 14px; line-height: 1.6; color: #8A8A8A; margin: 16px 0 0; max-width: 34ch;">AI &amp; automation engineering for agencies and brands. Part of the Mavlers group — 15+ years of digital delivery worldwide.</p>
+        </div>
+        <div>
+          <div style="color: #fff; font-weight: 700; font-size: 14px; margin-bottom: 16px;">Services</div>
+          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px;">
+            <a href="#services" style="color: #9A9A9A;">Custom AI Development</a>
+            <a href="#services" style="color: #9A9A9A;">RAG &amp; Knowledge Systems</a>
+            <a href="#services" style="color: #9A9A9A;">AI Agents</a>
+            <a href="#services" style="color: #9A9A9A;">Workflow Automation</a>
+            <a href="#services" style="color: #9A9A9A;">MCP Development</a>
+          </div>
+        </div>
+        <div>
+          <div style="color: #fff; font-weight: 700; font-size: 14px; margin-bottom: 16px;">Company</div>
+          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px;">
+            <a href="#why" style="color: #9A9A9A;">About</a>
+            <a href="#engagement" style="color: #9A9A9A;">Engagement models</a>
+            <a href="#implementations" style="color: #9A9A9A;">Implementations</a>
+            <a href="#contact" style="color: #9A9A9A;">Book a Call</a>
+          </div>
+        </div>
+        <div>
+          <div style="color: #fff; font-weight: 700; font-size: 14px; margin-bottom: 16px;">Group</div>
+          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px;">
+            <a href="https://mavlers.com" style="color: #9A9A9A;">mavlers.com</a>
+            <a href="https://mavlers.agency" style="color: #9A9A9A;">mavlers.agency</a>
+          </div>
+        </div>
+      </div>
+      <div style="border-top: 1px solid #222; margin-top: 44px; padding-top: 24px; display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; font-size: 13px; color: #6E6E6E;">
+        <span>© 2026 Mavlers.ai. All rights reserved.</span>
+        <div style="display: flex; gap: 20px;">
+          <a href="#top" style="color: #6E6E6E;">Privacy</a>
+          <a href="#top" style="color: #6E6E6E;">Terms</a>
+          <a href="#top" style="color: #6E6E6E;">Security</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#0d0d0d"/><rect x="30" y="30" width="40" height="40" rx="8" fill="#FFDB2D"/><circle cx="42" cy="47" r="4" fill="#0d0d0d"/><circle cx="58" cy="47" r="4" fill="#0d0d0d"/><path d="M42 58 q8 6 16 0" stroke="#0d0d0d" stroke-width="3" fill="none" stroke-linecap="round"/></svg></template></x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    const render = () => { try { window.lucide && window.lucide.createIcons(); } catch (e) {} };
+    if (window.lucide) { render(); return; }
+    if (!document.getElementById('lucide-cdn')) {
+      const s = document.createElement('script');
+      s.id = 'lucide-cdn';
+      s.src = 'https://unpkg.com/lucide@0.454.0/dist/umd/lucide.min.js';
+      s.onload = () => { render(); setTimeout(render, 100); };
+      document.head.appendChild(s);
+    } else {
+      const iv = setInterval(() => { if (window.lucide) { clearInterval(iv); render(); } }, 60);
+      setTimeout(() => clearInterval(iv), 4000);
+    }
+  }
+  componentDidUpdate() { try { window.lucide && window.lucide.createIcons(); } catch (e) {} }
+}
+</script>
+</body>
+</html>
