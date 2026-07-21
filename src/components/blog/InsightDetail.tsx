@@ -44,7 +44,13 @@ export function InsightDetail({
 
         {post.cover_image && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={post.cover_image} alt="" className="mb-10 w-full rounded-[16px]" />
+          <img
+            src={post.cover_image}
+            alt={post.title}
+            className="mb-10 w-full rounded-[16px]"
+            decoding="async"
+            fetchPriority="high"
+          />
         )}
 
         <div className="prose-mavlers" dangerouslySetInnerHTML={{ __html: post.body_html }} />
