@@ -5,6 +5,7 @@ import { getSettings } from '@/lib/queries';
 import { Scripts } from '@/components/site/Scripts';
 import { JsonLd } from '@/components/site/JsonLd';
 import { siteUrl } from '@/lib/seo';
+import { organizationSchema, websiteSchema } from '@/lib/schema';
 
 // Mavlers.ai brand typeface — Montserrat across the whole site (display + body).
 const montserrat = Montserrat({
@@ -34,7 +35,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body>
         <Scripts settings={settings} position="body-start" />
         {children}
-        <JsonLd data={settings.organization_schema} />
+        <JsonLd data={[organizationSchema(settings), websiteSchema(settings)]} />
         <Scripts settings={settings} position="body-end" />
       </body>
     </html>

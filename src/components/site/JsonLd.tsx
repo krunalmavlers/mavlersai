@@ -1,10 +1,20 @@
-/** Renders a JSON-LD <script> for the given schema object (skips if empty). */
-export function JsonLd({ data }: { data: Record<string, unknown> | null | undefined }) {
-  if (!data || Object.keys(data).length === 0) return null;
+type Schema = Record<string, unknown> | null | undefined;
+
+/** Renders one or more JSON-LD <script> blocks (skips empty/null entries). */
+export function JsonLd({ data }: { data: Schema | Schema[] }) {
+  const list = (Array.isArray(data) ? data : [data]).filter(
+    (d): d is Record<string, unknown> => !!d && Object.keys(d).length > 0,
+  );
+  if (!list.length) return null;
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
-    />
+    <>
+      {list.map((d, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(d) }}
+        />
+      ))}
+    </>
   );
 }

@@ -8,6 +8,14 @@ import {
 } from '@/lib/queries';
 import type { Page, PageSection, Post } from '@/lib/types';
 import { buildMetadata } from '@/lib/seo';
+import {
+  articleSchema,
+  breadcrumbSchema,
+  collectionPageSchema,
+  faqFromSections,
+  faqSchema,
+  storedSchema,
+} from '@/lib/schema';
 import { SectionRenderer } from '@/components/sections/Sections';
 import { JsonLd } from '@/components/site/JsonLd';
 import { ImplementationsList } from '@/components/blog/ImplementationsList';
@@ -80,6 +88,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
           canonical: r.page.canonical_url,
           robots: r.page.robots,
           keywords: r.page.meta_keywords,
+          pathname: r.page.slug ? `/${r.page.slug}` : '/',
         },
         settings,
       );
@@ -92,17 +101,36 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
           ogImage: r.post.og_image || r.post.cover_image,
           canonical: r.post.canonical_url,
           robots: r.post.robots,
+          pathname: `${r.base}/${r.post.slug}`,
+          type: 'article',
+          imageAlt: r.post.title,
+          article: {
+            publishedTime: r.post.published_at,
+            modifiedTime:
+              (r.post as unknown as { updated_at?: string }).updated_at || r.post.published_at,
+            authors: r.post.author?.name ? [r.post.author.name] : undefined,
+            section: r.post.categories?.[0]?.name,
+            tags: r.post.tags?.map((t) => t.name),
+          },
         },
         settings,
       );
     case 'impl-list':
       return buildMetadata(
-        { title: 'Implementations', description: 'AI implementations across industries and the digital lifecycle.' },
+        {
+          title: 'Implementations',
+          description: 'AI implementations across industries and the digital lifecycle.',
+          pathname: r.base,
+        },
         settings,
       );
     case 'insight-list':
       return buildMetadata(
-        { title: 'Insights', description: 'Practical AI thinking for agencies and brands.' },
+        {
+          title: 'Insights',
+          description: 'Practical AI thinking for agencies and brands.',
+          pathname: r.base,
+        },
         settings,
       );
     default:
@@ -132,9 +160,20 @@ export default async function CatchAllPage({ params }: { params: Params }) {
   if (r.kind === '404') notFound();
 
   if (r.kind === 'page') {
+    const isHome = !r.page.slug;
+    const schemas = [
+      storedSchema(r.page),
+      faqSchema(faqFromSections(r.page.sections)),
+      isHome
+        ? null
+        : breadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: r.page.title, path: `/${r.page.slug}` },
+          ]),
+    ].filter(Boolean);
     return (
       <>
-        <JsonLd data={r.page.schema_jsonld} />
+        <JsonLd data={schemas} />
         {r.page.sections.map((s) => (
           <SectionRenderer key={s.id} section={s} />
         ))}
@@ -144,8 +183,23 @@ export default async function CatchAllPage({ params }: { params: Params }) {
 
   if (r.kind === 'impl-list') {
     const posts = await getPosts('implementation');
+    const settings = await getSettings();
     return (
       <>
+        <JsonLd
+          data={[
+            collectionPageSchema({
+              name: 'Implementations',
+              description: 'AI implementations across industries and the digital lifecycle.',
+              path: r.base,
+              settings,
+            }),
+            breadcrumbSchema([
+              { name: 'Home', path: '/' },
+              { name: 'Implementations', path: r.base },
+            ]),
+          ]}
+        />
         <ListHero
           eyebrow="Implementations"
           title="AI implementations you can build with your clients"
@@ -162,8 +216,23 @@ export default async function CatchAllPage({ params }: { params: Params }) {
 
   if (r.kind === 'insight-list') {
     const posts = await getPosts('insight');
+    const settings = await getSettings();
     return (
       <>
+        <JsonLd
+          data={[
+            collectionPageSchema({
+              name: 'Insights',
+              description: 'Practical AI thinking for agencies and brands.',
+              path: r.base,
+              settings,
+            }),
+            breadcrumbSchema([
+              { name: 'Home', path: '/' },
+              { name: 'Insights', path: r.base },
+            ]),
+          ]}
+        />
         <ListHero
           eyebrow="Insights"
           title="Practical AI thinking for agencies."
@@ -179,18 +248,40 @@ export default async function CatchAllPage({ params }: { params: Params }) {
   }
 
   if (r.kind === 'impl-detail') {
+    const settings = await getSettings();
+    const path = `${r.base}/${r.post.slug}`;
     return (
       <>
-        <JsonLd data={r.post.schema_jsonld} />
+        <JsonLd
+          data={[
+            storedSchema(r.post) || articleSchema({ post: r.post, path, settings }),
+            breadcrumbSchema([
+              { name: 'Home', path: '/' },
+              { name: 'Implementations', path: r.base },
+              { name: r.post.title, path },
+            ]),
+          ]}
+        />
         <ImplementationDetail post={r.post} base={r.base} related={r.related} />
       </>
     );
   }
 
   // insight-detail
+  const settings = await getSettings();
+  const path = `${r.base}/${r.post.slug}`;
   return (
     <>
-      <JsonLd data={r.post.schema_jsonld} />
+      <JsonLd
+        data={[
+          storedSchema(r.post) || articleSchema({ post: r.post, path, settings }),
+          breadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Insights', path: r.base },
+            { name: r.post.title, path },
+          ]),
+        ]}
+      />
       <InsightDetail post={r.post} base={r.base} related={r.related} />
     </>
   );

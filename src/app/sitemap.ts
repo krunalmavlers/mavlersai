@@ -30,7 +30,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .eq('status', 'published');
   for (const post of posts || []) {
     const base = post.content_type === 'implementation' ? implBase : insBase;
-    entries.push({ url: siteUrl(`/${base}/${post.slug}`), lastModified: post.updated_at });
+    entries.push({
+      url: siteUrl(`/${base}/${post.slug}`),
+      lastModified: post.updated_at,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    });
   }
 
   return entries;
