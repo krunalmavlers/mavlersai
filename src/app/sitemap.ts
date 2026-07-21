@@ -3,6 +3,9 @@ import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { getSettings } from '@/lib/queries';
 import { siteUrl } from '@/lib/seo';
 
+// Regenerate on every request so newly published pages/posts appear immediately.
+export const dynamic = 'force-dynamic';
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const settings = await getSettings();
   const supabase = createSupabaseServerClient();

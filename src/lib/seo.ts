@@ -1,6 +1,19 @@
 import type { Metadata } from 'next';
 import type { SiteSettings } from '@/lib/types';
 
+/** Sensible default keywords applied when a page/post specifies none. */
+export const DEFAULT_KEYWORDS =
+  'AI automation, white-label AI, AI development agency, automation engineering, AI implementation, AI agents, workflow automation, MVP development, generative AI, AI for agencies';
+
+const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+/** Append the brand exactly once — never doubling a title that already carries it. */
+function withBrand(raw: string, siteName: string): string {
+  const t = raw.trim();
+  if (!siteName || !t) return t || siteName;
+  return normalize(t).includes(normalize(siteName)) ? t : `${t} | ${siteName}`;
+}
+
 interface SeoInput {
   title?: string;
   description?: string;
@@ -65,7 +78,9 @@ export function buildMetadata(input: SeoInput, settings: SiteSettings): Metadata
   const isArticle = input.type === 'article';
 
   const metadata: Metadata = {
-    title,
+    // `absolute` bypasses the root "%s · Mavlers.ai" template so the brand is
+    // never appended twice; withBrand adds it once only if missing.
+    title: { absolute: withBrand(title, settings.site_name) },
     description,
     robots: {
       index,
@@ -103,7 +118,7 @@ export function buildMetadata(input: SeoInput, settings: SiteSettings): Metadata
       images: ogImage ? [ogImage] : undefined,
     },
   };
-  if (input.keywords?.trim()) metadata.keywords = input.keywords;
+  metadata.keywords = input.keywords?.trim() || DEFAULT_KEYWORDS;
   if (canonical) metadata.alternates = { canonical };
   return metadata;
 }
