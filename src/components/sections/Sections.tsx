@@ -4,6 +4,7 @@ import { getForm } from '@/lib/queries';
 import { DynamicForm } from '@/components/forms/DynamicForm';
 import { HeroVideo } from './HeroVideo';
 import { HeroRobot } from './HeroRobot';
+import { Icon, serviceIconName, connectIconName, stepIconName } from './icons';
 
 /* ----------------------------- shared bits ------------------------------ */
 
@@ -40,7 +41,7 @@ function CtaLink({
       <Link href={href} className="hero-learn inline-flex items-center gap-2.5 text-[15.5px] font-bold text-black">
         {label}
         <span className="hero-learn-ico flex h-[34px] w-[34px] items-center justify-center rounded-full bg-brand text-black">
-          →
+          <Icon name="arrow-right" size={18} />
         </span>
       </Link>
     );
@@ -311,10 +312,12 @@ function ServiceCapabilities({ c }: { c: any }) {
             className="svc-card relative rounded-[18px] border border-surface-line2 bg-surface-tint px-[22px] py-6"
           >
             <div className="flex items-start justify-between">
-              <div className="svc-ico flex h-[46px] w-[46px] items-center justify-center rounded-[12px] bg-black font-display text-[15px] font-bold text-brand">
-                {s.mono}
+              <div className="svc-ico flex h-[46px] w-[46px] items-center justify-center rounded-[12px] bg-black text-brand">
+                <Icon name={serviceIconName(s.title, s.icon)} size={22} />
               </div>
-              <span className="svc-arrow inline-flex text-black opacity-0 [transform:translateX(-6px)]">↗</span>
+              <span className="svc-arrow inline-flex text-black opacity-0 [transform:translateX(-6px)]">
+                <Icon name="arrow-up-right" size={18} />
+              </span>
             </div>
             <h3 className="m-0 mb-1.5 mt-[18px] font-display text-[16.5px] font-extrabold tracking-[-0.01em] text-black">
               {s.title}
@@ -342,7 +345,7 @@ function ConnectGrid({ c }: { c: any }) {
             className="conn-tile flex items-center gap-3.5 rounded-[16px] border border-[#262626] bg-ink-700 px-5 py-[18px] text-[15px] font-semibold text-[#E4E4E4]"
           >
             <span className="conn-ico flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-[11px] bg-[#1C1C1C] text-brand">
-              ◈
+              <Icon name={connectIconName(it)} size={20} />
             </span>
             {it}
           </div>
@@ -433,6 +436,9 @@ function ProcessTimeline({ c }: { c: any }) {
                 {p.n || i + 1}
               </div>
               <div className="rm-card flex flex-1 items-center gap-[18px] rounded-[16px] border border-[#262626] bg-ink-700 px-6 py-5">
+                <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-[12px] bg-[#1C1C1C] text-brand">
+                  <Icon name={stepIconName(i)} size={22} />
+                </div>
                 <div>
                   <div className="font-display text-[12px] font-extrabold uppercase tracking-[0.1em] text-brand">
                     Step {p.n || i + 1}

@@ -112,14 +112,12 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
 function ListHero({ eyebrow, title, subtitle }: { eyebrow: string; title: string; subtitle: string }) {
   return (
-    <section className="relative overflow-hidden pb-6 pt-16 md:pt-20">
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{ background: 'radial-gradient(900px 500px at 70% 0%,rgba(255,203,46,0.14),transparent 60%)' }}
-      />
-      <div className="relative mx-auto max-w-page px-5 md:px-10">
-        <div className="mb-4 text-[13px] font-bold uppercase tracking-[0.08em] text-brand">{eyebrow}</div>
-        <h1 className="m-0 mb-4 max-w-[720px] font-display text-[36px] font-bold leading-tight tracking-[-0.02em] text-white md:text-[52px]">
+    <section className="bg-white pb-6 pt-16 md:pt-20">
+      <div className="mx-auto max-w-page px-6">
+        <p className="m-0 inline-block border-b-[3px] border-brand pb-1 text-[12px] font-bold uppercase tracking-[0.1em] text-black">
+          {eyebrow}
+        </p>
+        <h1 className="m-0 mb-4 mt-5 max-w-[720px] font-display text-[clamp(34px,4.6vw,52px)] font-extrabold leading-[1.06] tracking-[-0.03em] text-black">
           {title}
         </h1>
         <p className="m-0 max-w-[620px] text-[17px] leading-relaxed text-body-muted">{subtitle}</p>

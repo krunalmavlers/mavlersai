@@ -3,6 +3,7 @@
  * `compact` renders a smaller version next to a live "agents at work" board
  * (used in the Implementations block). Pure CSS — animations live in globals.css.
  */
+import { Icon } from './icons';
 
 function Robot({ scale = 0.78 }: { scale?: number }) {
   return (
@@ -31,7 +32,17 @@ function Robot({ scale = 0.78 }: { scale?: number }) {
   );
 }
 
-function Chip({ label, dark, style }: { label: string; dark?: boolean; style?: React.CSSProperties }) {
+function Chip({
+  label,
+  icon,
+  dark,
+  style,
+}: {
+  label: string;
+  icon: string;
+  dark?: boolean;
+  style?: React.CSSProperties;
+}) {
   return (
     <div
       className={`absolute flex items-center gap-2.5 rounded-[13px] px-3.5 py-2.5 text-[12.5px] font-bold shadow-[0_12px_30px_rgba(0,0,0,0.12)] ${
@@ -40,11 +51,11 @@ function Chip({ label, dark, style }: { label: string; dark?: boolean; style?: R
       style={style}
     >
       <span
-        className={`inline-flex h-[26px] w-[26px] items-center justify-center rounded-lg text-[13px] ${
+        className={`inline-flex h-[26px] w-[26px] items-center justify-center rounded-lg ${
           dark ? 'bg-brand text-black' : 'bg-surface-tint2 text-black'
         }`}
       >
-        ◆
+        <Icon name={icon} size={15} />
       </span>
       {label}
     </div>
@@ -65,9 +76,16 @@ export function HeroRobot({ compact }: { compact?: boolean }) {
             <span className="ml-auto text-[10.5px] font-bold uppercase tracking-[0.08em] text-body-dim">Live</span>
           </div>
           <div className="flex flex-col gap-3">
-            {['Marketing', 'Sales', 'Support', 'Operations'].map((label, i) => (
+            {[
+              { label: 'Marketing', icon: 'megaphone' },
+              { label: 'Sales', icon: 'trending-up' },
+              { label: 'Support', icon: 'headphones' },
+              { label: 'Operations', icon: 'settings-2' },
+            ].map(({ label, icon }, i) => (
               <div key={label} className="flex items-center gap-2.5">
-                <span className="h-[30px] w-[30px] flex-shrink-0 rounded-[9px] bg-surface-tint2" />
+                <span className="flex h-[30px] w-[30px] flex-shrink-0 items-center justify-center rounded-[9px] bg-surface-tint2 text-[#111]">
+                  <Icon name={icon} size={15} />
+                </span>
                 <div className="flex-1">
                   <div className="mb-1 text-[12px] font-bold text-[#222]">{label}</div>
                   <div className="h-1.5 overflow-hidden rounded bg-[#F0EEE6]">
@@ -101,13 +119,13 @@ export function HeroRobot({ compact }: { compact?: boolean }) {
         <Robot scale={0.78} />
       </div>
       {/* input chips (left) */}
-      <Chip label="Raw Data" style={{ top: '8%', left: -26, animation: 'heroFloat 4s ease-in-out infinite' }} />
-      <Chip label="Documents" style={{ top: '44%', left: -26, animation: 'heroFloat 4.3s ease-in-out infinite .4s' }} />
-      <Chip label="CRM & ERP" style={{ top: '80%', left: -26, animation: 'heroFloat 4.6s ease-in-out infinite .8s' }} />
+      <Chip label="Raw Data" icon="database" style={{ top: '8%', left: -26, animation: 'heroFloat 4s ease-in-out infinite' }} />
+      <Chip label="Documents" icon="file-text" style={{ top: '44%', left: -26, animation: 'heroFloat 4.3s ease-in-out infinite .4s' }} />
+      <Chip label="CRM & ERP" icon="users" style={{ top: '80%', left: -26, animation: 'heroFloat 4.6s ease-in-out infinite .8s' }} />
       {/* output chips (right) */}
-      <Chip label="AI Agents" dark style={{ top: '8%', right: -26, animation: 'heroFloat 4.2s ease-in-out infinite .3s' }} />
-      <Chip label="Automation" dark style={{ top: '44%', right: -26, animation: 'heroFloat 4.5s ease-in-out infinite .7s' }} />
-      <Chip label="Integrations" dark style={{ top: '80%', right: -26, animation: 'heroFloat 4.8s ease-in-out infinite 1.1s' }} />
+      <Chip label="AI Agents" icon="bot" dark style={{ top: '8%', right: -26, animation: 'heroFloat 4.2s ease-in-out infinite .3s' }} />
+      <Chip label="Automation" icon="workflow" dark style={{ top: '44%', right: -26, animation: 'heroFloat 4.5s ease-in-out infinite .7s' }} />
+      <Chip label="Integrations" icon="share-2" dark style={{ top: '80%', right: -26, animation: 'heroFloat 4.8s ease-in-out infinite 1.1s' }} />
 
       {/* caption */}
       <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-brand px-[18px] py-2.5 text-[12.5px] font-extrabold tracking-[-0.01em] text-black shadow-[0_12px_30px_rgba(255,219,45,0.35)]">
