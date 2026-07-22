@@ -25,8 +25,14 @@ export function Sidebar({ email, role, logoUrl }: { email: string; role: string;
     <aside className="flex w-[250px] flex-shrink-0 flex-col border-r border-line bg-white p-4">
       <Link href="/admin" className="mb-6 flex items-center px-2">
         {logoUrl ? (
+          // The brand logo asset is white-on-transparent; invert it to black so
+          // it's visible on the light admin sidebar.
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={logoUrl} alt="Mavlers.ai" style={{ height: 26, width: 'auto', display: 'block' }} />
+          <img
+            src={logoUrl}
+            alt="Mavlers.ai"
+            style={{ height: 26, width: 'auto', display: 'block', filter: 'brightness(0)' }}
+          />
         ) : (
           <span className="font-display text-[20px] font-bold text-black">
             Mavlers<span className="text-brand-ink">.ai</span>
