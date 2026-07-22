@@ -9,6 +9,8 @@ import { Icon, serviceIconName, connectIconName, stepIconName } from './icons';
 /* ----------------------------- shared bits ------------------------------ */
 
 const PAD = 'py-[clamp(40px,5vw,68px)]';
+// Half-height padding for prose blocks that read as one continuous narrative.
+const PAD_SM = 'py-[clamp(20px,2.5vw,34px)]';
 const H2 =
   'm-0 font-display font-extrabold leading-[1.1] tracking-[-0.03em] text-[clamp(27px,3vw,40px)]';
 
@@ -89,14 +91,18 @@ function Section({
   theme = 'light',
   children,
   narrow,
+  compact,
 }: {
   theme?: Theme;
   children: React.ReactNode;
   narrow?: boolean;
+  compact?: boolean;
 }) {
   return (
     <section className={BG[theme]}>
-      <div className={`mx-auto ${narrow ? 'max-w-[980px]' : 'max-w-page'} px-6 ${PAD}`}>{children}</div>
+      <div className={`mx-auto ${narrow ? 'max-w-[980px]' : 'max-w-page'} px-6 ${compact ? PAD_SM : PAD}`}>
+        {children}
+      </div>
     </section>
   );
 }
@@ -169,10 +175,10 @@ function StatsBar({ c }: { c: any }) {
         <div className="mx-auto grid max-w-page grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-x-6 gap-y-9 px-6 py-[clamp(46px,5vw,66px)]">
           {(c.stats || []).map((s: any, i: number) => (
             <div key={i}>
-              <div className="font-display text-[clamp(36px,4vw,50px)] font-extrabold leading-none tracking-[-0.03em] text-brand">
+              <div className="font-display text-[clamp(24px,2.6vw,34px)] font-extrabold leading-none tracking-[-0.03em] text-brand">
                 {s.num}
               </div>
-              <div className="mt-1.5 text-[13.5px] font-medium text-body-onDark">{s.label}</div>
+              <div className="mt-2 text-[13px] font-medium text-body-onDark">{s.label}</div>
             </div>
           ))}
         </div>
@@ -565,7 +571,7 @@ function TrustBand({ c }: { c: any }) {
 
 function RichText({ c }: { c: any }) {
   return (
-    <Section theme="light" narrow>
+    <Section theme="light" narrow compact>
       <div className="mx-auto max-w-[760px]">
         <Eyebrow>{c.eyebrow}</Eyebrow>
         {c.heading && <h2 className={`${H2} mb-6 mt-[22px] text-black`}>{c.heading}</h2>}
