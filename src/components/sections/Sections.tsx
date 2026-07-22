@@ -22,6 +22,7 @@ const PLATFORM_LOGOS: Record<string, string> = {
   shopify: '/logos/shopify.svg',
   hubspot: '/logos/hubspot.svg',
   n8n: '/logos/n8n.svg',
+  slack: '/logos/slack.svg',
 };
 const platformLogo = (name: string) =>
   PLATFORM_LOGOS[name.toLowerCase().replace(/[^a-z0-9]/g, '')];
