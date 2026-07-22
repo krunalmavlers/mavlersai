@@ -32,10 +32,11 @@ export function PostEditor({
     tag_ids: post.tag_ids || [],
   });
   const [pending, start] = useTransition();
-  const [msg, setMsg] = useState('');
+  const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
 
   const set = (k: string, v: any) => setF((prev: any) => ({ ...prev, [k]: v }));
   const isImpl = f.content_type === 'implementation';
+  const isCreated = !!f.id;
 
   function toggleArr(key: 'category_ids' | 'tag_ids', id: string) {
     setF((prev: any) => {
@@ -45,10 +46,35 @@ export function PostEditor({
   }
 
   function save() {
-    setMsg('');
+    setMsg(null);
+    if (!f.title?.trim()) {
+      setMsg({ ok: false, text: 'Please add a title before saving.' });
+      return;
+    }
     start(async () => {
-      await savePost(f);
-      setMsg('Saved.');
+      try {
+        const res = await savePost(f);
+        if (res?.ok) {
+          // First save of a new post: adopt its id + reflect it in the URL,
+          // so further saves update instead of creating duplicates.
+          if (!f.id && res.id) {
+            setF((prev: any) => ({ ...prev, id: res.id }));
+            if (typeof window !== 'undefined')
+              window.history.replaceState(null, '', `/admin/posts/${res.id}`);
+          }
+          setMsg({
+            ok: true,
+            text:
+              f.status === 'published'
+                ? 'Saved & published — it’s now live on the site.'
+                : 'Saved as draft.',
+          });
+        } else {
+          setMsg({ ok: false, text: 'Could not save. Please try again.' });
+        }
+      } catch (e: any) {
+        setMsg({ ok: false, text: e?.message || 'Could not save. Please try again.' });
+      }
     });
   }
 
@@ -208,13 +234,37 @@ export function PostEditor({
             disabled={pending}
             className="w-full rounded-[10px] bg-brand px-5 py-3 text-[14px] font-bold text-ink hover:bg-brand-300 disabled:opacity-60"
           >
-            {pending ? 'Saving…' : isNew ? 'Create' : 'Save changes'}
+            {pending ? 'Saving…' : isCreated ? 'Save changes' : 'Create'}
           </button>
-          {msg && <p className="mt-2 text-center text-[13px] text-emerald-600">{msg}</p>}
-          {!isNew && (
+          {msg && (
+            <div
+              className={`mt-3 rounded-[9px] border px-3 py-2 text-[13px] font-medium ${
+                msg.ok
+                  ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-700'
+                  : 'border-red-500/40 bg-red-500/10 text-red-600'
+              }`}
+            >
+              {msg.ok ? '✓ ' : '⚠ '}
+              {msg.text}
+              {msg.ok && isCreated && (
+                <>
+                  {' '}
+                  <a
+                    href={`/${isImpl ? 'implementations' : 'insights'}/${f.slug}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline"
+                  >
+                    View →
+                  </a>
+                </>
+              )}
+            </div>
+          )}
+          {isCreated && (
             <button
               onClick={() => {
-                if (confirm('Delete this post?')) start(() => deletePost(post.id));
+                if (confirm('Delete this post?')) start(() => deletePost(f.id));
               }}
               className="mt-3 w-full rounded-[10px] border border-red-500/40 px-4 py-2 text-[13px] font-semibold text-red-600 hover:bg-red-500/10"
             >

@@ -20,8 +20,13 @@ async function requireSuperAdmin() {
 }
 
 function revalidateSite() {
-  // Public site is dynamic, but revalidate the common trees to be safe.
-  revalidatePath('/', 'layout');
+  // Refresh the public content routes. IMPORTANT: do NOT use the root
+  // ('/', 'layout') scope — that also refreshes the admin screen the editor is
+  // on, remounting it and wiping the just-saved state / success message. The
+  // public pages read cookies (dynamic), so per-path revalidation is enough.
+  revalidatePath('/');
+  revalidatePath('/insights');
+  revalidatePath('/implementations');
 }
 
 /* ------------------------------- PAGES ---------------------------------- */
@@ -148,7 +153,7 @@ export async function savePost(payload: any) {
   }
 
   revalidateSite();
-  if (!payload.id) redirect(`/admin/posts/${postId}`);
+  return { ok: true, id: postId };
 }
 
 export async function deletePost(id: string) {
