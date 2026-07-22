@@ -141,10 +141,10 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
         </div>
       )}
       <div className="rounded-[18px] border border-brand-ink/30 bg-brand/10 p-6">
-        <div className="mb-2 font-display text-[15px] font-bold text-black">White-label by design</div>
+        <div className="mb-2 font-display text-[15px] font-bold text-black">Your brand, protected</div>
         <p className="m-0 text-[13px] leading-relaxed text-body-soft">
-          NDAs available on request. Your client relationship stays protected — we can operate
-          entirely behind your brand.
+          NDAs available on request. Whether you&apos;re an agency protecting a client relationship
+          or a brand building directly, we can operate behind the scenes or alongside your team.
         </p>
       </div>
     </aside>

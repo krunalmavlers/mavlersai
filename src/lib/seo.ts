@@ -3,7 +3,7 @@ import type { SiteSettings } from '@/lib/types';
 
 /** Sensible default keywords applied when a page/post specifies none. */
 export const DEFAULT_KEYWORDS =
-  'AI automation, white-label AI, AI development agency, automation engineering, AI implementation, AI agents, workflow automation, MVP development, generative AI, AI for agencies';
+  'AI automation, AI development agency, automation engineering, AI implementation, AI agents, workflow automation, MVP development, generative AI, AI for agencies, AI for brands, automation for brands';
 
 const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
 

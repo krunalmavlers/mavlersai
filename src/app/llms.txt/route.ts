@@ -45,7 +45,7 @@ export async function GET() {
     '',
     `> ${settings.default_meta_description || settings.tagline}`,
     '',
-    'Mavlers.ai is the white-label AI & automation engineering partner behind digital, marketing and technology agencies. We architect, build, integrate and scale production-grade AI, automation and MVPs under your brand.',
+    'Mavlers.ai is the AI & automation engineering partner for digital and technology agencies serving specific industries and their clients, and for brands building automation directly. We architect, build, integrate and scale production-grade AI, automation and MVPs — as your behind-the-scenes delivery partner or directly for your brand.',
     '',
     '## Usage',
     '',

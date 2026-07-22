@@ -22,13 +22,13 @@ insert into public.site_settings (id, site_name, tagline, default_meta_title, de
 values (
   1,
   'Mavlers.ai',
-  'The white-label AI & automation delivery partner for digital, marketing and technology agencies.',
-  'Mavlers.ai — White-label AI & Automation Engineering',
+  'The AI & automation delivery partner for digital and technology agencies — and the brands building automation directly.',
+  'Mavlers.ai — AI & Automation Engineering for Agencies & Brands',
   'Mavlers.ai is the engineering team behind agencies and brands. We architect, build, integrate and scale production-grade AI and automation — under your brand.',
   $json$[{"platform":"linkedin","label":"LinkedIn","url":"https://www.linkedin.com/"},{"platform":"youtube","label":"YouTube","url":"https://www.youtube.com/"}]$json$::jsonb,
   $json${"emails":["hello@mavlers.ai"],"phones":[{"region":"UK","number":"+44 20 0000 0000"},{"region":"US","number":"+1 000 000 0000"},{"region":"AUS","number":"+61 0 0000 0000"}]}$json$::jsonb,
   $json${"implementations_base":"implementations","insights_base":"insights"}$json$::jsonb,
-  $json${"@context":"https://schema.org","@type":"Organization","name":"Mavlers.ai","description":"White-label AI & automation delivery partner for agencies and brands.","url":"https://mavlers.ai"}$json$::jsonb
+  $json${"@context":"https://schema.org","@type":"Organization","name":"Mavlers.ai","description":"AI & automation engineering partner for digital and technology agencies and the brands they serve.","url":"https://mavlers.ai"}$json$::jsonb
 )
 on conflict (id) do update set
   site_name = excluded.site_name,
@@ -113,7 +113,7 @@ insert into public.categories (name, slug, taxonomy, content_type, sort_order) v
 -- ===========================================================================
 insert into public.tags (name, slug) values
   ('AI Strategy', 'ai-strategy'),
-  ('White-label', 'white-label'),
+  ('Behind the scenes', 'white-label'),
   ('Agency', 'agency'),
   ('Sales', 'sales'),
   ('RAG', 'rag'),
