@@ -11,6 +11,20 @@ import { Icon, serviceIconName, connectIconName, stepIconName } from './icons';
 const PAD = 'py-[clamp(40px,5vw,68px)]';
 // Half-height padding for prose blocks that read as one continuous narrative.
 const PAD_SM = 'py-[clamp(20px,2.5vw,34px)]';
+
+// Brand logos for the "platforms agencies build on" marquee. Names in the CMS
+// map to a self-hosted SVG; anything unmapped falls back to a text wordmark.
+const PLATFORM_LOGOS: Record<string, string> = {
+  salesforce: '/logos/salesforce.svg',
+  microsoft: '/logos/microsoft.svg',
+  braze: '/logos/braze.svg',
+  zendesk: '/logos/zendesk.svg',
+  shopify: '/logos/shopify.svg',
+  hubspot: '/logos/hubspot.svg',
+  n8n: '/logos/n8n.svg',
+};
+const platformLogo = (name: string) =>
+  PLATFORM_LOGOS[name.toLowerCase().replace(/[^a-z0-9]/g, '')];
 const H2 =
   'm-0 font-display font-extrabold leading-[1.1] tracking-[-0.03em] text-[clamp(27px,3vw,40px)]';
 
@@ -192,12 +206,27 @@ function StatsBar({ c }: { c: any }) {
               </p>
             )}
             <div className="overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
-              <div className="flex w-max animate-marquee gap-[52px] font-display text-[22px] font-bold tracking-[-0.02em] text-[#1A1A1A]">
-                {[...c.logos, ...c.logos].map((l: string, i: number) => (
-                  <span key={i} className="whitespace-nowrap">
-                    {l}
-                  </span>
-                ))}
+              <div className="flex w-max animate-marquee items-center gap-[52px]">
+                {[...c.logos, ...c.logos].map((l: string, i: number) => {
+                  const src = platformLogo(l);
+                  return src ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      key={i}
+                      src={src}
+                      alt={l}
+                      title={l}
+                      className="h-[26px] w-auto shrink-0 object-contain"
+                    />
+                  ) : (
+                    <span
+                      key={i}
+                      className="whitespace-nowrap font-display text-[22px] font-bold tracking-[-0.02em] text-[#1A1A1A]"
+                    >
+                      {l}
+                    </span>
+                  );
+                })}
               </div>
             </div>
           </div>
