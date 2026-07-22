@@ -18,7 +18,7 @@ export function RichEditor({
   placeholder?: string;
 }) {
   return (
-    <div className="overflow-hidden rounded-[10px] border border-white/12 bg-white">
+    <div className="overflow-hidden rounded-[10px] border border-surface-line2 bg-white">
       <Editor
         tinymceScriptSrc="/tinymce/tinymce.min.js"
         licenseKey="gpl"

@@ -13,7 +13,7 @@ export default async function FormsList() {
       />
       <Card className="p-0">
         <table className="w-full text-left text-[14px]">
-          <thead className="border-b border-white/9 text-[12px] uppercase tracking-wide text-body-dim">
+          <thead className="border-b border-surface-line2 text-[12px] uppercase tracking-wide text-body-dim">
             <tr>
               <th className="p-4">Name</th>
               <th className="p-4">Key</th>
@@ -23,12 +23,12 @@ export default async function FormsList() {
           </thead>
           <tbody>
             {forms.map((form) => (
-              <tr key={form.id} className="border-b border-white/6 last:border-0">
-                <td className="p-4 font-semibold text-white">{form.name}</td>
+              <tr key={form.id} className="border-b border-surface-line2 last:border-0">
+                <td className="p-4 font-semibold text-black">{form.name}</td>
                 <td className="p-4 text-body-faint">{form.key}</td>
                 <td className="p-4 text-body-faint">{form.recaptcha_enabled ? 'on' : 'off'}</td>
                 <td className="p-4 text-right">
-                  <Link href={`/admin/forms/${form.id}`} className="font-semibold text-brand">
+                  <Link href={`/admin/forms/${form.id}`} className="font-semibold text-brand-ink">
                     Edit →
                   </Link>
                 </td>

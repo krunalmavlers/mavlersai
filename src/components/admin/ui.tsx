@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 export const inputCls =
-  'w-full rounded-[10px] border border-white/12 bg-white/5 px-3.5 py-2.5 text-[14px] text-white placeholder:text-body-dim focus:border-brand focus:outline-none';
+  'w-full rounded-[10px] border border-surface-line2 bg-white px-3.5 py-2.5 text-[14px] text-black placeholder:text-body-dim focus:border-brand focus:outline-none';
 
 export function Field({
   label,
@@ -23,7 +23,7 @@ export function Field({
 
 export function Card({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={`rounded-[16px] border border-white/9 bg-white/[0.03] p-6 ${className}`}>
+    <div className={`rounded-[16px] border border-surface-line2 bg-white p-6 ${className}`}>
       {children}
     </div>
   );
@@ -41,7 +41,7 @@ export function PageHeader({
   return (
     <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
       <div>
-        <h1 className="m-0 font-display text-[26px] font-bold text-white">{title}</h1>
+        <h1 className="m-0 font-display text-[26px] font-bold text-black">{title}</h1>
         {subtitle && <p className="m-0 mt-1 text-[14px] text-body-faint">{subtitle}</p>}
       </div>
       {action}

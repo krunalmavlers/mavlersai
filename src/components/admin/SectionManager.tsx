@@ -119,17 +119,17 @@ export function SectionManager({ pageId, sections }: { pageId: string; sections:
   return (
     <Card>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <h2 className="m-0 font-display text-[18px] font-bold text-white">
+        <h2 className="m-0 font-display text-[18px] font-bold text-black">
           Sections <span className="ml-1 text-[12px] font-normal text-body-dim">— drag to reorder</span>
         </h2>
         <div className="flex items-center gap-2">
           <select
             value={newType}
             onChange={(e) => setNewType(e.target.value)}
-            className="rounded-[9px] border border-white/12 bg-white/5 px-3 py-2 text-[13px] text-white"
+            className="rounded-[9px] border border-surface-line2 bg-white px-3 py-2 text-[13px] text-black"
           >
             {SECTION_TYPES.map((t) => (
-              <option key={t} value={t} className="bg-ink">
+              <option key={t} value={t} className="bg-surface-tint2">
                 {t}
               </option>
             ))}
@@ -168,31 +168,31 @@ export function SectionManager({ pageId, sections }: { pageId: string; sections:
                 dragId.current = null;
                 setDragOver(null);
               }}
-              className={`rounded-[12px] border bg-white/[0.02] p-3 transition-colors ${
-                dragOver === sec.id ? 'border-brand' : 'border-white/9'
+              className={`rounded-[12px] border bg-white p-3 transition-colors ${
+                dragOver === sec.id ? 'border-brand' : 'border-surface-line2'
               }`}
             >
               <div className="flex items-center gap-3">
                 <span className="cursor-grab select-none text-body-dim active:cursor-grabbing" title="Drag to reorder">
                   ⠿
                 </span>
-                <span className="font-display text-[14px] font-semibold text-white">{sec.type}</span>
+                <span className="font-display text-[14px] font-semibold text-black">{sec.type}</span>
                 {!sec.is_visible && (
-                  <span className="rounded bg-white/10 px-2 py-0.5 text-[11px] text-body-dim">hidden</span>
+                  <span className="rounded bg-surface-tint2 px-2 py-0.5 text-[11px] text-body-dim">hidden</span>
                 )}
                 <div className="ml-auto flex items-center gap-1.5">
-                  <button onClick={() => move(sec.id, -1)} className="rounded border border-white/12 px-2 py-1 text-[12px] text-body-faint hover:bg-white/5">
+                  <button onClick={() => move(sec.id, -1)} className="rounded border border-surface-line2 px-2 py-1 text-[12px] text-body-faint hover:bg-black/5">
                     ↑
                   </button>
-                  <button onClick={() => move(sec.id, 1)} className="rounded border border-white/12 px-2 py-1 text-[12px] text-body-faint hover:bg-white/5">
+                  <button onClick={() => move(sec.id, 1)} className="rounded border border-surface-line2 px-2 py-1 text-[12px] text-body-faint hover:bg-black/5">
                     ↓
                   </button>
-                  <button onClick={() => toggleVisible(sec)} className="rounded border border-white/12 px-2 py-1 text-[12px] text-body-faint hover:bg-white/5">
+                  <button onClick={() => toggleVisible(sec)} className="rounded border border-surface-line2 px-2 py-1 text-[12px] text-body-faint hover:bg-black/5">
                     {sec.is_visible ? 'Hide' : 'Show'}
                   </button>
                   <button
                     onClick={() => setEditing(editing === sec.id ? null : sec.id)}
-                    className="rounded bg-white/10 px-2.5 py-1 text-[12px] font-semibold text-white hover:bg-white/15"
+                    className="rounded bg-surface-tint2 px-2.5 py-1 text-[12px] font-semibold text-black hover:bg-black/5"
                   >
                     {editing === sec.id ? 'Close' : 'Edit'}
                   </button>

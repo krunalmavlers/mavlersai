@@ -14,7 +14,7 @@ export default async function AccountPage() {
   return (
     <div>
       <PageHeader title="Account" subtitle="Your login details." />
-      <div className="mb-6 rounded-[16px] border border-white/9 bg-white/[0.03] p-6 text-[13.5px] text-body-soft">
+      <div className="mb-6 rounded-[16px] border border-surface-line2 bg-white p-6 text-[13.5px] text-body-soft">
         <div className="mb-1">
           <span className="text-body-dim">Email:</span> {admin.email}
         </div>

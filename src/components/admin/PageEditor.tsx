@@ -37,8 +37,8 @@ export function PageEditor({ page, isNew }: { page: any; isNew: boolean }) {
         </Field>
       </div>
 
-      <div className="mt-5 border-t border-white/8 pt-5">
-        <div className="mb-3 text-[12px] font-bold uppercase tracking-wide text-brand">SEO</div>
+      <div className="mt-5 border-t border-surface-line2 pt-5">
+        <div className="mb-3 text-[12px] font-bold uppercase tracking-wide text-brand-ink">SEO</div>
         <div className="grid grid-cols-1 gap-4">
           <Field label="SEO title">
             <input className={inputCls} value={f.seo_title || ''} onChange={(e) => set('seo_title', e.target.value)} />
@@ -63,7 +63,7 @@ export function PageEditor({ page, isNew }: { page: any; isNew: boolean }) {
         </div>
       </div>
 
-      <div className="mt-5 border-t border-white/8 pt-5">
+      <div className="mt-5 border-t border-surface-line2 pt-5">
         <Field label="Schema (JSON-LD)" hint="Rendered as application/ld+json on this page.">
           <textarea
             className={`${inputCls} font-mono text-[12.5px]`}
@@ -74,7 +74,7 @@ export function PageEditor({ page, isNew }: { page: any; isNew: boolean }) {
         </Field>
       </div>
 
-      <div className="mt-5 flex flex-wrap items-center gap-4 border-t border-white/8 pt-5">
+      <div className="mt-5 flex flex-wrap items-center gap-4 border-t border-surface-line2 pt-5">
         <Field label="Status">
           <select className={inputCls} value={f.status} onChange={(e) => set('status', e.target.value)}>
             <option value="draft">draft</option>
@@ -104,12 +104,12 @@ export function PageEditor({ page, isNew }: { page: any; isNew: boolean }) {
             onClick={() => {
               if (confirm('Delete this page and all its sections?')) start(() => deletePage(page.id));
             }}
-            className="rounded-[10px] border border-red-500/40 px-4 py-2.5 text-[14px] font-semibold text-red-400 hover:bg-red-500/10"
+            className="rounded-[10px] border border-red-500/40 px-4 py-2.5 text-[14px] font-semibold text-red-600 hover:bg-red-500/10"
           >
             Delete
           </button>
         )}
-        {msg && <span className="text-[13px] text-emerald-300">{msg}</span>}
+        {msg && <span className="text-[13px] text-emerald-600">{msg}</span>}
       </div>
     </Card>
   );

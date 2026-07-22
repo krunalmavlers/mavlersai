@@ -13,7 +13,7 @@ export default async function PagesList() {
       />
       <Card className="p-0">
         <table className="w-full text-left text-[14px]">
-          <thead className="border-b border-white/9 text-[12px] uppercase tracking-wide text-body-dim">
+          <thead className="border-b border-surface-line2 text-[12px] uppercase tracking-wide text-body-dim">
             <tr>
               <th className="p-4">Title</th>
               <th className="p-4">Slug</th>
@@ -23,20 +23,20 @@ export default async function PagesList() {
           </thead>
           <tbody>
             {pages.map((p) => (
-              <tr key={p.id} className="border-b border-white/6 last:border-0">
-                <td className="p-4 font-semibold text-white">{p.title || '(untitled)'}</td>
+              <tr key={p.id} className="border-b border-surface-line2 last:border-0">
+                <td className="p-4 font-semibold text-black">{p.title || '(untitled)'}</td>
                 <td className="p-4 text-body-faint">/{p.slug}</td>
                 <td className="p-4">
                   <span
                     className={`rounded-full px-2.5 py-1 text-[11px] font-bold ${
-                      p.status === 'published' ? 'bg-emerald-500/15 text-emerald-300' : 'bg-white/10 text-body-faint'
+                      p.status === 'published' ? 'bg-emerald-500/15 text-emerald-600' : 'bg-surface-tint2 text-body-faint'
                     }`}
                   >
                     {p.status}
                   </span>
                 </td>
                 <td className="p-4 text-right">
-                  <Link href={`/admin/pages/${p.id}`} className="font-semibold text-brand">
+                  <Link href={`/admin/pages/${p.id}`} className="font-semibold text-brand-ink">
                     Edit →
                   </Link>
                 </td>

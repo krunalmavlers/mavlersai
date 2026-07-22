@@ -10,15 +10,15 @@ export default async function LoginPage() {
   if (admin) redirect('/admin');
   const settings = await getSettings();
   return (
-    <div className="flex min-h-screen items-center justify-center bg-ink px-5">
+    <div className="flex min-h-screen items-center justify-center bg-surface-tint2 px-5">
       <div className="w-full max-w-[400px]">
         <div className="mb-8 flex flex-col items-center text-center">
           {settings.logo_url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={settings.logo_url} alt="Mavlers.ai" style={{ height: 40, width: 'auto' }} />
           ) : (
-            <div className="font-display text-[26px] font-bold text-white">
-              Mavlers<span className="text-brand">.ai</span>
+            <div className="font-display text-[26px] font-bold text-black">
+              Mavlers<span className="text-brand-ink">.ai</span>
             </div>
           )}
           <div className="mt-2 text-[13px] text-body-dim">Content management</div>

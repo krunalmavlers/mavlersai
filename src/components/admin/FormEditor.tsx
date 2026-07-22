@@ -118,7 +118,7 @@ export function FormEditor({ form, isNew }: { form: FormDef; isNew: boolean }) {
 
       {!isNew && (
         <Card>
-          <h2 className="m-0 mb-3 font-display text-[16px] font-bold text-white">Fields (JSON)</h2>
+          <h2 className="m-0 mb-3 font-display text-[16px] font-bold text-black">Fields (JSON)</h2>
           <p className="m-0 mb-3 text-[12.5px] text-body-dim">
             Array of {'{ name, label, type, placeholder, options[], required, sort_order, col_span, conditional }'}.
             Types: text, email, tel, url, textarea, select, checkbox.
@@ -130,8 +130,8 @@ export function FormEditor({ form, isNew }: { form: FormDef; isNew: boolean }) {
         </Card>
       )}
 
-      {err && <p className="text-[13px] text-red-400">{err}</p>}
-      {msg && <p className="text-[13px] text-emerald-300">{msg}</p>}
+      {err && <p className="text-[13px] text-red-600">{err}</p>}
+      {msg && <p className="text-[13px] text-emerald-600">{msg}</p>}
     </div>
   );
 }

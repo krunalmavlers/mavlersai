@@ -61,7 +61,7 @@ export function SettingsEditor({ settings }: { settings: any }) {
   return (
     <div className="flex flex-col gap-6">
       <Card>
-        <h2 className="m-0 mb-4 font-display text-[16px] font-bold text-white">Branding</h2>
+        <h2 className="m-0 mb-4 font-display text-[16px] font-bold text-black">Branding</h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Field label="Site name">
             <input className={inputCls} value={f.site_name} onChange={(e) => set('site_name', e.target.value)} />
@@ -79,7 +79,7 @@ export function SettingsEditor({ settings }: { settings: any }) {
       </Card>
 
       <Card>
-        <h2 className="m-0 mb-4 font-display text-[16px] font-bold text-white">Default SEO</h2>
+        <h2 className="m-0 mb-4 font-display text-[16px] font-bold text-black">Default SEO</h2>
         <div className="grid grid-cols-1 gap-4">
           <Field label="Default meta title">
             <input className={inputCls} value={f.default_meta_title} onChange={(e) => set('default_meta_title', e.target.value)} />
@@ -94,7 +94,7 @@ export function SettingsEditor({ settings }: { settings: any }) {
       </Card>
 
       <Card>
-        <h2 className="m-0 mb-1 font-display text-[16px] font-bold text-white">Tracking & scripts</h2>
+        <h2 className="m-0 mb-1 font-display text-[16px] font-bold text-black">Tracking & scripts</h2>
         <p className="m-0 mb-4 text-[12.5px] text-body-dim">
           Enter IDs for standard tags, or paste raw snippets. All are injected into the site head/body.
         </p>
@@ -111,7 +111,7 @@ export function SettingsEditor({ settings }: { settings: any }) {
       </Card>
 
       <Card>
-        <h2 className="m-0 mb-4 font-display text-[16px] font-bold text-white">reCAPTCHA & URL structure</h2>
+        <h2 className="m-0 mb-4 font-display text-[16px] font-bold text-black">reCAPTCHA & URL structure</h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Field label="reCAPTCHA site key" hint="Public key. Secret key lives in .env (RECAPTCHA_SECRET_KEY).">
             <input className={inputCls} value={f.recaptcha_site_key} onChange={(e) => set('recaptcha_site_key', e.target.value)} />
@@ -130,11 +130,11 @@ export function SettingsEditor({ settings }: { settings: any }) {
       {/* -------- Footer: social links -------- */}
       <Card>
         <div className="mb-1 flex items-center justify-between">
-          <h2 className="m-0 font-display text-[16px] font-bold text-white">Footer social links</h2>
+          <h2 className="m-0 font-display text-[16px] font-bold text-black">Footer social links</h2>
           <button
             type="button"
             onClick={addSocial}
-            className="rounded-[9px] border border-white/12 px-3 py-1.5 text-[13px] font-semibold text-body-soft hover:border-brand hover:text-white"
+            className="rounded-[9px] border border-surface-line2 px-3 py-1.5 text-[13px] font-semibold text-body-soft hover:border-brand hover:text-black"
           >
             + Add link
           </button>
@@ -145,8 +145,8 @@ export function SettingsEditor({ settings }: { settings: any }) {
         {social.length === 0 && <p className="m-0 text-[13px] text-body-dim">No social links yet.</p>}
         <div className="flex flex-col gap-3">
           {social.map((s, i) => (
-            <div key={i} className="flex flex-wrap items-center gap-2.5 rounded-[12px] border border-white/8 bg-white/[0.02] p-3">
-              <span className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-[9px] border border-white/12 text-[11px] font-bold text-body-faint">
+            <div key={i} className="flex flex-wrap items-center gap-2.5 rounded-[12px] border border-surface-line2 bg-white p-3">
+              <span className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-[9px] border border-surface-line2 text-[11px] font-bold text-body-faint">
                 {s.platform ? <SocialIcon platform={s.platform} /> : (s.label || '?').slice(0, 2)}
               </span>
               <select
@@ -180,7 +180,7 @@ export function SettingsEditor({ settings }: { settings: any }) {
                 type="button"
                 onClick={() => removeSocial(i)}
                 aria-label="Remove link"
-                className="rounded-[9px] border border-white/12 px-3 py-2 text-[13px] font-semibold text-red-300 hover:border-red-400/60 hover:bg-red-500/10"
+                className="rounded-[9px] border border-surface-line2 px-3 py-2 text-[13px] font-semibold text-red-600 hover:border-red-400/60 hover:bg-red-500/10"
               >
                 Remove
               </button>
@@ -192,11 +192,11 @@ export function SettingsEditor({ settings }: { settings: any }) {
       {/* -------- Footer: phone numbers -------- */}
       <Card>
         <div className="mb-1 flex items-center justify-between">
-          <h2 className="m-0 font-display text-[16px] font-bold text-white">Footer phone numbers</h2>
+          <h2 className="m-0 font-display text-[16px] font-bold text-black">Footer phone numbers</h2>
           <button
             type="button"
             onClick={addPhone}
-            className="rounded-[9px] border border-white/12 px-3 py-1.5 text-[13px] font-semibold text-body-soft hover:border-brand hover:text-white"
+            className="rounded-[9px] border border-surface-line2 px-3 py-1.5 text-[13px] font-semibold text-body-soft hover:border-brand hover:text-black"
           >
             + Add phone
           </button>
@@ -205,7 +205,7 @@ export function SettingsEditor({ settings }: { settings: any }) {
         {phones.length === 0 && <p className="m-0 text-[13px] text-body-dim">No phone numbers yet.</p>}
         <div className="flex flex-col gap-3">
           {phones.map((p, i) => (
-            <div key={i} className="flex flex-wrap items-center gap-2.5 rounded-[12px] border border-white/8 bg-white/[0.02] p-3">
+            <div key={i} className="flex flex-wrap items-center gap-2.5 rounded-[12px] border border-surface-line2 bg-white p-3">
               <input
                 className={`${inputCls} w-[110px] flex-none`}
                 placeholder="Region"
@@ -222,7 +222,7 @@ export function SettingsEditor({ settings }: { settings: any }) {
                 type="button"
                 onClick={() => removePhone(i)}
                 aria-label="Remove phone"
-                className="rounded-[9px] border border-white/12 px-3 py-2 text-[13px] font-semibold text-red-300 hover:border-red-400/60 hover:bg-red-500/10"
+                className="rounded-[9px] border border-surface-line2 px-3 py-2 text-[13px] font-semibold text-red-600 hover:border-red-400/60 hover:bg-red-500/10"
               >
                 Remove
               </button>
@@ -237,7 +237,7 @@ export function SettingsEditor({ settings }: { settings: any }) {
       </Card>
 
       <Card>
-        <h2 className="m-0 mb-4 font-display text-[16px] font-bold text-white">Organization schema (JSON-LD)</h2>
+        <h2 className="m-0 mb-4 font-display text-[16px] font-bold text-black">Organization schema (JSON-LD)</h2>
         <Field label="Organization schema">
           <textarea className={`${inputCls} font-mono text-[12px]`} rows={6} value={f.organization_schema} onChange={(e) => set('organization_schema', e.target.value)} />
         </Field>
@@ -247,7 +247,7 @@ export function SettingsEditor({ settings }: { settings: any }) {
         <button onClick={save} disabled={pending} className="rounded-[10px] bg-brand px-6 py-3 text-[14px] font-bold text-ink hover:bg-brand-300 disabled:opacity-60">
           {pending ? 'Saving…' : 'Save settings'}
         </button>
-        {msg && <span className="text-[13px] text-emerald-300">{msg}</span>}
+        {msg && <span className="text-[13px] text-emerald-600">{msg}</span>}
       </div>
     </div>
   );

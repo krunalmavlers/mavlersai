@@ -92,7 +92,7 @@ export function PostEditor({
         )}
 
         <Card>
-          <div className="mb-3 text-[12px] font-bold uppercase tracking-wide text-brand">SEO & Schema</div>
+          <div className="mb-3 text-[12px] font-bold uppercase tracking-wide text-brand-ink">SEO & Schema</div>
           <div className="grid grid-cols-1 gap-4">
             <Field label="SEO title">
               <input className={inputCls} value={f.seo_title} onChange={(e) => set('seo_title', e.target.value)} />
@@ -157,7 +157,7 @@ export function PostEditor({
         </Card>
 
         <Card>
-          <div className="mb-2 text-[13px] font-bold text-white">Categories</div>
+          <div className="mb-2 text-[13px] font-bold text-black">Categories</div>
           {catGroups.map((tax) => (
             <div key={tax} className="mb-3">
               <div className="mb-1.5 text-[11px] uppercase tracking-wide text-body-dim">{tax}</div>
@@ -172,7 +172,7 @@ export function PostEditor({
                         type="button"
                         onClick={() => toggleArr('category_ids', c.id)}
                         className={`rounded-full border px-3 py-1 text-[12px] font-semibold ${
-                          on ? 'border-brand bg-brand/15 text-brand-200' : 'border-white/12 text-body-faint hover:border-white/25'
+                          on ? 'border-brand bg-brand/15 text-brand-ink' : 'border-surface-line2 text-body-faint hover:border-black'
                         }`}
                       >
                         {c.name}
@@ -182,7 +182,7 @@ export function PostEditor({
               </div>
             </div>
           ))}
-          <div className="mb-2 mt-4 text-[13px] font-bold text-white">Tags</div>
+          <div className="mb-2 mt-4 text-[13px] font-bold text-black">Tags</div>
           <div className="flex flex-wrap gap-1.5">
             {tags.map((t) => {
               const on = f.tag_ids.includes(t.id);
@@ -192,7 +192,7 @@ export function PostEditor({
                   type="button"
                   onClick={() => toggleArr('tag_ids', t.id)}
                   className={`rounded-full border px-3 py-1 text-[12px] font-semibold ${
-                    on ? 'border-brand bg-brand/15 text-brand-200' : 'border-white/12 text-body-faint hover:border-white/25'
+                    on ? 'border-brand bg-brand/15 text-brand-ink' : 'border-surface-line2 text-body-faint hover:border-black'
                   }`}
                 >
                   #{t.name}
@@ -210,13 +210,13 @@ export function PostEditor({
           >
             {pending ? 'Saving…' : isNew ? 'Create' : 'Save changes'}
           </button>
-          {msg && <p className="mt-2 text-center text-[13px] text-emerald-300">{msg}</p>}
+          {msg && <p className="mt-2 text-center text-[13px] text-emerald-600">{msg}</p>}
           {!isNew && (
             <button
               onClick={() => {
                 if (confirm('Delete this post?')) start(() => deletePost(post.id));
               }}
-              className="mt-3 w-full rounded-[10px] border border-red-500/40 px-4 py-2 text-[13px] font-semibold text-red-400 hover:bg-red-500/10"
+              className="mt-3 w-full rounded-[10px] border border-red-500/40 px-4 py-2 text-[13px] font-semibold text-red-600 hover:bg-red-500/10"
             >
               Delete
             </button>

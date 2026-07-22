@@ -76,7 +76,7 @@ export function UsersManager({ users, currentUserId }: { users: AdminUserRow[]; 
   return (
     <div className="flex flex-col gap-6">
       <Card>
-        <h2 className="m-0 mb-1 font-display text-[16px] font-bold text-white">Add user</h2>
+        <h2 className="m-0 mb-1 font-display text-[16px] font-bold text-black">Add user</h2>
         <p className="m-0 mb-4 text-[12.5px] text-body-dim">
           Editors can create and edit content (pages, posts, menus, forms) but cannot change site settings or manage users.
         </p>
@@ -105,17 +105,17 @@ export function UsersManager({ users, currentUserId }: { users: AdminUserRow[]; 
           >
             {pending ? 'Working…' : 'Add user'}
           </button>
-          {msg && <span className={`text-[13px] ${msg.ok ? 'text-emerald-300' : 'text-red-400'}`}>{msg.text}</span>}
+          {msg && <span className={`text-[13px] ${msg.ok ? 'text-emerald-600' : 'text-red-600'}`}>{msg.text}</span>}
         </div>
       </Card>
 
       <Card>
-        <h2 className="m-0 mb-4 font-display text-[16px] font-bold text-white">Users</h2>
-        <div className="flex flex-col divide-y divide-white/8">
+        <h2 className="m-0 mb-4 font-display text-[16px] font-bold text-black">Users</h2>
+        <div className="flex flex-col divide-y divide-surface-line2">
           {users.map((u) => (
             <div key={u.id} className="flex flex-wrap items-center gap-3 py-3 first:pt-0 last:pb-0">
               <div className="min-w-[200px] flex-1">
-                <div className="text-[14px] font-semibold text-white">
+                <div className="text-[14px] font-semibold text-black">
                   {u.full_name || u.email.split('@')[0]}
                   {u.id === currentUserId && <span className="ml-2 text-[11px] font-medium text-body-dim">(you)</span>}
                 </div>
@@ -135,14 +135,14 @@ export function UsersManager({ users, currentUserId }: { users: AdminUserRow[]; 
               <button
                 onClick={() => resetPw(u.id, u.email)}
                 disabled={pending}
-                className="rounded-[9px] border border-white/12 px-3 py-2 text-[13px] font-semibold text-body-soft hover:border-brand hover:text-white disabled:opacity-60"
+                className="rounded-[9px] border border-surface-line2 px-3 py-2 text-[13px] font-semibold text-body-soft hover:border-brand hover:text-black disabled:opacity-60"
               >
                 Reset password
               </button>
               <button
                 onClick={() => remove(u.id, u.email)}
                 disabled={pending || u.id === currentUserId}
-                className="rounded-[9px] border border-white/12 px-3 py-2 text-[13px] font-semibold text-red-300 hover:border-red-400/60 hover:bg-red-500/10 disabled:opacity-40"
+                className="rounded-[9px] border border-surface-line2 px-3 py-2 text-[13px] font-semibold text-red-600 hover:border-red-400/60 hover:bg-red-500/10 disabled:opacity-40"
               >
                 Remove
               </button>

@@ -27,12 +27,12 @@ export function LoginForm() {
   }
 
   const input =
-    'w-full rounded-[10px] border border-white/12 bg-white/5 px-4 py-3 text-[14px] text-white placeholder:text-body-dim focus:border-brand focus:outline-none';
+    'w-full rounded-[10px] border border-surface-line2 bg-white px-4 py-3 text-[14px] text-black placeholder:text-body-dim focus:border-brand focus:outline-none';
 
   return (
     <form
       onSubmit={onSubmit}
-      className="rounded-[18px] border border-white/9 bg-white/[0.03] p-7"
+      className="rounded-[18px] border border-surface-line2 bg-white p-7"
     >
       <label className="mb-1.5 block text-[13px] font-semibold text-body-soft">Email</label>
       <input
@@ -52,7 +52,7 @@ export function LoginForm() {
         className={`${input} mb-4`}
         placeholder="••••••••"
       />
-      {error && <p className="mb-4 mt-0 text-[13px] text-red-400">{error}</p>}
+      {error && <p className="mb-4 mt-0 text-[13px] text-red-600">{error}</p>}
       <button
         type="submit"
         disabled={loading}

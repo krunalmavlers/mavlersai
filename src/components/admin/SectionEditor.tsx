@@ -63,7 +63,7 @@ export function SectionEditor({ section, onDone }: { section: PageSection; onDon
   const entries = Object.entries(content);
 
   return (
-    <div className="mt-3 rounded-[12px] border border-white/12 bg-ink-800 p-5">
+    <div className="mt-3 rounded-[12px] border border-surface-line2 bg-white p-5">
       <div className="mb-4 flex items-center justify-between">
         <span className="text-[13px] text-body-dim">
           Editing <b className="text-body-soft">{section.type}</b>
@@ -85,7 +85,7 @@ export function SectionEditor({ section, onDone }: { section: PageSection; onDon
             }
             setRawMode((v) => !v);
           }}
-          className="rounded border border-white/12 px-2.5 py-1 text-[12px] font-semibold text-body-faint hover:bg-white/5"
+          className="rounded border border-surface-line2 px-2.5 py-1 text-[12px] font-semibold text-body-faint hover:bg-black/5"
         >
           {rawMode ? 'Visual editor' : 'Raw JSON'}
         </button>
@@ -150,7 +150,7 @@ export function SectionEditor({ section, onDone }: { section: PageSection; onDon
         </div>
       )}
 
-      {err && <p className="mt-3 text-[13px] text-red-400">{err}</p>}
+      {err && <p className="mt-3 text-[13px] text-red-600">{err}</p>}
 
       <div className="mt-4 flex items-center gap-3">
         <button
@@ -160,14 +160,14 @@ export function SectionEditor({ section, onDone }: { section: PageSection; onDon
         >
           {pending ? 'Saving…' : 'Save section'}
         </button>
-        <button onClick={onDone} className="text-[13px] font-semibold text-body-faint hover:text-white">
+        <button onClick={onDone} className="text-[13px] font-semibold text-body-faint hover:text-black">
           Cancel
         </button>
         <button
           onClick={() => {
             if (confirm('Delete this section?')) start(() => deleteSection(section.id, section.page_id));
           }}
-          className="ml-auto text-[13px] font-semibold text-red-400 hover:text-red-300"
+          className="ml-auto text-[13px] font-semibold text-red-600 hover:text-red-600"
         >
           Delete section
         </button>

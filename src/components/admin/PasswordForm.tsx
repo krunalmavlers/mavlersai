@@ -28,7 +28,7 @@ export function PasswordForm() {
 
   return (
     <Card>
-      <h2 className="m-0 mb-4 font-display text-[16px] font-bold text-white">Change password</h2>
+      <h2 className="m-0 mb-4 font-display text-[16px] font-bold text-black">Change password</h2>
       <div className="grid max-w-[420px] grid-cols-1 gap-4">
         <Field label="New password" hint="At least 8 characters.">
           <input className={inputCls} type="password" value={pw} onChange={(e) => setPw(e.target.value)} autoComplete="new-password" />
@@ -45,7 +45,7 @@ export function PasswordForm() {
         >
           {pending ? 'Saving…' : 'Update password'}
         </button>
-        {msg && <span className={`text-[13px] ${msg.ok ? 'text-emerald-300' : 'text-red-400'}`}>{msg.text}</span>}
+        {msg && <span className={`text-[13px] ${msg.ok ? 'text-emerald-600' : 'text-red-600'}`}>{msg.text}</span>}
       </div>
     </Card>
   );

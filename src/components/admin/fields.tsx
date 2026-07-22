@@ -77,7 +77,7 @@ function FieldRenderer({
           <select className={inputCls} value={value ?? ''} onChange={(e) => onChange(e.target.value)}>
             <option value="">—</option>
             {(desc.options || []).map((o) => (
-              <option key={o} value={o} className="bg-ink">
+              <option key={o} value={o} className="bg-surface-tint2">
                 {o}
               </option>
             ))}
@@ -110,7 +110,7 @@ function FieldRenderer({
     case 'group': {
       const v = value || emptyObject(desc.itemFields || []);
       return (
-        <div className="rounded-[10px] border border-white/10 p-3">
+        <div className="rounded-[10px] border border-surface-line2 p-3">
           <Label desc={desc} />
           <div className="flex flex-col gap-3">
             {(desc.itemFields || []).map((f) => (
@@ -185,7 +185,7 @@ function ObjectListEditor({
       <Label desc={desc} />
       <div className="flex flex-col gap-3">
         {value.map((item, i) => (
-          <div key={i} className="rounded-[10px] border border-white/10 bg-white/[0.02] p-3">
+          <div key={i} className="rounded-[10px] border border-surface-line2 bg-white p-3">
             <div className="mb-2 flex items-center justify-between">
               <span className="text-[12px] font-semibold text-body-dim">#{i + 1}</span>
               <ListButtons
@@ -217,7 +217,7 @@ function ObjectListEditor({
 }
 
 function ListButtons({ onUp, onDown, onDelete }: { onUp: () => void; onDown: () => void; onDelete: () => void }) {
-  const b = 'rounded border border-white/12 px-2 py-1 text-[12px] text-body-faint hover:bg-white/5';
+  const b = 'rounded border border-surface-line2 px-2 py-1 text-[12px] text-body-faint hover:bg-black/5';
   return (
     <div className="flex flex-shrink-0 items-center gap-1">
       <button type="button" className={b} onClick={onUp}>
@@ -226,7 +226,7 @@ function ListButtons({ onUp, onDown, onDelete }: { onUp: () => void; onDown: () 
       <button type="button" className={b} onClick={onDown}>
         ↓
       </button>
-      <button type="button" className="rounded border border-red-500/40 px-2 py-1 text-[12px] text-red-400 hover:bg-red-500/10" onClick={onDelete}>
+      <button type="button" className="rounded border border-red-500/40 px-2 py-1 text-[12px] text-red-600 hover:bg-red-500/10" onClick={onDelete}>
         ×
       </button>
     </div>
@@ -238,7 +238,7 @@ function AddButton({ label, onClick }: { label: string; onClick: () => void }) {
     <button
       type="button"
       onClick={onClick}
-      className="self-start rounded-[9px] border border-white/15 px-3 py-1.5 text-[12.5px] font-semibold text-body-soft hover:bg-white/5"
+      className="self-start rounded-[9px] border border-surface-line2 px-3 py-1.5 text-[12.5px] font-semibold text-body-soft hover:bg-black/5"
     >
       + {label}
     </button>

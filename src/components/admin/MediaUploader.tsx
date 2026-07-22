@@ -65,10 +65,10 @@ export function MediaUploader() {
           }}
           onClick={() => inputRef.current?.click()}
           className={`flex cursor-pointer flex-col items-center justify-center gap-2 rounded-[14px] border-2 border-dashed px-6 py-12 text-center transition-colors ${
-            dragOver ? 'border-brand bg-brand/10' : 'border-white/15 bg-white/[0.02] hover:border-white/30'
+            dragOver ? 'border-brand bg-brand/10' : 'border-surface-line2 bg-white hover:border-black'
           }`}
         >
-          <span className="text-[15px] font-semibold text-white">
+          <span className="text-[15px] font-semibold text-black">
             {busy ? 'Uploading…' : 'Drop a file here, or click to choose'}
           </span>
           <span className="text-[12.5px] text-body-dim">
@@ -83,24 +83,24 @@ export function MediaUploader() {
             onChange={(e) => e.target.files && upload(e.target.files)}
           />
         </div>
-        {error && <p className="mt-3 text-[13px] text-red-400">{error}</p>}
+        {error && <p className="mt-3 text-[13px] text-red-600">{error}</p>}
       </Card>
 
       {items.length > 0 && (
         <Card>
-          <h2 className="m-0 mb-4 font-display text-[16px] font-bold text-white">Uploaded</h2>
+          <h2 className="m-0 mb-4 font-display text-[16px] font-bold text-black">Uploaded</h2>
           <div className="grid grid-cols-1 gap-4">
             {items.map((it) => (
               <div
                 key={it.path}
-                className="flex items-center gap-4 rounded-[12px] border border-white/9 bg-white/[0.02] p-3"
+                className="flex items-center gap-4 rounded-[12px] border border-surface-line2 bg-white p-3"
               >
                 {it.isPdf ? (
                   <a
                     href={it.path}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-[8px] border border-white/10 bg-black/40 text-[11px] font-bold text-brand-200"
+                    className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-[8px] border border-surface-line2 bg-surface-tint2 text-[11px] font-bold text-brand-ink"
                   >
                     PDF
                   </a>
@@ -109,12 +109,12 @@ export function MediaUploader() {
                   <img
                     src={it.path}
                     alt={it.name}
-                    className="h-16 w-16 flex-shrink-0 rounded-[8px] border border-white/10 object-cover"
+                    className="h-16 w-16 flex-shrink-0 rounded-[8px] border border-surface-line2 object-cover"
                   />
                 )}
                 <div className="min-w-0 flex-1">
                   <div className="mb-1 truncate text-[13px] font-semibold text-body-soft">{it.name}</div>
-                  <code className="block truncate rounded-[7px] bg-black/40 px-2.5 py-1.5 text-[12.5px] text-brand-200">
+                  <code className="block truncate rounded-[7px] bg-surface-tint2 px-2.5 py-1.5 text-[12.5px] text-brand-ink">
                     {it.fullUrl}
                   </code>
                 </div>
@@ -127,7 +127,7 @@ export function MediaUploader() {
                   </button>
                   <button
                     onClick={() => copy(it.path)}
-                    className="rounded-[9px] border border-white/15 px-3.5 py-2 text-[12.5px] font-semibold text-body-soft hover:border-white/30"
+                    className="rounded-[9px] border border-surface-line2 px-3.5 py-2 text-[12.5px] font-semibold text-body-soft hover:border-black"
                   >
                     {copied === it.path ? 'Copied ✓' : 'Copy path'}
                   </button>

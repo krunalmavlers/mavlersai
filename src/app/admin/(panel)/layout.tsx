@@ -11,7 +11,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
   if (!admin) redirect('/admin/login');
   const settings = await getSettings();
   return (
-    <div className="flex min-h-screen bg-ink text-body">
+    <div className="flex min-h-screen bg-surface-tint2 text-body">
       <Sidebar email={admin.email} role={admin.role} logoUrl={settings.logo_url} />
       <div className="flex-1 overflow-x-hidden">
         <div className="mx-auto max-w-[1400px] px-8 py-10">{children}</div>
