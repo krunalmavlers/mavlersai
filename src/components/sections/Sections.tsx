@@ -8,7 +8,7 @@ import { Icon, serviceIconName, connectIconName, stepIconName } from './icons';
 
 /* ----------------------------- shared bits ------------------------------ */
 
-const PAD = 'py-[clamp(64px,8vw,108px)]';
+const PAD = 'py-[clamp(40px,5vw,68px)]';
 const H2 =
   'm-0 font-display font-extrabold leading-[1.1] tracking-[-0.03em] text-[clamp(27px,3vw,40px)]';
 
@@ -114,7 +114,7 @@ function Hero({ c }: { c: any }) {
           <div className="pointer-events-none absolute inset-0 bg-white/70" />
         </>
       )}
-      <div className="relative mx-auto max-w-page px-6 pb-[clamp(44px,5vw,76px)] pt-[clamp(56px,8vw,108px)]">
+      <div className="relative mx-auto max-w-page px-6 pb-[clamp(28px,3.5vw,44px)] pt-[clamp(32px,4vw,60px)]">
         <div className={showVisual ? 'grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]' : ''}>
           <div>
             {c.badge && (

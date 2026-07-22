@@ -140,7 +140,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
 function ListHero({ eyebrow, title, subtitle }: { eyebrow: string; title: string; subtitle: string }) {
   return (
-    <section className="bg-white pb-6 pt-16 md:pt-20">
+    <section className="bg-white pb-6 pt-10 md:pt-14">
       <div className="mx-auto max-w-page px-6">
         <p className="m-0 inline-block border-b-[3px] border-brand pb-1 text-[12px] font-bold uppercase tracking-[0.1em] text-black">
           {eyebrow}
