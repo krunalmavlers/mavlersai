@@ -29,7 +29,7 @@ export function Footer({
       <div className="mx-auto max-w-page px-6 pb-10 pt-[clamp(52px,6vw,76px)]">
         <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-x-6 gap-y-10">
           <div className="min-w-[200px]">
-            <Logo settings={settings} height={26} variant="dark" />
+            <Logo settings={settings} height={31} variant="dark" />
             <p className="m-0 mt-4 max-w-[34ch] text-[14px] leading-relaxed text-[#8A8A8A]">{settings.tagline}</p>
             {settings.social_links?.length > 0 && (
               <div className="mt-5 flex gap-2.5">
