@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { SignOutButton } from './SignOutButton';
-import { retinaSrcSet } from '@/lib/utils';
+import { logoImageProps } from '@/lib/utils';
 
 const NAV = [
   { href: '/admin', label: 'Dashboard', exact: true },
@@ -31,7 +31,7 @@ export function Sidebar({ email, role, logoUrl }: { email: string; role: string;
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={logoUrl}
-            srcSet={retinaSrcSet(logoUrl, 26, { axis: 'h' })}
+            {...logoImageProps(logoUrl, 26)}
             alt="Mavlers.ai"
             style={{ height: 26, width: 'auto', display: 'block', filter: 'brightness(0)' }}
           />

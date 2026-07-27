@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { getCurrentAdmin } from '@/lib/auth';
 import { getSettings } from '@/lib/queries';
 import { LoginForm } from './LoginForm';
+import { logoImageProps } from '@/lib/utils';
 
 export const metadata = { title: 'Admin Login', robots: { index: false } };
 
@@ -15,7 +16,7 @@ export default async function LoginPage() {
         <div className="mb-8 flex flex-col items-center text-center">
           {settings.logo_url ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={settings.logo_url} alt="Mavlers.ai" style={{ height: 40, width: 'auto' }} />
+            <img src={settings.logo_url} {...logoImageProps(settings.logo_url, 40)} alt="Mavlers.ai" style={{ height: 40, width: 'auto' }} />
           ) : (
             <div className="font-display text-[26px] font-bold text-black">
               Mavlers<span className="text-brand-ink">.ai</span>

@@ -6,7 +6,7 @@ export default async function TaxonomiesPage() {
   const [categories, tags] = await Promise.all([adminListCategories(), adminListTags()]);
   return (
     <div>
-      <PageHeader title="Categories & Tags" subtitle="Taxonomies for insights and implementations." />
+      <PageHeader title="Categories & Tags" subtitle="Taxonomies for insights and AI use cases." />
       <TaxonomyManager categories={categories} tags={tags} />
     </div>
   );

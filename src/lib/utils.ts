@@ -37,6 +37,35 @@ export function retinaSrcSet(
     .join(', ');
 }
 
+// The bundled brand logo, pre-resampled at build time into /public/logo. The
+// source is 938x227 but it renders into slots ~107-165px wide, so handing the
+// browser the original means a ~7x in-place downscale — which is what reads as
+// soft on a retina panel. These variants let it pick one near the real size.
+const BRAND_LOGO = '/mavlers-ai-logo.png';
+const BRAND_LOGO_WIDTHS = [128, 192, 256, 384, 512];
+const BRAND_LOGO_ASPECT = 938 / 227;
+
+/**
+ * `srcset` + `sizes` for a logo rendered at a fixed CSS `height` with width
+ * auto. Handles both the bundled brand asset and CMS logos served through
+ * `/images/`. Returns empty props for anything else, so callers can spread it
+ * and fall back to a plain `src`.
+ */
+export function logoImageProps(
+  src: string | undefined | null,
+  height: number,
+): { srcSet?: string; sizes?: string } {
+  if (!src) return {};
+  if (src === BRAND_LOGO) {
+    return {
+      srcSet: BRAND_LOGO_WIDTHS.map((w) => `/logo/mavlers-ai-logo-${w}.png ${w}w`).join(', '),
+      sizes: `${Math.round(height * BRAND_LOGO_ASPECT)}px`,
+    };
+  }
+  const srcSet = retinaSrcSet(src, height, { axis: 'h' });
+  return srcSet ? { srcSet } : {};
+}
+
 export function formatDate(iso: string | null): string {
   if (!iso) return '';
   const d = new Date(iso);

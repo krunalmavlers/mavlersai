@@ -68,8 +68,8 @@ where name ilike '%implementation%';
 -- 5. Simplify the "Submit a Requirement" form.
 --
 --    Keeps: name, work email, one free-text requirement box.
---    Drops: company, website, role, opportunity, challenge, outcome,
---           timeline, budget.
+--    Drops: company, website, role, opportunity, outcome, timeline, budget
+--           and the brief_file upload.
 --
 --    `challenge` is REUSED as the requirement box rather than deleted and
 --    recreated, so existing submissions that stored a `challenge` value keep
@@ -77,7 +77,8 @@ where name ilike '%implementation%';
 -- ---------------------------------------------------------------------------
 delete from public.form_fields
 where form_id = (select id from public.forms where key = 'book-a-call')
-  and name in ('company', 'website', 'role', 'opportunity', 'outcome', 'timeline', 'budget');
+  and name in ('company', 'website', 'role', 'opportunity', 'outcome',
+               'timeline', 'budget', 'brief_file');
 
 update public.form_fields set
   label       = 'Name',

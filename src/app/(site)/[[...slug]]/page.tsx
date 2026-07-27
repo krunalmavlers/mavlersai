@@ -119,7 +119,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       return buildMetadata(
         {
           title: 'AI Use Cases',
-          description: 'AI implementations across industries and the digital lifecycle.',
+          description: 'AI use cases across industries and the digital lifecycle.',
           pathname: r.base,
         },
         settings,
@@ -190,7 +190,7 @@ export default async function CatchAllPage({ params }: { params: Params }) {
           data={[
             collectionPageSchema({
               name: 'AI Use Cases',
-              description: 'AI implementations across industries and the digital lifecycle.',
+              description: 'AI use cases across industries and the digital lifecycle.',
               path: r.base,
               settings,
             }),
@@ -202,7 +202,7 @@ export default async function CatchAllPage({ params }: { params: Params }) {
         />
         <ListHero
           eyebrow="AI Use Cases"
-          title="AI implementations you can build with your clients"
+          title="AI use cases you can build with your clients"
           subtitle="Explore the workflows, agents and integrations we deliver — filter by industry or by digital lifecycle."
         />
         <section className="pb-16 md:pb-20">

@@ -68,7 +68,7 @@ export function ImplementationsList({
           ))}
         </div>
         <span className="text-[13px] text-body-dim">
-          Showing {paged.length} of {filtered.length} implementations
+          Showing {paged.length} of {filtered.length} AI use cases
         </span>
       </div>
 
