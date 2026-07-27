@@ -8,9 +8,9 @@ import { Icon, serviceIconName, connectIconName, stepIconName } from './icons';
 
 /* ----------------------------- shared bits ------------------------------ */
 
-const PAD = 'py-[clamp(40px,5vw,68px)]';
+const PAD = 'py-[clamp(30px,3.4vw,48px)]';
 // Half-height padding for prose blocks that read as one continuous narrative.
-const PAD_SM = 'py-[clamp(20px,2.5vw,34px)]';
+const PAD_SM = 'py-[clamp(16px,1.8vw,26px)]';
 
 // Brand logos for the "platforms agencies build on" marquee. Names in the CMS
 // map to a self-hosted SVG; anything unmapped falls back to a text wordmark.
@@ -27,7 +27,7 @@ const PLATFORM_LOGOS: Record<string, string> = {
 const platformLogo = (name: string) =>
   PLATFORM_LOGOS[name.toLowerCase().replace(/[^a-z0-9]/g, '')];
 const H2 =
-  'm-0 font-display font-extrabold leading-[1.1] tracking-[-0.03em] text-[clamp(27px,3vw,40px)]';
+  'm-0 font-display font-extrabold leading-[1.1] tracking-[-0.03em] text-[clamp(23px,2.4vw,32px)]';
 
 function Eyebrow({ children, onDark }: { children?: React.ReactNode; onDark?: boolean }) {
   if (!children) return null;
@@ -67,7 +67,7 @@ function CtaLink({
     return (
       <Link
         href={href}
-        className="rounded-full border-[1.5px] border-black px-[30px] py-4 text-[16px] font-bold text-black transition-colors hover:bg-black hover:text-white"
+        className="rounded-full border-[1.5px] border-black px-[26px] py-[13px] text-[15px] font-bold text-black transition-colors hover:bg-black hover:text-white"
       >
         {label}
       </Link>
@@ -77,7 +77,7 @@ function CtaLink({
     return (
       <Link
         href={href}
-        className="rounded-full bg-brand px-[30px] py-4 text-[16px] font-bold text-black transition-colors hover:bg-brand-300"
+        className="rounded-full bg-brand px-[26px] py-[13px] text-[15px] font-bold text-black transition-colors hover:bg-brand-300"
       >
         {label}
       </Link>
@@ -86,7 +86,7 @@ function CtaLink({
   return (
     <Link
       href={href}
-      className="rounded-full bg-black px-[30px] py-4 text-[16px] font-bold text-white transition-colors hover:bg-[#1a1a1a]"
+      className="rounded-full bg-black px-[26px] py-[13px] text-[15px] font-bold text-white transition-colors hover:bg-[#1a1a1a]"
     >
       {label}
     </Link>
@@ -135,8 +135,8 @@ function Hero({ c }: { c: any }) {
           <div className="pointer-events-none absolute inset-0 bg-white/70" />
         </>
       )}
-      <div className="relative mx-auto max-w-page px-6 pb-[clamp(28px,3.5vw,44px)] pt-[clamp(32px,4vw,60px)]">
-        <div className={showVisual ? 'grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]' : ''}>
+      <div className="relative mx-auto max-w-page px-6 pb-[clamp(22px,2.6vw,34px)] pt-[clamp(24px,3vw,44px)]">
+        <div className={showVisual ? 'grid items-center gap-9 lg:grid-cols-[1.05fr_0.95fr]' : ''}>
           <div>
             {c.badge && (
               <div className="inline-flex items-center gap-2.5 rounded-full border-[1.5px] border-black px-[15px] py-[7px] text-[12.5px] font-bold uppercase tracking-[0.01em] text-black">
@@ -145,20 +145,20 @@ function Hero({ c }: { c: any }) {
               </div>
             )}
             <h1
-              className="m-0 mt-6 max-w-[17ch] font-display text-[clamp(34px,4.6vw,54px)] font-extrabold leading-[1.06] tracking-[-0.03em] text-black [text-wrap:balance] [&_span]:bg-[linear-gradient(180deg,transparent_62%,#FFDB2D_62%)]"
+              className="m-0 mt-5 max-w-[17ch] font-display text-[clamp(29px,3.7vw,44px)] font-extrabold leading-[1.06] tracking-[-0.03em] text-black [text-wrap:balance] [&_span]:bg-[linear-gradient(180deg,transparent_62%,#FFDB2D_62%)]"
               dangerouslySetInnerHTML={{ __html: c.heading_html || '' }}
             />
             {c.subhead && (
-              <p className="m-0 mt-6 max-w-[54ch] text-[clamp(16px,1.5vw,19px)] leading-relaxed text-body-muted">
+              <p className="m-0 mt-4 max-w-[54ch] text-[clamp(15px,1.3vw,17px)] leading-relaxed text-body-muted">
                 {c.subhead}
               </p>
             )}
-            <div className="mt-[34px] flex flex-wrap items-center gap-5">
+            <div className="mt-7 flex flex-wrap items-center gap-4">
               {c.primary_cta?.label && <CtaLink {...c.primary_cta} style={c.primary_cta.style || 'primary'} />}
               {c.secondary_cta?.label && <CtaLink {...c.secondary_cta} style={c.secondary_cta.style || 'link'} />}
             </div>
             {Array.isArray(c.trust_items) && c.trust_items.length > 0 && (
-              <div className="mt-[30px] flex flex-wrap gap-2.5">
+              <div className="mt-6 flex flex-wrap gap-2">
                 {c.trust_items.map((t: string) => (
                   <span
                     key={t}
@@ -187,10 +187,10 @@ function StatsBar({ c }: { c: any }) {
   return (
     <>
       <section className="bg-black text-white">
-        <div className="mx-auto grid max-w-page grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-x-6 gap-y-9 px-6 py-[clamp(46px,5vw,66px)]">
+        <div className="mx-auto grid max-w-page grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-x-6 gap-y-7 px-6 py-[clamp(32px,3.4vw,46px)]">
           {(c.stats || []).map((s: any, i: number) => (
             <div key={i}>
-              <div className="font-display text-[clamp(24px,2.6vw,34px)] font-extrabold leading-none tracking-[-0.03em] text-brand">
+              <div className="font-display text-[clamp(21px,2.2vw,29px)] font-extrabold leading-none tracking-[-0.03em] text-brand">
                 {s.num}
               </div>
               <div className="mt-2 text-[13px] font-medium text-body-onDark">{s.label}</div>
@@ -200,9 +200,9 @@ function StatsBar({ c }: { c: any }) {
       </section>
       {Array.isArray(c.logos) && c.logos.length > 0 && (
         <section className="border-b border-line bg-white">
-          <div className="mx-auto max-w-page px-6 py-[clamp(40px,5vw,58px)]">
+          <div className="mx-auto max-w-page px-6 py-[clamp(26px,2.8vw,40px)]">
             {c.logos_title && (
-              <p className="m-0 mb-7 text-center text-[12px] font-bold uppercase tracking-[0.1em] text-[#999]">
+              <p className="m-0 mb-5 text-center text-[12px] font-bold uppercase tracking-[0.1em] text-[#999]">
                 {c.logos_title}
               </p>
             )}
@@ -251,15 +251,15 @@ function FeatureGrid({ c }: { c: any }) {
             {c.eyebrow}
           </div>
         )}
-        {c.heading && <h2 className={`${H2} mt-6 max-w-[20ch] text-white`}>{c.heading}</h2>}
-        <div className={`mt-14 grid grid-cols-1 gap-[22px] sm:grid-cols-2 ${cols}`}>
+        {c.heading && <h2 className={`${H2} mt-5 max-w-[20ch] text-white`}>{c.heading}</h2>}
+        <div className={`mt-9 grid grid-cols-1 gap-[18px] sm:grid-cols-2 ${cols}`}>
           {(c.items || []).map((it: any, i: number) => (
             <div
               key={i}
-              className="opp-card relative overflow-hidden rounded-[20px] border border-[#232323] p-8 [background:linear-gradient(180deg,#121212,#0D0D0D)]"
+              className="opp-card relative overflow-hidden rounded-[20px] border border-[#232323] p-7 [background:linear-gradient(180deg,#121212,#0D0D0D)]"
             >
               {numbered && (
-                <span className="opp-num pointer-events-none absolute right-[22px] top-[14px] font-display text-[130px] font-extrabold leading-none tracking-[-0.04em] text-white/[0.035]">
+                <span className="opp-num pointer-events-none absolute right-[22px] top-[14px] font-display text-[110px] font-extrabold leading-none tracking-[-0.04em] text-white/[0.035]">
                   {it.n || String(i + 1).padStart(2, '0')}
                 </span>
               )}
@@ -274,8 +274,8 @@ function FeatureGrid({ c }: { c: any }) {
           ))}
         </div>
         {c.callout && (
-          <div className="mt-11 flex flex-wrap items-center justify-between gap-6 rounded-[22px] bg-brand p-[clamp(30px,4vw,48px)]">
-            <p className="m-0 max-w-[40ch] font-display text-[clamp(19px,2.2vw,27px)] font-bold leading-tight tracking-[-0.02em] text-black">
+          <div className="mt-9 flex flex-wrap items-center justify-between gap-6 rounded-[22px] bg-brand p-[clamp(24px,3vw,38px)]">
+            <p className="m-0 max-w-[40ch] font-display text-[clamp(18px,1.9vw,23px)] font-bold leading-tight tracking-[-0.02em] text-black">
               {c.callout.text}
             </p>
             {c.callout.cta?.label && <CtaLink {...c.callout.cta} style="primary" />}
@@ -292,13 +292,13 @@ function Partnership({ c }: { c: any }) {
   return (
     <Section theme="light">
       <Eyebrow>{c.eyebrow}</Eyebrow>
-      {c.heading && <h2 className={`${H2} mt-[22px] text-black`}>{c.heading}</h2>}
-      <div className="mt-12 grid grid-cols-1 gap-[22px] lg:grid-cols-2">
-        <div className="rounded-[22px] border border-ink-600 bg-ink-card p-9">
-          <h3 className="m-0 mb-[22px] font-display text-[20px] font-bold tracking-[-0.015em] text-white">
+      {c.heading && <h2 className={`${H2} mt-4 text-black`}>{c.heading}</h2>}
+      <div className="mt-9 grid grid-cols-1 gap-[18px] lg:grid-cols-2">
+        <div className="rounded-[22px] border border-ink-600 bg-ink-card p-7">
+          <h3 className="m-0 mb-4 font-display text-[18px] font-bold tracking-[-0.015em] text-white">
             {c.left_title}
           </h3>
-          <div className="flex flex-col gap-3.5">
+          <div className="flex flex-col gap-2.5">
             {(c.left_items || []).map((a: string) => (
               <div key={a} className="flex items-center gap-3 text-[15.5px] text-[#D2D2D2]">
                 <span className="text-[#666]">◇</span>
@@ -307,11 +307,11 @@ function Partnership({ c }: { c: any }) {
             ))}
           </div>
         </div>
-        <div className="rounded-[22px] bg-brand p-9">
-          <h3 className="m-0 mb-[22px] font-display text-[20px] font-bold tracking-[-0.015em] text-black">
+        <div className="rounded-[22px] bg-brand p-7">
+          <h3 className="m-0 mb-4 font-display text-[18px] font-bold tracking-[-0.015em] text-black">
             {c.right_title}
           </h3>
-          <div className="grid grid-cols-1 gap-x-5 gap-y-3.5 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-x-5 gap-y-2.5 sm:grid-cols-2">
             {(c.right_items || []).map((m: string) => (
               <div key={m} className="flex items-center gap-2.5 text-[15px] font-semibold text-black">
                 <span>✓</span>
@@ -333,7 +333,7 @@ function ServiceCapabilities({ c }: { c: any }) {
       <div className="flex flex-wrap items-end justify-between gap-5">
         <div>
           <Eyebrow>{c.eyebrow}</Eyebrow>
-          {c.heading && <h2 className={`${H2} mt-[22px] max-w-[22ch] text-black [text-wrap:balance]`}>{c.heading}</h2>}
+          {c.heading && <h2 className={`${H2} mt-4 max-w-[22ch] text-black [text-wrap:balance]`}>{c.heading}</h2>}
         </div>
         {c.link?.href && (
           <Link href={c.link.href} className="border-b-2 border-brand pb-0.5 text-[15px] font-bold text-black">
@@ -341,7 +341,7 @@ function ServiceCapabilities({ c }: { c: any }) {
           </Link>
         )}
       </div>
-      <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-9 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {(c.items || []).map((s: any, i: number) => (
           <div
             key={i}
@@ -374,11 +374,11 @@ function ConnectGrid({ c }: { c: any }) {
       <Eyebrow onDark>{c.eyebrow}</Eyebrow>
       {c.heading && <h2 className={`${H2} mt-[18px] text-white`}>{c.heading}</h2>}
       {c.subhead && <p className="m-0 mt-[18px] max-w-[60ch] text-[16px] leading-relaxed text-body-onDark">{c.subhead}</p>}
-      <div className="mt-11 grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {(c.items || []).map((it: string) => (
           <div
             key={it}
-            className="conn-tile flex items-center gap-3.5 rounded-[16px] border border-[#262626] bg-ink-700 px-5 py-[18px] text-[15px] font-semibold text-[#E4E4E4]"
+            className="conn-tile flex items-center gap-3.5 rounded-[16px] border border-[#262626] bg-ink-700 px-4 py-[14px] text-[14.5px] font-semibold text-[#E4E4E4]"
           >
             <span className="conn-ico flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-[11px] bg-[#1C1C1C] text-brand">
               <Icon name={connectIconName(it)} size={20} />
@@ -396,15 +396,15 @@ function ConnectGrid({ c }: { c: any }) {
 function Implementations({ c }: { c: any }) {
   return (
     <Section theme="light">
-      <div className="grid grid-cols-1 items-center gap-11 rounded-[26px] border border-surface-line2 bg-surface-tint p-[clamp(32px,5vw,62px)] lg:grid-cols-2">
+      <div className="grid grid-cols-1 items-center gap-9 rounded-[26px] border border-surface-line2 bg-surface-tint p-[clamp(26px,3.6vw,46px)] lg:grid-cols-2">
         <div>
           <Eyebrow>{c.eyebrow}</Eyebrow>
-          {c.heading && <h2 className={`${H2} mt-[22px] text-black [text-wrap:balance]`}>{c.heading}</h2>}
+          {c.heading && <h2 className={`${H2} mt-4 text-black [text-wrap:balance]`}>{c.heading}</h2>}
           {c.subhead && <p className="m-0 mt-5 text-[16px] leading-relaxed text-body-faint">{c.subhead}</p>}
           {c.cta?.label && (
             <Link
               href={c.cta.href || '#'}
-              className="mt-7 inline-block rounded-full bg-black px-7 py-[15px] text-[15px] font-bold text-brand"
+              className="mt-6 inline-block rounded-full bg-black px-6 py-[13px] text-[15px] font-bold text-brand"
             >
               {c.cta.label} →
             </Link>
@@ -424,12 +424,12 @@ function EngagementModels({ c }: { c: any }) {
   return (
     <Section theme="tint2">
       <Eyebrow>{c.eyebrow}</Eyebrow>
-      {c.heading && <h2 className={`${H2} mt-[22px] text-black`}>{c.heading}</h2>}
-      <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {c.heading && <h2 className={`${H2} mt-4 text-black`}>{c.heading}</h2>}
+      <div className="mt-9 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {(c.items || []).map((e: any, i: number) => (
           <div
             key={i}
-            className={`relative rounded-[18px] border p-[30px] ${
+            className={`relative rounded-[18px] border p-6 ${
               e.featured ? 'border-black bg-black' : 'border-[#E7E7E3] bg-white'
             }`}
           >
@@ -463,15 +463,15 @@ function ProcessTimeline({ c }: { c: any }) {
       <Eyebrow onDark>{c.eyebrow}</Eyebrow>
       {c.heading && <h2 className={`${H2} mt-[18px] text-white`}>{c.heading}</h2>}
       {c.subhead && <p className="m-0 mt-[18px] max-w-[60ch] text-[16px] leading-relaxed text-body-onDark">{c.subhead}</p>}
-      <div className="relative mt-14">
+      <div className="relative mt-10">
         <div className="absolute bottom-[26px] left-[27px] top-[26px] w-0.5 rounded [background:linear-gradient(180deg,#FFDB2D,rgba(255,219,45,0.12))]" />
-        <div className="flex flex-col gap-[18px]">
+        <div className="flex flex-col gap-3">
           {steps.map((p, i) => (
             <div key={i} className="rm-row flex items-center gap-[22px]">
-              <div className="rm-node z-[1] flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full bg-brand font-display text-[20px] font-extrabold text-black">
+              <div className="rm-node z-[1] flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-brand font-display text-[18px] font-extrabold text-black">
                 {p.n || i + 1}
               </div>
-              <div className="rm-card flex flex-1 items-center gap-[18px] rounded-[16px] border border-[#262626] bg-ink-700 px-6 py-5">
+              <div className="rm-card flex flex-1 items-center gap-[18px] rounded-[16px] border border-[#262626] bg-ink-700 px-5 py-4">
                 <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-[12px] bg-[#1C1C1C] text-brand">
                   <Icon name={stepIconName(i)} size={22} />
                 </div>
@@ -496,10 +496,10 @@ function Pillars({ c }: { c: any }) {
   return (
     <Section theme="light">
       <Eyebrow>{c.eyebrow}</Eyebrow>
-      {c.heading && <h2 className={`${H2} mt-[22px] max-w-[24ch] text-black [text-wrap:balance]`}>{c.heading}</h2>}
-      <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {c.heading && <h2 className={`${H2} mt-4 max-w-[24ch] text-black [text-wrap:balance]`}>{c.heading}</h2>}
+      <div className="mt-9 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {(c.items || []).map((p: any, i: number) => (
-          <div key={i} className="rounded-[18px] border border-surface-line2 bg-surface-tint p-7">
+          <div key={i} className="rounded-[18px] border border-surface-line2 bg-surface-tint p-6">
             <div className="flex h-9 w-9 items-center justify-center rounded-[9px] bg-brand font-extrabold text-black">
               ✓
             </div>
@@ -520,7 +520,7 @@ function CtaBand({ c }: { c: any }) {
   if (c.variant === 'band') {
     return (
       <Section theme="light">
-        <div className="flex flex-wrap items-center justify-between gap-6 rounded-[22px] bg-brand p-8 md:p-12">
+        <div className="flex flex-wrap items-center justify-between gap-6 rounded-[22px] bg-brand p-7 md:p-9">
           <div className="max-w-[640px]">
             <h2 className={`${H2} text-black`}>{c.heading}</h2>
             {c.body && <p className="m-0 mt-3 text-[16px] leading-relaxed text-[#1a1a1a]">{c.body}</p>}
@@ -539,15 +539,15 @@ function CtaBand({ c }: { c: any }) {
     return (
       <section className="bg-brand">
         <div className={`mx-auto max-w-page px-6 text-center ${PAD}`}>
-          <h2 className="m-0 mx-auto max-w-[18ch] font-display text-[clamp(30px,4.4vw,58px)] font-extrabold leading-[1.02] tracking-[-0.035em] text-black [text-wrap:balance]">
+          <h2 className="m-0 mx-auto max-w-[18ch] font-display text-[clamp(26px,3.5vw,44px)] font-extrabold leading-[1.02] tracking-[-0.035em] text-black [text-wrap:balance]">
             {c.heading}
           </h2>
           {c.body && (
-            <p className="m-0 mx-auto mt-[22px] max-w-[56ch] text-[clamp(16px,1.6vw,19px)] leading-relaxed text-[#1A1A1A]">
+            <p className="m-0 mx-auto mt-4 max-w-[56ch] text-[clamp(15px,1.4vw,17px)] leading-relaxed text-[#1A1A1A]">
               {c.body}
             </p>
           )}
-          <div className="mt-[34px] flex flex-wrap items-center justify-center gap-3.5">
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
             {(c.ctas || []).map((cta: any, i: number) => (
               <CtaLink key={i} label={cta.label} href={cta.href} style={cta.style || (i === 0 ? 'primary' : 'outline')} />
             ))}
@@ -563,7 +563,7 @@ function CtaBand({ c }: { c: any }) {
         <div className="mx-auto inline-block">
           <Eyebrow>{c.eyebrow}</Eyebrow>
         </div>
-        <h2 className={`${H2} mt-[22px] text-black [text-wrap:balance]`}>{c.heading}</h2>
+        <h2 className={`${H2} mt-4 text-black [text-wrap:balance]`}>{c.heading}</h2>
         {c.body && (
           <p className="m-0 mx-auto mt-5 max-w-[640px] text-[17px] leading-relaxed text-body-muted">{c.body}</p>
         )}
@@ -582,7 +582,7 @@ function CtaBand({ c }: { c: any }) {
 function TrustBand({ c }: { c: any }) {
   return (
     <section className="bg-black">
-      <div className="mx-auto max-w-page px-6 py-14 text-center md:py-16">
+      <div className="mx-auto max-w-page px-6 py-10 text-center md:py-12">
         {c.eyebrow && (
           <div className="mb-3.5 inline-flex items-center gap-2 text-[12.5px] font-bold uppercase tracking-[0.1em] text-brand">
             <span className="h-1.5 w-1.5 rounded-full bg-brand" />
@@ -604,7 +604,7 @@ function RichText({ c }: { c: any }) {
     <Section theme="light" narrow compact>
       <div className="mx-auto max-w-[760px]">
         <Eyebrow>{c.eyebrow}</Eyebrow>
-        {c.heading && <h2 className={`${H2} mb-6 mt-[22px] text-black`}>{c.heading}</h2>}
+        {c.heading && <h2 className={`${H2} mb-6 mt-4 text-black`}>{c.heading}</h2>}
         <div className="prose-mavlers" dangerouslySetInnerHTML={{ __html: c.html || '' }} />
       </div>
     </Section>
@@ -619,7 +619,7 @@ function Faq({ c }: { c: any }) {
       <div className="mx-auto max-w-[760px]">
         <div className="text-center">
           <Eyebrow>{c.eyebrow}</Eyebrow>
-          {c.heading && <h2 className={`${H2} mt-[22px] text-black`}>{c.heading}</h2>}
+          {c.heading && <h2 className={`${H2} mt-4 text-black`}>{c.heading}</h2>}
         </div>
         <div className="mt-10 flex flex-col gap-3">
           {(c.items || []).map((f: any, i: number) => (
@@ -749,7 +749,7 @@ function ComparisonTable({ c }: { c: any }) {
     <Section theme="tint2">
       <div className="mx-auto max-w-[640px] text-center">
         <Eyebrow>{c.eyebrow}</Eyebrow>
-        {c.heading && <h2 className={`${H2} mt-[22px] text-black`}>{c.heading}</h2>}
+        {c.heading && <h2 className={`${H2} mt-4 text-black`}>{c.heading}</h2>}
       </div>
       <div className="mt-10 overflow-x-auto">
         <table className="w-full min-w-[560px] border-collapse overflow-hidden rounded-[14px] border border-surface-line2 text-left">
@@ -792,9 +792,9 @@ function Packages({ c }: { c: any }) {
     <Section theme="tint2">
       <div id="packages" className="text-center">
         <Eyebrow>{c.eyebrow}</Eyebrow>
-        {c.heading && <h2 className={`${H2} mt-[22px] text-black`}>{c.heading}</h2>}
+        {c.heading && <h2 className={`${H2} mt-4 text-black`}>{c.heading}</h2>}
       </div>
-      <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-9 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {(c.items || []).map((p: any, i: number) => (
           <div key={i} className={`relative rounded-[18px] border p-7 ${p.featured ? 'border-black bg-black' : 'border-[#E7E7E3] bg-white'}`}>
             {p.featured && (
