@@ -118,7 +118,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     case 'impl-list':
       return buildMetadata(
         {
-          title: 'Implementations',
+          title: 'AI Use Cases',
           description: 'AI implementations across industries and the digital lifecycle.',
           pathname: r.base,
         },
@@ -189,19 +189,19 @@ export default async function CatchAllPage({ params }: { params: Params }) {
         <JsonLd
           data={[
             collectionPageSchema({
-              name: 'Implementations',
+              name: 'AI Use Cases',
               description: 'AI implementations across industries and the digital lifecycle.',
               path: r.base,
               settings,
             }),
             breadcrumbSchema([
               { name: 'Home', path: '/' },
-              { name: 'Implementations', path: r.base },
+              { name: 'AI Use Cases', path: r.base },
             ]),
           ]}
         />
         <ListHero
-          eyebrow="Implementations"
+          eyebrow="AI Use Cases"
           title="AI implementations you can build with your clients"
           subtitle="Explore the workflows, agents and integrations we deliver — filter by industry or by digital lifecycle."
         />
@@ -257,7 +257,7 @@ export default async function CatchAllPage({ params }: { params: Params }) {
             storedSchema(r.post) || articleSchema({ post: r.post, path, settings }),
             breadcrumbSchema([
               { name: 'Home', path: '/' },
-              { name: 'Implementations', path: r.base },
+              { name: 'AI Use Cases', path: r.base },
               { name: r.post.title, path },
             ]),
           ]}

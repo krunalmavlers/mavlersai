@@ -40,7 +40,7 @@ const TEMPLATES: Record<string, any> = {
   process_timeline: { eyebrow: '', heading: '', steps: [{ n: '1', title: 'Step' }] },
   stats_bar: { stats: [{ num: '10+', label: 'label' }], logos: [] },
   connect_grid: { eyebrow: '', heading: '', items: ['Item'] },
-  implementations: { eyebrow: 'Implementations', heading: 'AI in action across industries', subhead: '', cta: { label: 'Explore Our Implementations', href: '/implementations' } },
+  implementations: { eyebrow: 'AI Use Cases', heading: 'AI in action across industries', subhead: '', cta: { label: 'Explore Our AI Use Cases', href: '/implementations' } },
   partnership: { eyebrow: '', heading: '', left_title: 'You bring', left_items: [], right_title: 'We deliver', right_items: [] },
   service_capabilities: { eyebrow: '', heading: '', items: [{ mono: 'AI', title: 'Service', body: '' }] },
   services_detail: {

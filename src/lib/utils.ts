@@ -14,6 +14,29 @@ export function slugify(input: string): string {
     .replace(/^-|-$/g, '');
 }
 
+/**
+ * Build a DPR-aware `srcset` for media served through our own `/images/` route
+ * (which resizes via `?w=`). Handing the browser an asset near its display size
+ * — properly resampled by sharp — is far crisper than letting it downscale a
+ * full-resolution original in-place, and much lighter to download.
+ *
+ * `displayWidth` is the CSS width the image occupies. Returns `undefined` for
+ * anything we can't resize (external hosts, SVG, /public assets), so callers can
+ * spread it onto an <img> and fall back to plain `src`.
+ */
+export function retinaSrcSet(
+  src: string | undefined | null,
+  displaySize: number,
+  { axis = 'w', densities = [1, 2, 3] }: { axis?: 'w' | 'h'; densities?: number[] } = {},
+): string | undefined {
+  if (!src || !src.startsWith('/images/')) return undefined;
+  if (/\.svg($|\?)/i.test(src)) return undefined;
+  const sep = src.includes('?') ? '&' : '?';
+  return densities
+    .map((d) => `${src}${sep}${axis}=${Math.round(displaySize * d)} ${d}x`)
+    .join(', ');
+}
+
 export function formatDate(iso: string | null): string {
   if (!iso) return '';
   const d = new Date(iso);

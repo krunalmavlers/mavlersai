@@ -19,7 +19,7 @@ export function ImplementationDetail({
       <div className="mx-auto max-w-[860px]">
         <nav className="mb-6 text-[13px] text-body-dim">
           <Link href={base} className="hover:text-black">
-            Implementations
+            AI Use Cases
           </Link>{' '}
           <span className="text-body-dim">/</span> <span className="text-body-faint">{post.title}</span>
         </nav>

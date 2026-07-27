@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { SiteSettings } from '@/lib/types';
+import { retinaSrcSet } from '@/lib/utils';
 
 /**
  * Mavlers.ai wordmark. Adapts to the surface it sits on:
@@ -31,6 +32,7 @@ export function Logo({
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={settings.logo_url}
+          srcSet={retinaSrcSet(settings.logo_url, height, { axis: 'h' })}
           alt={settings.site_name}
           style={{
             height,

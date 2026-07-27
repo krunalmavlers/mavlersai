@@ -29,7 +29,7 @@ export default async function Dashboard() {
           <h2 className="m-0 mb-2 font-display text-[16px] font-bold text-black">Quick start</h2>
           <ul className="m-0 list-disc pl-5 text-[14px] leading-relaxed text-body-faint">
             <li>Edit page content and sections in <Link href="/admin/pages" className="text-brand-ink">Pages</Link>.</li>
-            <li>Write blog posts &amp; case studies in <Link href="/admin/posts" className="text-brand-ink">Insights &amp; Implementations</Link>.</li>
+            <li>Write blog posts &amp; case studies in <Link href="/admin/posts" className="text-brand-ink">Insights &amp; AI Use Cases</Link>.</li>
             <li>Add tracking (GA/GTM/Pixel) and SEO defaults in <Link href="/admin/settings" className="text-brand-ink">Settings</Link>.</li>
             <li>Manage header/footer navigation in <Link href="/admin/menus" className="text-brand-ink">Menus</Link>.</li>
           </ul>

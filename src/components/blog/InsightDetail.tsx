@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { Post } from '@/lib/types';
-import { formatDate } from '@/lib/utils';
+import { formatDate, retinaSrcSet } from '@/lib/utils';
 
 export function InsightDetail({
   post,
@@ -46,6 +46,10 @@ export function InsightDetail({
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={post.cover_image}
+            // The prose column is capped at 860px; serve 1x/2x/3x of that
+            // rather than the full-size original.
+            srcSet={retinaSrcSet(post.cover_image, 860)}
+            sizes="(max-width: 900px) 100vw, 860px"
             alt={post.title}
             className="mb-10 w-full rounded-[16px]"
             decoding="async"

@@ -63,7 +63,7 @@ export async function GET() {
     '',
     ...(insights.length ? insights : ['(none published yet)']),
     '',
-    `## Implementations`,
+    `## AI Use Cases`,
     '',
     ...(implementations.length ? implementations : ['(none published yet)']),
     '',

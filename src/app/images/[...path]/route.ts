@@ -19,10 +19,13 @@ const CTYPE: Record<Exclude<Fmt, 'original'>, string> = {
   jpeg: 'image/jpeg',
 };
 
+// Tuned for crisp edges on retina rather than smallest-possible bytes. 4:4:4
+// chroma (below) matters most for coloured text, logos and UI screenshots,
+// where the default 4:2:0 subsampling visibly smears edges.
 const QUALITY: Record<Exclude<Fmt, 'original' | 'png'>, number> = {
-  webp: 78,
-  avif: 50,
-  jpeg: 80,
+  webp: 84,
+  avif: 58,
+  jpeg: 84,
 };
 
 function clampInt(raw: string | null, min: number, max: number): number | null {
@@ -86,26 +89,54 @@ export async function GET(
   }
 
   const width = clampInt(url.searchParams.get('w'), 16, 2048);
+  // `h` suits height-constrained art (logos rendered at a fixed height with
+  // width:auto), where the caller can't know the aspect ratio up front.
+  const height = clampInt(url.searchParams.get('h'), 16, 2048);
   const quality = clampInt(url.searchParams.get('q'), 30, 95);
 
   try {
     let pipeline = sharp(input, { animated: false }).rotate(); // honor EXIF orientation
-    if (width) pipeline = pipeline.resize({ width, withoutEnlargement: true });
+    if (width || height) {
+      // Lanczos downscale always softens a little. A mild unsharp restores the
+      // edge definition, which is the difference between "resized" and "crisp"
+      // once the result is shown at 2x on a retina panel.
+      pipeline = pipeline
+        .resize({
+          width: width ?? undefined,
+          height: height ?? undefined,
+          fit: 'inside',
+          withoutEnlargement: true,
+          kernel: 'lanczos3',
+        })
+        .sharpen({ sigma: 0.6, m1: 0.4, m2: 0.8 });
+    }
 
     let outType: string;
     if (target === 'original') {
       outType = sourceType;
     } else if (target === 'png') {
-      pipeline = pipeline.png({ compressionLevel: 9, palette: true });
+      // No `palette` — quantising to 256 colours bands gradients and haloes
+      // anti-aliased edges, which reads as blurriness on a high-DPI screen.
+      pipeline = pipeline.png({ compressionLevel: 9 });
       outType = CTYPE.png;
     } else if (target === 'jpeg') {
-      pipeline = pipeline.jpeg({ quality: quality ?? QUALITY.jpeg, mozjpeg: true });
+      pipeline = pipeline.jpeg({
+        quality: quality ?? QUALITY.jpeg,
+        mozjpeg: true,
+        chromaSubsampling: '4:4:4',
+      });
       outType = CTYPE.jpeg;
     } else if (target === 'avif') {
-      pipeline = pipeline.avif({ quality: quality ?? QUALITY.avif });
+      pipeline = pipeline.avif({
+        quality: quality ?? QUALITY.avif,
+        chromaSubsampling: '4:4:4',
+      });
       outType = CTYPE.avif;
     } else {
-      pipeline = pipeline.webp({ quality: quality ?? QUALITY.webp });
+      pipeline = pipeline.webp({
+        quality: quality ?? QUALITY.webp,
+        smartSubsample: true,
+      });
       outType = CTYPE.webp;
     }
 
