@@ -13,6 +13,7 @@ const SECTION_TYPES = [
   'partnership',
   'service_capabilities',
   'services_detail',
+  'service_categories',
   'connect_grid',
   'implementations',
   'cta_band',
@@ -48,6 +49,14 @@ const TEMPLATES: Record<string, any> = {
     ],
     cta_primary: { label: 'Connect with an AI expert', href: '/book-a-call' },
     cta_secondary: { label: 'Submit a project brief', href: '/book-a-call' },
+  },
+  service_categories: {
+    eyebrow: 'What we offer',
+    heading: 'Three capabilities. One engineering partner.',
+    subhead: '',
+    items: [
+      { n: '01', tag: 'Build', title: 'Capability', kicker: '', body: '', chips: [], href: '/services', cta_label: 'Explore' },
+    ],
   },
   engagement_models: { eyebrow: '', heading: '', items: [{ step: '01', title: 'Model', body: '', featured: false }] },
   trust_band: { eyebrow: '', text: '' },

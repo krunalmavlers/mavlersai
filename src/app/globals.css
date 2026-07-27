@@ -95,6 +95,34 @@ a:not([class]):hover {
 .hero-learn-ico { transition: transform .25s ease; }
 .hero-learn:hover .hero-learn-ico { transform: translateX(4px); }
 
+/* ---- Header dropdown (menu items with children) ---- */
+.nav-dd-menu { opacity: 0; pointer-events: none; transition: opacity .18s ease; }
+.nav-dd:hover .nav-dd-menu, .nav-dd:focus-within .nav-dd-menu { opacity: 1; pointer-events: auto; }
+
+/* ---- Services hub capability cards ---- */
+.cat-card { transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease; }
+.cat-card:hover { transform: translateY(-6px); border-color: rgba(255,219,45,0.55) !important; box-shadow: 0 20px 50px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,219,45,0.25); }
+.cat-num { transition: color .35s ease; }
+.cat-card:hover .cat-num { color: rgba(255,219,45,0.28) !important; }
+.cat-ico { transition: background .28s ease, color .28s ease, transform .28s ease; }
+.cat-card:hover .cat-ico { background: #FFDB2D !important; color: #000 !important; transform: rotate(-6deg); }
+.cat-arrow { transition: transform .25s ease; }
+.cat-card:hover .cat-arrow { transform: translateX(4px); }
+
+/* ---- Service detail pages: quick-jump bar + service cards ---- */
+.jump-pill { transition: border-color .2s ease, color .2s ease, background .2s ease, transform .2s ease, box-shadow .2s ease; }
+.jump-pill:hover { border-color: #000 !important; color: #000 !important; background: #fff !important; transform: translateY(-1px); }
+.svc-detail { transition: border-color .25s ease, box-shadow .25s ease; }
+.svc-detail:hover, .svc-detail:target { border-color: rgba(255,219,45,0.72) !important; box-shadow: 0 12px 32px rgba(0,0,0,0.05), 0 0 0 1px rgba(255,219,45,0.28); outline: none; }
+.svc-detail:target { border-color: rgba(255,219,45,0.88) !important; box-shadow: 0 14px 36px rgba(0,0,0,0.06), 0 0 0 1px rgba(255,219,45,0.42); }
+.svc-stack { transition: border-color .2s ease, background .2s ease, color .2s ease; }
+.svc-stack:hover { border-color: #111 !important; background: #FFDB2D !important; color: #000 !important; }
+.svc-cta-primary, .svc-cta-secondary { transition: background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease; }
+.svc-cta-primary:hover { background: #fff !important; transform: translateY(-1px); }
+.svc-cta-secondary:hover { background: #FFDB2D !important; transform: translateY(-1px); }
+.cross-link { transition: gap .2s ease; }
+.cross-link:hover { gap: 10px; }
+
 /* ---- Rich text (WYSIWYG output) — dark-on-light to match the site ---- */
 .prose-mavlers {
   color: #4a4a4a;

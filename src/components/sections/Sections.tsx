@@ -126,7 +126,10 @@ function Section({
 
 function Hero({ c }: { c: any }) {
   const hasVideo = !!c.bg_video;
-  const showVisual = !!c.animated && !hasVideo;
+  // `image` wins over the animated robot when both are set.
+  const showImage = !!c.image && !hasVideo;
+  const showVisual = !!c.animated && !hasVideo && !showImage;
+  const crumbs: any[] = Array.isArray(c.breadcrumb) ? c.breadcrumb : [];
   return (
     <section className="relative overflow-hidden bg-white">
       {hasVideo && (
@@ -136,7 +139,23 @@ function Hero({ c }: { c: any }) {
         </>
       )}
       <div className="relative mx-auto max-w-page px-6 pb-[clamp(22px,2.6vw,34px)] pt-[clamp(24px,3vw,44px)]">
-        <div className={showVisual ? 'grid items-center gap-9 lg:grid-cols-[1.05fr_0.95fr]' : ''}>
+        {crumbs.length > 0 && (
+          <nav aria-label="Breadcrumb" className="mb-5 text-[13px] font-semibold text-body-dim">
+            {crumbs.map((b: any, i: number) => (
+              <span key={i}>
+                {i > 0 && <span className="mx-2 opacity-50">/</span>}
+                {b.href ? (
+                  <Link href={b.href} className="text-body-dim transition-colors hover:text-black">
+                    {b.label}
+                  </Link>
+                ) : (
+                  <span className="text-black">{b.label}</span>
+                )}
+              </span>
+            ))}
+          </nav>
+        )}
+        <div className={showVisual || showImage ? 'grid items-center gap-9 lg:grid-cols-[1.05fr_0.95fr]' : ''}>
           <div>
             {c.badge && (
               <div className="inline-flex items-center gap-2.5 rounded-full border-[1.5px] border-black px-[15px] py-[7px] text-[12.5px] font-bold uppercase tracking-[0.01em] text-black">
@@ -173,6 +192,16 @@ function Hero({ c }: { c: any }) {
           {showVisual && (
             <div className="hidden lg:block">
               <HeroRobot />
+            </div>
+          )}
+          {showImage && (
+            <div className="hidden lg:block">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={c.image}
+                alt={c.image_alt || ''}
+                className="mx-auto w-full max-w-[460px] rounded-[22px] object-contain"
+              />
             </div>
           )}
         </div>
@@ -637,108 +666,219 @@ function Faq({ c }: { c: any }) {
   );
 }
 
+/* -------------------- Service categories (services hub) ----------------- */
+
+// The three capability cards on /services, each linking to its own sub-page.
+function ServiceCategories({ c }: { c: any }) {
+  const items: any[] = c.items || [];
+  return (
+    <section className="bg-ink-900 text-white [background:radial-gradient(1100px_520px_at_12%_-20%,rgba(255,219,45,0.16),transparent_55%),radial-gradient(900px_420px_at_100%_110%,rgba(255,219,45,0.08),transparent_50%),#0A0A0A]">
+      <div className={`mx-auto max-w-page px-6 ${PAD}`}>
+        {c.eyebrow && (
+          <div className="inline-flex items-center gap-2.5 rounded-full border border-brand/40 px-5 py-2 text-[13px] font-bold uppercase tracking-[0.14em] text-brand">
+            <span className="h-2 w-2 rounded-full bg-brand shadow-[0_0_10px_1px_rgba(255,219,45,0.7)]" />
+            {c.eyebrow}
+          </div>
+        )}
+        {c.heading && <h2 className={`${H2} mt-5 max-w-[18ch] text-white`}>{c.heading}</h2>}
+        {c.subhead && (
+          <p className="m-0 mt-4 max-w-[54ch] text-[16px] leading-relaxed text-body-onDark">{c.subhead}</p>
+        )}
+        <div className="mt-10 grid grid-cols-1 gap-[18px] md:grid-cols-2 lg:grid-cols-3">
+          {items.map((it: any, i: number) => (
+            <Link
+              key={it.href || i}
+              href={it.href || '#'}
+              className="cat-card relative flex flex-col overflow-hidden rounded-[22px] border border-[#262626] p-7 text-inherit [background:linear-gradient(180deg,#141414,#0E0E0E)]"
+            >
+              <span className="cat-num pointer-events-none absolute right-[18px] top-2 font-display text-[86px] font-extrabold leading-none tracking-[-0.05em] text-white/[0.035]">
+                {it.n || String(i + 1).padStart(2, '0')}
+              </span>
+              <div className="relative z-[1] mb-6 flex items-center justify-between">
+                <div className="cat-ico flex h-[52px] w-[52px] items-center justify-center rounded-[15px] border border-[#2A2A2A] bg-[#1C1C1C] text-brand">
+                  <Icon name={serviceIconName(it.title, it.icon)} size={22} />
+                </div>
+                {it.tag && (
+                  <span className="text-[11.5px] font-extrabold uppercase tracking-[0.12em] text-brand">{it.tag}</span>
+                )}
+              </div>
+              <h3 className="relative z-[1] m-0 mb-3 font-display text-[22px] font-extrabold leading-tight tracking-[-0.02em] text-white">
+                {it.title}
+              </h3>
+              {it.kicker && (
+                <p className="relative z-[1] m-0 mb-3.5 text-[12px] font-bold uppercase tracking-[0.04em] text-[#B98D1E]">
+                  {it.kicker}
+                </p>
+              )}
+              {it.body && (
+                <p className="relative z-[1] m-0 mb-5 flex-1 text-[14.5px] leading-relaxed text-[#9A9A9A]">{it.body}</p>
+              )}
+              {Array.isArray(it.chips) && it.chips.length > 0 && (
+                <div className="relative z-[1] mb-6 flex flex-wrap gap-[7px]">
+                  {it.chips.map((chip: string) => (
+                    <span
+                      key={chip}
+                      className="rounded-full border border-[#2E2E2E] bg-[#161616] px-[11px] py-1.5 text-[11.5px] font-semibold text-[#B8B8B8]"
+                    >
+                      {chip}
+                    </span>
+                  ))}
+                </div>
+              )}
+              {it.cta_label && (
+                <span className="relative z-[1] inline-flex items-center gap-2.5 self-start rounded-full bg-brand px-5 py-3 text-[14px] font-bold text-black">
+                  {it.cta_label}
+                  <span className="cat-arrow inline-flex">
+                    <Icon name="arrow-right" size={16} />
+                  </span>
+                </span>
+              )}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ----------------------------- Services detail -------------------------- */
 
 function ServicesDetail({ c }: { c: any }) {
   const items: any[] = c.items || [];
   const primary = c.cta_primary || { label: 'Connect with an AI expert', href: '/book-a-call' };
   const secondary = c.cta_secondary || { label: 'Submit a project brief', href: '/book-a-call' };
+  const num = (i: number) => String(i + 1).padStart(2, '0');
   return (
-    <Section theme="light">
+    <>
       {items.length > 1 && (
-        <div className="mb-8 flex flex-wrap gap-2">
-          {items.map((s) => (
-            <a
-              key={s.id}
-              href={`#${s.id}`}
-              className="rounded-full border border-surface-line2 bg-surface-tint px-3.5 py-[7px] text-[12.5px] font-semibold text-body-faint transition-colors hover:border-black hover:text-black"
-            >
-              {s.short || s.title}
-            </a>
-          ))}
+        <div className="sticky top-[63px] z-40 border-b border-line bg-white/92 backdrop-blur-md">
+          <div className="mx-auto max-w-page px-6 py-3.5">
+            <div className="flex flex-wrap gap-2">
+              {items.map((s) => (
+                <a
+                  key={s.id}
+                  href={`#${s.id}`}
+                  className="jump-pill rounded-full border border-surface-line2 bg-surface-tint px-3.5 py-2 text-[12.5px] font-semibold text-body-dim"
+                >
+                  {s.short || s.title}
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
       )}
-      <div className="flex flex-col gap-6">
-        {items.map((s) => (
-          <div
-            key={s.id}
-            id={s.id}
-            className="grid scroll-mt-[150px] grid-cols-1 gap-8 rounded-[22px] border border-surface-line2 bg-surface-tint p-6 md:p-10 lg:grid-cols-[0.9fr_1.4fr] lg:gap-11"
-          >
-            <div>
-              <div className="mb-5 flex items-center gap-3.5">
-                <div className="flex h-[52px] w-[52px] items-center justify-center rounded-[13px] bg-black font-display text-[16px] font-bold text-brand">
+      <Section theme="light">
+        <div className="flex flex-col gap-[22px]">
+          {items.map((s) => (
+            <article
+              key={s.id}
+              id={s.id}
+              className="svc-detail scroll-mt-[150px] rounded-[22px] border border-surface-line2 bg-white p-[clamp(24px,3.2vw,40px)]"
+            >
+              <div className="mb-4 flex flex-wrap items-center gap-3">
+                <span className="inline-flex h-[34px] min-w-[48px] items-center justify-center rounded-[9px] bg-black px-3 font-display text-[12.5px] font-extrabold tracking-[0.04em] text-brand">
                   {s.mono}
-                </div>
+                </span>
                 {s.cat && (
-                  <span className="font-display text-[12px] font-bold uppercase tracking-[0.08em] text-body-dim">
-                    {s.cat}
-                  </span>
+                  <span className="text-[12px] font-bold uppercase tracking-[0.1em] text-body-dim">{s.cat}</span>
                 )}
               </div>
-              <h2 className="m-0 mb-3.5 font-display text-[24px] font-extrabold leading-tight tracking-[-0.02em] text-black md:text-[26px]">
+              <h2 className="m-0 mb-3 font-display text-[clamp(22px,2.4vw,29px)] font-extrabold leading-[1.12] tracking-[-0.03em] text-black">
                 {s.title}
               </h2>
-              {s.tagline && <p className="m-0 mb-5 text-[15px] leading-relaxed text-body-muted">{s.tagline}</p>}
-              {Array.isArray(s.stack) && s.stack.length > 0 && (
-                <div className="border-t border-surface-line2 pt-4">
-                  <div className="mb-2.5 text-[11.5px] font-bold uppercase tracking-[0.06em] text-body-dim">Typical stack</div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {s.stack.map((t: string) => (
-                      <span key={t} className="rounded-[7px] border border-surface-line2 bg-white px-2.5 py-[5px] text-[11.5px] font-semibold text-body-soft">
-                        {t}
-                      </span>
-                    ))}
+              {s.tagline && (
+                <p className="m-0 max-w-[70ch] text-[16px] leading-relaxed text-body-muted">{s.tagline}</p>
+              )}
+
+              <div className="mt-7 grid grid-cols-1 items-start gap-7 md:grid-cols-[1.1fr_1fr]">
+                {Array.isArray(s.stack) && s.stack.length > 0 && (
+                  <div>
+                    <div className="mb-3 text-[11.5px] font-bold uppercase tracking-[0.08em] text-body-dim">
+                      Typical stack
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {s.stack.map((t: string) => (
+                        <span
+                          key={t}
+                          className="svc-stack inline-flex items-center rounded-full border border-surface-line2 bg-surface-tint px-3 py-[7px] text-[12.5px] font-semibold text-body-soft"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
+                {s.outcome && (
+                  <div className="border-l-[3px] border-brand py-0.5 pl-4">
+                    <div className="mb-3 text-[11.5px] font-bold uppercase tracking-[0.08em] text-body-dim">
+                      Business outcome
+                    </div>
+                    <p className="m-0 text-[15px] font-medium leading-relaxed text-[#222]">{s.outcome}</p>
+                  </div>
+                )}
+              </div>
+
+              <div className="mt-8 grid grid-cols-1 gap-[clamp(24px,4vw,48px)] border-t border-surface-line2 pt-7 md:grid-cols-2">
+                {Array.isArray(s.build) && s.build.length > 0 && (
+                  <div>
+                    <div className="mb-4 text-[13px] font-extrabold uppercase tracking-[0.06em] text-black">
+                      What we build
+                    </div>
+                    <ol className="m-0 flex list-none flex-col gap-3.5 p-0">
+                      {s.build.map((b: string, i: number) => (
+                        <li key={i} className="grid grid-cols-[2.2ch_1fr] items-start gap-3.5">
+                          <span className="pt-px text-[13px] font-extrabold tracking-[0.04em] text-[#B5B5B0]">{num(i)}</span>
+                          <span className="text-[15px] font-medium leading-snug text-[#2E2E2E]">{b}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                )}
+                {Array.isArray(s.detail) && s.detail.length > 0 && (
+                  <div>
+                    <div className="mb-4 text-[13px] font-extrabold uppercase tracking-[0.06em] text-black">
+                      Engineering detail
+                    </div>
+                    <ol className="m-0 flex list-none flex-col gap-3.5 p-0">
+                      {s.detail.map((d: string, i: number) => (
+                        <li key={i} className="grid grid-cols-[2.2ch_1fr] items-start gap-3.5">
+                          <span className="pt-px text-[13px] font-extrabold tracking-[0.04em] text-[#B5B5B0]">{num(i)}</span>
+                          <span className="text-[15px] font-medium leading-snug text-[#2E2E2E]">{d}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                )}
+              </div>
+
+              {s.cross_link?.label && (
+                <Link
+                  href={s.cross_link.href || '#'}
+                  className="cross-link mt-5 inline-flex items-center gap-1.5 border-b-[1.5px] border-brand pb-px text-[13.5px] font-bold text-black"
+                >
+                  {s.cross_link.label}
+                </Link>
               )}
-              {s.outcome && (
-                <div className="mt-5 rounded-[12px] border border-brand bg-brand/[0.12] p-4">
-                  <div className="mb-1.5 text-[11.5px] font-bold uppercase tracking-[0.06em] text-brand-ink">Business outcome</div>
-                  <p className="m-0 text-[13.5px] leading-relaxed text-body-soft">{s.outcome}</p>
-                </div>
-              )}
-              <div className="mt-5 flex flex-wrap gap-2.5 border-t border-surface-line2 pt-5">
-                <Link href={primary.href} className="rounded-full bg-black px-4 py-2.5 text-[13px] font-bold text-brand">
+
+              <div className="mt-8 flex flex-wrap items-center gap-3 border-t border-surface-line2 pt-6">
+                <Link
+                  href={primary.href}
+                  className="svc-cta-primary inline-flex items-center justify-center rounded-full border-[1.5px] border-black bg-brand px-[22px] py-3 text-[14.5px] font-bold leading-none text-black"
+                >
                   {primary.label}
                 </Link>
-                <Link href={secondary.href} className="rounded-full border-[1.5px] border-black px-4 py-2.5 text-[13px] font-bold text-black">
+                <Link
+                  href={secondary.href}
+                  className="svc-cta-secondary inline-flex items-center justify-center rounded-full border-[1.5px] border-black bg-white px-[22px] py-3 text-[14.5px] font-bold leading-none text-black"
+                >
                   {secondary.label}
                 </Link>
               </div>
-            </div>
-            <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 sm:gap-x-9">
-              {Array.isArray(s.build) && (
-                <div>
-                  <div className="mb-3.5 font-display text-[12.5px] font-bold uppercase tracking-[0.05em] text-brand-ink">What we build</div>
-                  <div className="flex flex-col gap-2.5">
-                    {s.build.map((b: string, i: number) => (
-                      <div key={i} className="flex items-start gap-2.5">
-                        <span className="mt-0.5 flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-full bg-brand text-[10px] text-black">✓</span>
-                        <span className="text-[13.5px] leading-snug text-body-soft">{b}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {Array.isArray(s.detail) && (
-                <div>
-                  <div className="mb-3.5 font-display text-[12.5px] font-bold uppercase tracking-[0.05em] text-brand-ink">Engineering detail</div>
-                  <div className="flex flex-col gap-2.5">
-                    {s.detail.map((d: string, i: number) => (
-                      <div key={i} className="flex items-start gap-2.5">
-                        <span className="mt-2 h-[5px] w-[5px] flex-shrink-0 rounded-full bg-brand" />
-                        <span className="text-[13.5px] leading-snug text-body-soft">{d}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-    </Section>
+            </article>
+          ))}
+        </div>
+      </Section>
+    </>
   );
 }
 
@@ -871,6 +1011,8 @@ export async function SectionRenderer({ section }: { section: PageSection }) {
       return <ServiceCapabilities c={c} />;
     case 'services_detail':
       return <ServicesDetail c={c} />;
+    case 'service_categories':
+      return <ServiceCategories c={c} />;
     case 'connect_grid':
       return <ConnectGrid c={c} />;
     case 'implementations':

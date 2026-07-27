@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Automation &amp; Integration Services — Workflow, API, MCP, CRM/ERP | Mavlers.ai</title>
+<meta name="description" content="Workflow and process automation, multi-system orchestration, API, MCP and CRM/ERP integration — observable and built to run unattended.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Services","item":"https://mavlers.ai/services"},{"@type":"ListItem","position":2,"name":"Automation & Integration","item":"https://mavlers.ai/services/automation-integration"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Automation & Integration","description":"Workflow and process automation, multi-system orchestration, API, MCP and CRM/ERP integration — observable and built to run unattended.","provider":{"@type":"Organization","name":"Mavlers.ai","url":"https://mavlers.ai"},"areaServed":"Worldwide","url":"https://mavlers.ai/services/automation-integration"}</script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  a { color: #111111; text-decoration: none; }
+  a:hover { color: #000000; }
+  .jump-pill { transition: border-color .2s ease, color .2s ease, background .2s ease, transform .2s ease, box-shadow .2s ease; }
+  .jump-pill:hover { border-color: #000 !important; color: #000 !important; background: #fff !important; transform: translateY(-1px); }
+  .jump-pill.is-active { border-color: #000 !important; background: #fff !important; color: #000 !important; box-shadow: 0 4px 14px rgba(0,0,0,0.06); }
+  .jump-bar { position: sticky; top: 72px; z-index: 40; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid #EDEDED; }
+  .opp-card { transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease; }
+  .opp-card:hover { transform: translateY(-6px); border-color: rgba(255,219,45,0.55) !important; box-shadow: 0 20px 50px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,219,45,0.25); }
+  .rm-row .rm-card { transition: border-color .25s ease, background .25s ease, transform .25s ease; }
+  .rm-row:hover .rm-card { border-color: rgba(255,219,45,0.5); background: #171717; transform: translateX(6px); }
+  .rm-node { transition: box-shadow .25s ease; }
+  .rm-row:hover .rm-node { box-shadow: 0 0 0 6px rgba(255,219,45,0.14); }
+  .rm-card .rm-ico svg { width: 22px; height: 22px; }
+  .nav-dd { position: relative; }
+  .nav-dd-menu { position: absolute; top: calc(100% + 14px); left: 50%; transform: translateX(-50%); min-width: 260px; background: #fff; border: 1px solid #EDEDED; border-radius: 14px; padding: 10px; box-shadow: 0 18px 40px rgba(0,0,0,0.12); opacity: 0; pointer-events: none; transition: opacity .18s ease; z-index: 60; }
+  .nav-dd:hover .nav-dd-menu, .nav-dd:focus-within .nav-dd-menu { opacity: 1; pointer-events: auto; }
+  .nav-dd-menu a { display: block; padding: 11px 14px; border-radius: 10px; font-size: 14px; font-weight: 600; color: #333; }
+  .nav-dd-menu a:hover { background: #FAFAF8; color: #000; }
+  .nav-dd-menu a.active { background: rgba(255,219,45,0.18); color: #000; }
+.svc-detail { transition: border-color .25s ease, box-shadow .25s ease; }
+  .svc-detail:hover, .svc-detail:target { border-color: rgba(255,219,45,0.72) !important; box-shadow: 0 12px 32px rgba(0,0,0,0.05), 0 0 0 1px rgba(255,219,45,0.28); outline: none; }
+  .svc-detail:target { border-color: rgba(255,219,45,0.88) !important; box-shadow: 0 14px 36px rgba(0,0,0,0.06), 0 0 0 1px rgba(255,219,45,0.42); }
+  .svc-code { min-width: 48px; height: 34px; padding: 0 12px; border-radius: 9px; background: #000; color: #FFDB2D; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12.5px; letter-spacing: 0.04em; }
+  .svc-label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #888; }
+  .svc-title { font-weight: 800; font-size: clamp(24px, 2.4vw, 30px); letter-spacing: -0.03em; line-height: 1.12; margin: 0 0 12px; color: #000; }
+  .svc-desc { font-size: 16px; line-height: 1.65; color: #555; margin: 0; max-width: 70ch; }
+  .svc-meta { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; margin-top: 28px; align-items: start; }
+  .svc-meta-label { font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #888; margin-bottom: 12px; }
+  .svc-stack { display: inline-flex; align-items: center; border: 1px solid #E6E6E2; background: #FAFAF8; border-radius: 999px; padding: 7px 12px; font-size: 12.5px; font-weight: 600; color: #444; transition: border-color .2s ease, background .2s ease, color .2s ease; }
+  .svc-stack:hover { border-color: #111 !important; background: #FFDB2D !important; color: #000 !important; }
+  .svc-outcome { border-left: 3px solid #FFDB2D; padding: 2px 0 2px 16px; }
+  .svc-outcome p { font-size: 15px; line-height: 1.55; color: #222; margin: 0; font-weight: 500; }
+  .svc-cols { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 4vw, 48px); margin-top: 32px; padding-top: 28px; border-top: 1px solid #ECECE8; }
+  .svc-col-label { font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #000; margin-bottom: 18px; }
+  .svc-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+  .svc-list li { display: grid; grid-template-columns: 2.2ch 1fr; gap: 14px; align-items: start; }
+  .svc-num { font-size: 13px; font-weight: 800; letter-spacing: 0.04em; color: #B5B5B0; line-height: 1.55; padding-top: 1px; }
+  .svc-text { font-size: 15px; line-height: 1.55; color: #2E2E2E; font-weight: 500; }
+  .svc-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 32px; padding-top: 24px; border-top: 1px solid #F0F0EC; }
+  .svc-cta-primary { display: inline-flex; align-items: center; justify-content: center; background: #FFDB2D; color: #000; border: 1.5px solid #000; padding: 13px 22px; border-radius: 999px; font-size: 14.5px; font-weight: 700; line-height: 1; transition: background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease; }
+  .svc-cta-primary:hover { background: #fff !important; color: #000 !important; border-color: #000 !important; transform: translateY(-1px); }
+  .svc-cta-secondary { display: inline-flex; align-items: center; justify-content: center; border: 1.5px solid #111; color: #111; background: #fff; padding: 13px 22px; border-radius: 999px; font-size: 14.5px; font-weight: 700; line-height: 1; transition: background .2s ease, border-color .2s ease, color .2s ease, transform .2s ease; }
+  .svc-cta-secondary:hover { background: #fff !important; border-color: #000 !important; color: #000 !important; transform: translateY(-1px); }
+  .cross-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; font-size: 13.5px; font-weight: 700; color: #000; border-bottom: 1.5px solid #FFDB2D; padding-bottom: 1px; transition: gap .2s ease; }
+  .cross-link:hover { gap: 10px; color: #000; }
+  @media (max-width: 900px) {
+    .svc-meta { grid-template-columns: 1fr !important; gap: 22px !important; }
+    .svc-cols { grid-template-columns: 1fr !important; gap: 28px !important; }
+  }
+
+  @media (max-width: 860px) { .main-nav-links { display: none !important; } .jump-bar { top: 64px; } }
+  @media (max-width: 560px) { .nav-cta { padding: 9px 16px !important; font-size: 13.5px !important; } }
+</style>
+</helmet>
+
+<div style="font-family: 'Montserrat', system-ui, sans-serif; color: #111111; background: #FFFFFF; -webkit-font-smoothing: antialiased;">
+
+  <div style="background: #000000; color: #B8B8B8; font-size: 12.5px; letter-spacing: 0.01em;">
+    <div style="max-width: 1220px; margin: 0 auto; padding: 9px 24px; display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; justify-content: center;">
+      <span>Part of the Mavlers group</span>
+      <span style="opacity: 0.4;">·</span>
+      <a href="https://mavlers.com" style="color: #FFDB2D;">mavlers.com</a>
+      <span style="opacity: 0.4;">·</span>
+      <a href="https://mavlers.agency" style="color: #FFDB2D;">mavlers.agency</a>
+    </div>
+  </div>
+
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); border-bottom: 1px solid #EDEDED;">
+    <nav style="max-width: 1220px; margin: 0 auto; padding: 15px 24px; display: flex; align-items: center; gap: 20px;">
+      <a href="./Mavlers AI Landing.dc.html" style="display: flex; align-items: baseline; gap: 1px; color: #000000; font-weight: 800; font-size: 24px; letter-spacing: -0.03em;">
+        mavlers<span style="color: #000; background: #FFDB2D; padding: 0 5px; border-radius: 4px; margin-left: 3px; font-weight: 800;">.ai</span>
+      </a>
+      <div style="flex: 1;"></div>
+      <div class="main-nav-links" style="display: flex; align-items: center; gap: 26px; font-size: 15px; font-weight: 600; color: #333333;">
+        <div class="nav-dd">
+          <a href="./Mavlers AI Services.dc.html" style="color:#000;border-bottom:2px solid #FFDB2D;padding-bottom:2px;">Services</a>
+          <div class="nav-dd-menu">
+            <a href="./Mavlers AI Services.dc.html">All Services</a>
+            <a href="./Mavlers AI Services AI Development.dc.html" class="">AI Development</a>
+            <a href="./Mavlers AI Services Automation Integration.dc.html" class="active">Automation &amp; Integration</a>
+            <a href="./Mavlers AI Services Product Development.dc.html" class="">Product &amp; Validation</a>
+          </div>
+        </div>
+        <a href="./Mavlers AI Landing.dc.html#implementations" style="color: #333;">Implementations</a>
+        <a href="./Mavlers AI Landing.dc.html#engagement" style="color: #333;">Engagement</a>
+        <a href="./Mavlers AI Landing.dc.html#why" style="color: #333;">About</a>
+      </div>
+      <a href="./Mavlers AI Landing.dc.html#contact" class="nav-cta" style="background: #FFDB2D; color: #000000; padding: 11px 22px; border-radius: 999px; font-size: 14.5px; font-weight: 700; white-space: nowrap;">Book a Call</a>
+    </nav>
+  </header>
+
+  <section id="top" style="background: #FFFFFF;">
+    <div style="max-width: 1220px; margin: 0 auto; padding: clamp(28px, 4vw, 48px) 24px 0;">
+      <nav aria-label="Breadcrumb" style="font-size: 13px; font-weight: 600; color: #888; margin-bottom: 22px;">
+        <a href="./Mavlers AI Services.dc.html" style="color: #888;">Services</a>
+        <span style="margin: 0 8px; opacity: 0.5;">/</span>
+        <span style="color: #000;">Automation &amp; Integration</span>
+      </nav>
+      <h1 style="font-weight: 800; font-size: clamp(34px, 4.6vw, 54px); line-height: 1.06; letter-spacing: -0.03em; margin: 0; max-width: 14ch; text-wrap: balance;">Automation &amp; Integration</h1>
+      <p style="font-size: clamp(16px, 1.5vw, 19px); line-height: 1.6; color: #4A4A4A; max-width: 58ch; margin: 22px 0 0;">Connecting the stack. We wire the platforms your business runs on into one dependable flow of data and actions — and automate the manual, repetitive work in between. Observable, recoverable, and built to run unattended.</p>
+    </div>
+  </section>
+
+  <div class="jump-bar">
+    <div style="max-width: 1220px; margin: 0 auto; padding: 14px 24px;">
+      <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+        <a href="#workflow" data-target="workflow" class="jump-pill" style="border:1px solid #E8E8E4;background:#FAFAF8;border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:600;color:#777;">Workflow Automation</a><a href="#bpa" data-target="bpa" class="jump-pill" style="border:1px solid #E8E8E4;background:#FAFAF8;border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:600;color:#777;">Process Automation</a><a href="#orchestration" data-target="orchestration" class="jump-pill" style="border:1px solid #E8E8E4;background:#FAFAF8;border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:600;color:#777;">Orchestration</a><a href="#api" data-target="api" class="jump-pill" style="border:1px solid #E8E8E4;background:#FAFAF8;border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:600;color:#777;">API Integration</a><a href="#mcp" data-target="mcp" class="jump-pill" style="border:1px solid #E8E8E4;background:#FAFAF8;border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:600;color:#777;">MCP</a><a href="#crm-erp" data-target="crm-erp" class="jump-pill" style="border:1px solid #E8E8E4;background:#FAFAF8;border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:600;color:#777;">CRM &amp; ERP</a>
+      </div>
+    </div>
+  </div>
+
+  <section style="background: #FFFFFF;">
+    <div style="max-width: 1220px; margin: 0 auto; padding: clamp(28px, 4vw, 40px) 24px clamp(48px, 6vw, 80px); display: flex; flex-direction: column; gap: 22px;">
+      
+        <article id="workflow" class="svc-detail" style="scroll-margin-top:150px;background:#fff;border:1px solid #ECECE8;border-radius:22px;padding:clamp(28px,3.2vw,40px);">
+          <div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+              <div class="svc-code">WF</div>
+              <span class="svc-label">Automation</span>
+            </div>
+            <h2 class="svc-title">Workflow Automation</h2>
+            <p class="svc-desc">Remove manual, repetitive work by wiring your tools into reliable, observable automations.</p>
+          </div>
+
+          <div class="svc-meta">
+            <div>
+              <div class="svc-meta-label">Typical stack</div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;"><span class="svc-stack">n8n</span><span class="svc-stack">Make</span><span class="svc-stack">Langflow</span><span class="svc-stack">Webhooks</span></div>
+            </div>
+            <div class="svc-outcome">
+              <div class="svc-meta-label">Business outcome</div>
+              <p>Hours of manual effort disappear each week, with fewer errors and a clear audit trail.</p>
+            </div>
+          </div>
+
+          <div class="svc-cols">
+            <div>
+              <div class="svc-col-label">What we build</div>
+              <ol class="svc-list"><li><span class="svc-num">01</span><span class="svc-text">Event- and schedule-driven workflows across your existing stack</span></li><li><span class="svc-num">02</span><span class="svc-text">Data sync, enrichment and notification pipelines</span></li><li><span class="svc-num">03</span><span class="svc-text">Reporting and document-generation automations</span></li><li><span class="svc-num">04</span><span class="svc-text">Human-in-the-loop steps where judgement is required</span></li></ol>
+            </div>
+            <div>
+              <div class="svc-col-label">Engineering detail</div>
+              <ol class="svc-list"><li><span class="svc-num">01</span><span class="svc-text">Built in n8n, Make or Langflow — self-hosted where needed</span></li><li><span class="svc-num">02</span><span class="svc-text">Idempotent steps, retries and dead-letter handling for reliability</span></li><li><span class="svc-num">03</span><span class="svc-text">Secrets management and scoped API credentials per connection</span></li><li><span class="svc-num">04</span><span class="svc-text">Run logging and alerting so failures surface immediately</span></li></ol>
+            </div>
+          </div>
+
+          <div class="svc-actions">
+            <a class="svc-cta-primary" href="./Mavlers AI Landing.dc.html#contact">Connect with an AI expert</a>
+            <a class="svc-cta-secondary" href="./Mavlers AI Landing.dc.html#contact">Submit a project brief</a>
+          </div>
+          
+        </article>
+
+        <article id="bpa" class="svc-detail" style="scroll-margin-top:150px;background:#fff;border:1px solid #ECECE8;border-radius:22px;padding:clamp(28px,3.2vw,40px);">
+          <div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+              <div class="svc-code">BPA</div>
+              <span class="svc-label">Automation</span>
+            </div>
+            <h2 class="svc-title">Business Process Automation</h2>
+            <p class="svc-desc">Automate approvals, routing, reporting and document handling — with control where it matters.</p>
+          </div>
+
+          <div class="svc-meta">
+            <div>
+              <div class="svc-meta-label">Typical stack</div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;"><span class="svc-stack">OCR</span><span class="svc-stack">Rules engine</span><span class="svc-stack">n8n</span><span class="svc-stack">Cloud functions</span></div>
+            </div>
+            <div class="svc-outcome">
+              <div class="svc-meta-label">Business outcome</div>
+              <p>Back-office processes move faster and more consistently, with people focused on exceptions, not busywork.</p>
+            </div>
+          </div>
+
+          <div class="svc-cols">
+            <div>
+              <div class="svc-col-label">What we build</div>
+              <ol class="svc-list"><li><span class="svc-num">01</span><span class="svc-text">Approval and routing workflows with role-based decision points</span></li><li><span class="svc-num">02</span><span class="svc-text">Document processing: extraction, classification and filing</span></li><li><span class="svc-num">03</span><span class="svc-text">Case and request management automations</span></li><li><span class="svc-num">04</span><span class="svc-text">Scheduled reporting and reconciliation jobs</span></li></ol>
+            </div>
+            <div>
+              <div class="svc-col-label">Engineering detail</div>
+              <ol class="svc-list"><li><span class="svc-num">01</span><span class="svc-text">OCR and structured extraction from PDFs, forms and emails</span></li><li><span class="svc-num">02</span><span class="svc-text">Business rules engine for routing and eligibility logic</span></li><li><span class="svc-num">03</span><span class="svc-text">Human approval gates with full audit logging</span></li><li><span class="svc-num">04</span><span class="svc-text">SLA timers, escalations and exception handling</span></li></ol>
+            </div>
+          </div>
+
+          <div class="svc-actions">
+            <a class="svc-cta-primary" href="./Mavlers AI Landing.dc.html#contact">Connect with an AI expert</a>
+            <a class="svc-cta-secondary" href="./Mavlers AI Landing.dc.html#contact">Submit a project brief</a>
+          </div>
+          
+        </article>
+
+        <article id="orchestration" class="svc-detail" style="scroll-margin-top:150px;background:#fff;border:1px solid #ECECE8;border-radius:22px;padding:clamp(28px,3.2vw,40px);">
+          <div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+              <div class="svc-code">ORC</div>
+              <span class="svc-label">Automation</span>
+            </div>
+            <h2 class="svc-title">Multi-System Orchestration</h2>
+            <p class="svc-desc">Coordinate data and actions across many platforms so disconnected systems behave as one.</p>
+          </div>
+
+          <div class="svc-meta">
+            <div>
+              <div class="svc-meta-label">Typical stack</div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;"><span class="svc-stack">Queues</span><span class="svc-stack">Event bus</span><span class="svc-stack">State machines</span><span class="svc-stack">Observability</span></div>
+            </div>
+            <div class="svc-outcome">
+              <div class="svc-meta-label">Business outcome</div>
+              <p>Complex cross-platform processes run reliably end to end, without manual coordination.</p>
+            </div>
+          </div>
+
+          <div class="svc-cols">
+            <div>
+              <div class="svc-col-label">What we build</div>
+              <ol class="svc-list"><li><span class="svc-num">01</span><span class="svc-text">Orchestration layers that sequence steps across multiple systems</span></li><li><span class="svc-num">02</span><span class="svc-text">Stateful, long-running processes with checkpoints and recovery</span></li><li><span class="svc-num">03</span><span class="svc-text">Conditional branching, parallelism and fan-out / fan-in flows</span></li><li><span class="svc-num">04</span><span class="svc-text">Central visibility into every process instance and its status</span></li></ol>
+            </div>
+            <div>
+              <div class="svc-col-label">Engineering detail</div>
+              <ol class="svc-list"><li><span class="svc-num">01</span><span class="svc-text">Queue- and event-driven architecture for decoupled reliability</span></li><li><span class="svc-num">02</span><span class="svc-text">State machines / workflow engines for resumable execution</span></li><li><span class="svc-num">03</span><span class="svc-text">Observability: tracing, metrics and per-step logs</span></li><li><span class="svc-num">04</span><span class="svc-text">Compensation logic to safely roll back partial failures</span></li></ol>
+            </div>
+          </div>
+
+          <div class="svc-actions">
+            <a class="svc-cta-primary" href="./Mavlers AI Landing.dc.html#contact">Connect with an AI expert</a>
+            <a class="svc-cta-secondary" href="./Mavlers AI Landing.dc.html#contact">Submit a project brief</a>
+          </div>
+          
+        </article>
+
+        <article id="api" class="svc-detail" style="scroll-margin-top:150px;background:#fff;border:1px solid #ECECE8;border-radius:22px;padding:clamp(28px,3.2vw,40px);">
+          <div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+              <div class="svc-code">API</div>
+              <span class="svc-label">Integrations</span>
+            </div>
+            <h2 class="svc-title">API &amp;amp; Platform Integration</h2>
+            <p class="svc-desc">Connect the platforms your business runs on into one dependable flow of data and actions.</p>
+          </div>
+
+          <div class="svc-meta">
+            <div>
+              <div class="svc-meta-label">Typical stack</div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;"><span class="svc-stack">REST</span><span class="svc-stack">GraphQL</span><span class="svc-stack">OAuth2</span><span class="svc-stack">Webhooks</span></div>
+            </div>
+            <div class="svc-outcome">
+              <div class="svc-meta-label">Business outcome</div>
+              <p>Systems stay in sync automatically, eliminating copy-paste and data drift between tools.</p>
+            </div>
+          </div>
+
+          <div class="svc-cols">
+            <div>
+              <div class="svc-col-label">What we build</div>
+              <ol class="svc-list"><li><span class="svc-num">01</span><span class="svc-text">Two-way integrations between SaaS platforms, apps and databases</span></li><li><span class="svc-num">02</span><span class="svc-text">Custom connectors for systems without off-the-shelf support</span></li><li><span class="svc-num">03</span><span class="svc-text">Real-time (webhook) and batch synchronisation patterns</span></li><li><span class="svc-num">04</span><span class="svc-text">Data mapping, transformation and validation layers</span></li></ol>
+            </div>
+            <div>
+              <div class="svc-col-label">Engineering detail</div>
+              <ol class="svc-list"><li><span class="svc-num">01</span><span class="svc-text">REST, GraphQL and webhook integrations with OAuth2 / API-key auth</span></li><li><span class="svc-num">02</span><span class="svc-text">Rate-limit handling, pagination and backoff strategies</span></li><li><span class="svc-num">03</span><span class="svc-text">Schema contracts and validation to prevent bad data propagating</span></li><li><span class="svc-num">04</span><span class="svc-text">Monitoring, retries and reconciliation for eventual consistency</span></li></ol>
+            </div>
+          </div>
+
+          <div class="svc-actions">
+            <a class="svc-cta-primary" href="./Mavlers AI Landing.dc.html#contact">Connect with an AI expert</a>
+            <a class="svc-cta-secondary" href="./Mavlers AI Landing.dc.html#contact">Submit a project brief</a>
+          </div>
+          
+        </article>
+
+        <article id="mcp" class="svc-detail" style="scroll-margin-top:150px;background:#fff;border:1px solid #ECECE8;border-radius:22px;padding:clamp(28px,3.2vw,40px);">
+          <div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+              <div class="svc-code">MCP</div>
+              <span class="svc-label">Integrations</span>
+            </div>
+            <h2 class="svc-title">Model Context Protocol (MCP)</h2>
+            <p class="svc-desc">Custom MCP servers and connectors that give agents secure, governed access to your tools and data.</p>
+          </div>
+
+          <div class="svc-meta">
+            <div>
+              <div class="svc-meta-label">Typical stack</div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;"><span class="svc-stack">MCP</span><span class="svc-stack">TypeScript / Python</span><span class="svc-stack">OAuth</span><span class="svc-stack">RBAC</span></div>
+            </div>
+            <div class="svc-outcome">
+              <div class="svc-meta-label">Business outcome</div>
+              <p>Agents gain safe, standardised access to your systems — reusable across every future AI build.</p>
+            </div>
+          </div>
+
+          <div class="svc-cols">
+            <div>
+              <div class="svc-col-label">What we build</div>
+              <ol class="svc-list"><li><span class="svc-num">01</span><span class="svc-text">Custom MCP servers exposing your systems as agent tools</span></li><li><span class="svc-num">02</span><span class="svc-text">Connectors for internal APIs, databases and SaaS platforms</span></li><li><span class="svc-num">03</span><span class="svc-text">Scoped, permissioned access for what agents can see and do</span></li><li><span class="svc-num">04</span><span class="svc-text">Reusable tool catalogues across multiple AI products</span></li></ol>
+            </div>
+            <div>
+              <div class="svc-col-label">Engineering detail</div>
+              <ol class="svc-list"><li><span class="svc-num">01</span><span class="svc-text">MCP tool/resource definitions with typed schemas</span></li><li><span class="svc-num">02</span><span class="svc-text">Auth, scoping and per-tool authorisation policies</span></li><li><span class="svc-num">03</span><span class="svc-text">Audit logging of every tool invocation</span></li><li><span class="svc-num">04</span><span class="svc-text">Versioning and backward compatibility for tools</span></li></ol>
+            </div>
+          </div>
+
+          <div class="svc-actions">
+            <a class="svc-cta-primary" href="./Mavlers AI Landing.dc.html#contact">Connect with an AI expert</a>
+            <a class="svc-cta-secondary" href="./Mavlers AI Landing.dc.html#contact">Submit a project brief</a>
+          </div>
+          <a class="cross-link" href="./Mavlers AI Services AI Development.dc.html#agents">See how this powers our AI Agents →</a>
+        </article>
+
+        <article id="crm-erp" class="svc-detail" style="scroll-margin-top:150px;background:#fff;border:1px solid #ECECE8;border-radius:22px;padding:clamp(28px,3.2vw,40px);">
+          <div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+              <div class="svc-code">CRM</div>
+              <span class="svc-label">Integrations</span>
+            </div>
+            <h2 class="svc-title">CRM &amp;amp; ERP Integration</h2>
+            <p class="svc-desc">Deep, dependable integrations with the systems of record you run your business on.</p>
+          </div>
+
+          <div class="svc-meta">
+            <div>
+              <div class="svc-meta-label">Typical stack</div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;"><span class="svc-stack">Salesforce</span><span class="svc-stack">HubSpot</span><span class="svc-stack">Dynamics</span><span class="svc-stack">ERP APIs</span></div>
+            </div>
+            <div class="svc-outcome">
+              <div class="svc-meta-label">Business outcome</div>
+              <p>Your systems of record stay clean, connected and enriched — ready for AI to add value on top.</p>
+            </div>
+          </div>
+
+          <div class="svc-cols">
+            <div>
+              <div class="svc-col-label">What we build</div>
+              <ol class="svc-list"><li><span class="svc-num">01</span><span class="svc-text">Bi-directional sync with Salesforce, HubSpot, Dynamics and more</span></li><li><span class="svc-num">02</span><span class="svc-text">ERP integration for orders, inventory, finance and operations</span></li><li><span class="svc-num">03</span><span class="svc-text">AI features layered onto CRM/ERP data (scoring, drafting, insights)</span></li><li><span class="svc-num">04</span><span class="svc-text">Data hygiene, de-duplication and enrichment automations</span></li></ol>
+            </div>
+            <div>
+              <div class="svc-col-label">Engineering detail</div>
+              <ol class="svc-list"><li><span class="svc-num">01</span><span class="svc-text">Native APIs, bulk endpoints and change-data-capture where available</span></li><li><span class="svc-num">02</span><span class="svc-text">Field mapping, conflict resolution and sync-loop prevention</span></li><li><span class="svc-num">03</span><span class="svc-text">Sandbox-first delivery with staged rollout to production</span></li><li><span class="svc-num">04</span><span class="svc-text">Respect for platform limits, governor rules and permissions</span></li></ol>
+            </div>
+          </div>
+
+          <div class="svc-actions">
+            <a class="svc-cta-primary" href="./Mavlers AI Landing.dc.html#contact">Connect with an AI expert</a>
+            <a class="svc-cta-secondary" href="./Mavlers AI Landing.dc.html#contact">Submit a project brief</a>
+          </div>
+          <a class="cross-link" href="./Mavlers AI Services AI Development.dc.html#custom-ai">Layer AI on top of this data →</a>
+        </article>
+    </div>
+  </section>
+
+  
+  
+  <section style="background: radial-gradient(1200px 500px at 78% -10%, rgba(255,219,45,0.14), transparent 60%), #0A0A0A; color: #FFFFFF;">
+    <div style="max-width: 1220px; margin: 0 auto; padding: clamp(48px, 6vw, 72px) 24px;">
+      <div style="display: inline-flex; align-items: center; gap: 11px; padding: 9px 20px; border: 1px solid rgba(255,219,45,0.4); border-radius: 999px; font-size: 13px; font-weight: 700; color: #FFDB2D; letter-spacing: 0.14em; text-transform: uppercase;">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: #FFDB2D; box-shadow: 0 0 10px 1px rgba(255,219,45,0.7);"></span>
+        Across every engagement
+      </div>
+      <h2 style="font-weight: 800; font-size: clamp(27px, 3vw, 40px); letter-spacing: -0.03em; line-height: 1.1; margin: 24px 0 0; max-width: 20ch; color: #fff;">The engineering foundations we bring to all of it</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px; margin-top: 40px;">
+        <div class="opp-card" style="position:relative;overflow:hidden;background:linear-gradient(180deg,#121212,#0D0D0D);border:1px solid #232323;border-radius:20px;padding:26px;"><h3 style="font-weight:700;font-size:18px;letter-spacing:-0.015em;line-height:1.2;margin:0 0 12px;color:#fff;">Security by design</h3><p style="font-size:14px;line-height:1.65;color:#9A9A9A;margin:0;">Role-based access, scoped credentials, data isolation and audit logging.</p></div><div class="opp-card" style="position:relative;overflow:hidden;background:linear-gradient(180deg,#121212,#0D0D0D);border:1px solid #232323;border-radius:20px;padding:26px;"><h3 style="font-weight:700;font-size:18px;letter-spacing:-0.015em;line-height:1.2;margin:0 0 12px;color:#fff;">Human-in-the-loop</h3><p style="font-size:14px;line-height:1.65;color:#9A9A9A;margin:0;">Approval gates and guardrails wherever judgement or risk demands them.</p></div><div class="opp-card" style="position:relative;overflow:hidden;background:linear-gradient(180deg,#121212,#0D0D0D);border:1px solid #232323;border-radius:20px;padding:26px;"><h3 style="font-weight:700;font-size:18px;letter-spacing:-0.015em;line-height:1.2;margin:0 0 12px;color:#fff;">Observability</h3><p style="font-size:14px;line-height:1.65;color:#9A9A9A;margin:0;">Tracing, logging and evaluation so you can see and trust what runs.</p></div><div class="opp-card" style="position:relative;overflow:hidden;background:linear-gradient(180deg,#121212,#0D0D0D);border:1px solid #232323;border-radius:20px;padding:26px;"><h3 style="font-weight:700;font-size:18px;letter-spacing:-0.015em;line-height:1.2;margin:0 0 12px;color:#fff;">Technology agnostic</h3><p style="font-size:14px;line-height:1.65;color:#9A9A9A;margin:0;">We pick the right models and tools for the job, not a fixed stack.</p></div><div class="opp-card" style="position:relative;overflow:hidden;background:linear-gradient(180deg,#121212,#0D0D0D);border:1px solid #232323;border-radius:20px;padding:26px;"><h3 style="font-weight:700;font-size:18px;letter-spacing:-0.015em;line-height:1.2;margin:0 0 12px;color:#fff;">Production-grade</h3><p style="font-size:14px;line-height:1.65;color:#9A9A9A;margin:0;">Testing, CI/CD and monitoring — engineered to run, not just to demo.</p></div><div class="opp-card" style="position:relative;overflow:hidden;background:linear-gradient(180deg,#121212,#0D0D0D);border:1px solid #232323;border-radius:20px;padding:26px;"><h3 style="font-weight:700;font-size:18px;letter-spacing:-0.015em;line-height:1.2;margin:0 0 12px;color:#fff;">Data governance</h3><p style="font-size:14px;line-height:1.65;color:#9A9A9A;margin:0;">PII handling, retention controls and responsible-AI practices.</p></div><div class="opp-card" style="position:relative;overflow:hidden;background:linear-gradient(180deg,#121212,#0D0D0D);border:1px solid #232323;border-radius:20px;padding:26px;"><h3 style="font-weight:700;font-size:18px;letter-spacing:-0.015em;line-height:1.2;margin:0 0 12px;color:#fff;">Flexible engagement</h3><p style="font-size:14px;line-height:1.65;color:#9A9A9A;margin:0;">Work with us directly, or as a behind-the-scenes delivery partner.</p></div><div class="opp-card" style="position:relative;overflow:hidden;background:linear-gradient(180deg,#121212,#0D0D0D);border:1px solid #232323;border-radius:20px;padding:26px;"><h3 style="font-weight:700;font-size:18px;letter-spacing:-0.015em;line-height:1.2;margin:0 0 12px;color:#fff;">Ongoing support</h3><p style="font-size:14px;line-height:1.65;color:#9A9A9A;margin:0;">Maintenance, optimization and model updates after launch.</p></div>
+      </div>
+    </div>
+  </section>
+  
+  <section style="background: #FFFFFF;">
+    <div style="max-width: 1220px; margin: 0 auto; padding: clamp(64px, 8vw, 108px) 24px;">
+      <div style="background: #FAFAF8; border: 1px solid #ECECE8; border-radius: 26px; padding: clamp(32px, 5vw, 62px);">
+        <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #000; margin: 0; display: inline-block; border-bottom: 3px solid #FFDB2D; padding-bottom: 4px;">See these services in action</p>
+        <h2 style="font-weight: 800; font-size: clamp(27px, 3vw, 40px); letter-spacing: -0.03em; line-height: 1.1; margin: 22px 0 0; max-width: 24ch;">Browse real implementation patterns across industries and the digital lifecycle</h2>
+        <p style="font-size: 16px; line-height: 1.6; color: #565656; margin: 20px 0 0; max-width: 60ch;">The workflows, agents and integrations we build — from marketing and sales to support, operations and internal productivity.</p>
+        <a href="./Mavlers AI Landing.dc.html#implementations" style="display: inline-block; margin-top: 28px; background: #000; color: #FFDB2D; padding: 15px 28px; border-radius: 999px; font-size: 15px; font-weight: 700;">View Our Implementations →</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" style="background: #FFDB2D;">
+    <div style="max-width: 1220px; margin: 0 auto; padding: clamp(64px, 8vw, 108px) 24px; text-align: center;">
+      <h2 style="font-weight: 800; font-size: clamp(30px, 4.4vw, 58px); letter-spacing: -0.035em; line-height: 1.02; margin: 0; color: #000; max-width: 16ch; margin-left: auto; margin-right: auto; text-wrap: balance;">Have a service requirement in mind?</h2>
+      <p style="font-size: clamp(16px, 1.6vw, 19px); line-height: 1.6; color: #1A1A1A; max-width: 56ch; margin: 22px auto 0;">Tell us the problem or the capability you want to build. We'll map it to the right approach and team.</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-top: 34px;">
+        <a href="./Mavlers AI Landing.dc.html#contact" style="background: #000; color: #FFDB2D; padding: 16px 34px; border-radius: 999px; font-size: 16px; font-weight: 700;">Book a Call</a>
+        <a href="./Mavlers AI Landing.dc.html#contact" style="background: transparent; color: #000; border: 1.5px solid #000; padding: 16px 34px; border-radius: 999px; font-size: 16px; font-weight: 700;">Or submit a requirement →</a>
+      </div>
+    </div>
+  </section>
+
+  <footer style="background: #000000; color: #9A9A9A;">
+    <div style="max-width: 1220px; margin: 0 auto; padding: clamp(52px, 6vw, 76px) 24px 40px;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 40px 24px;">
+        <div style="min-width: 200px;">
+          <div style="display: flex; align-items: baseline; color: #fff; font-weight: 800; font-size: 24px; letter-spacing: -0.03em;">mavlers<span style="color: #000; background: #FFDB2D; padding: 0 5px; border-radius: 4px; margin-left: 3px;">.ai</span></div>
+          <p style="font-size: 14px; line-height: 1.6; color: #8A8A8A; margin: 16px 0 0; max-width: 34ch;">AI &amp; automation engineering for agencies and brands. Part of the Mavlers group — 15+ years of digital delivery worldwide.</p>
+        </div>
+        <div>
+          <div style="color: #fff; font-weight: 700; font-size: 14px; margin-bottom: 16px;">Services</div>
+          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px;">
+            <a href="./Mavlers AI Services AI Development.dc.html" style="color: #9A9A9A;">AI Development</a>
+            <a href="./Mavlers AI Services Automation Integration.dc.html" style="color: #9A9A9A;">Automation &amp; Integration</a>
+            <a href="./Mavlers AI Services Product Development.dc.html" style="color: #9A9A9A;">Product &amp; Validation</a>
+            <a href="./Mavlers AI Services AI Development.dc.html#rag" style="color: #9A9A9A;">RAG &amp; Knowledge Systems</a>
+            <a href="./Mavlers AI Services AI Development.dc.html#agents" style="color: #9A9A9A;">AI Agents</a>
+          </div>
+        </div>
+        <div>
+          <div style="color: #fff; font-weight: 700; font-size: 14px; margin-bottom: 16px;">Company</div>
+          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px;">
+            <a href="./Mavlers AI Landing.dc.html#why" style="color: #9A9A9A;">About</a>
+            <a href="./Mavlers AI Landing.dc.html#engagement" style="color: #9A9A9A;">Engagement models</a>
+            <a href="./Mavlers AI Landing.dc.html#implementations" style="color: #9A9A9A;">Implementations</a>
+            <a href="./Mavlers AI Landing.dc.html#contact" style="color: #9A9A9A;">Book a Call</a>
+          </div>
+        </div>
+        <div>
+          <div style="color: #fff; font-weight: 700; font-size: 14px; margin-bottom: 16px;">Group</div>
+          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px;">
+            <a href="https://mavlers.com" style="color: #9A9A9A;">mavlers.com</a>
+            <a href="https://mavlers.agency" style="color: #9A9A9A;">mavlers.agency</a>
+          </div>
+        </div>
+      </div>
+      <div style="border-top: 1px solid #222; margin-top: 44px; padding-top: 24px; display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; font-size: 13px; color: #6E6E6E;">
+        <span>© 2026 Mavlers.ai. All rights reserved.</span>
+        <div style="display: flex; gap: 20px;">
+          <a href="#top" style="color: #6E6E6E;">Privacy</a>
+          <a href="#top" style="color: #6E6E6E;">Terms</a>
+          <a href="#top" style="color: #6E6E6E;">Security</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#0d0d0d"/><rect x="18" y="28" width="64" height="12" rx="3" fill="#FFDB2D"/><rect x="18" y="48" width="64" height="8" rx="2" fill="#333"/><rect x="18" y="62" width="40" height="8" rx="2" fill="#333"/></svg></template></x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    this._bindJumpActive();
+    const render = () => { try { window.lucide && window.lucide.createIcons(); } catch (e) {} };
+    if (window.lucide) { render(); return; }
+    if (!document.getElementById('lucide-cdn')) {
+      const s = document.createElement('script');
+      s.id = 'lucide-cdn';
+      s.src = 'https://unpkg.com/lucide@0.454.0/dist/umd/lucide.min.js';
+      s.onload = () => { render(); setTimeout(render, 100); };
+      document.head.appendChild(s);
+    } else {
+      const iv = setInterval(() => { if (window.lucide) { clearInterval(iv); render(); } }, 60);
+      setTimeout(() => clearInterval(iv), 4000);
+    }
+  }
+  _bindJumpActive() {
+    try {
+      const pills = Array.from(document.querySelectorAll('.jump-pill[data-target]'));
+      const sections = pills.map((p) => document.getElementById(p.getAttribute('data-target'))).filter(Boolean);
+      if (!pills.length || !sections.length || !window.IntersectionObserver) return;
+      const setActive = (id) => {
+        pills.forEach((p) => p.classList.toggle('is-active', p.getAttribute('data-target') === id));
+      };
+      const io = new IntersectionObserver((entries) => {
+        const visible = entries.filter((e) => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0] && visible[0].target && visible[0].target.id) setActive(visible[0].target.id);
+      }, { rootMargin: '-25% 0px -55% 0px', threshold: [0.1, 0.25, 0.5] });
+      sections.forEach((s) => io.observe(s));
+      if (location.hash) setActive(location.hash.replace('#', ''));
+    } catch (e) {}
+  }
+  componentDidUpdate() { try { window.lucide && window.lucide.createIcons(); } catch (e) {} }
+}
+</script>
+</body>
+</html>
