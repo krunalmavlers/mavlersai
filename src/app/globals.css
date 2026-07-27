@@ -98,6 +98,21 @@ a:not([class]):hover {
 /* ---- Header dropdown (menu items with children) ---- */
 .nav-dd-menu { opacity: 0; pointer-events: none; transition: opacity .18s ease; }
 .nav-dd:hover .nav-dd-menu, .nav-dd:focus-within .nav-dd-menu { opacity: 1; pointer-events: auto; }
+/* Bridge the gap between the trigger and the panel, so moving the pointer
+   down to the submenu doesn't leave .nav-dd and close it mid-travel. The
+   bridge spans the panel's width, not just the trigger's, so diagonal
+   travel toward the panel edges stays inside the hover area. Scoped to the
+   open state so the invisible strip never intercepts clicks on page
+   content while the menu is closed. */
+.nav-dd:hover::after, .nav-dd:focus-within::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 280px;
+  height: 18px;
+}
 
 /* ---- Services hub capability cards ---- */
 .cat-card { transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease; }
