@@ -29,6 +29,7 @@
     "react-dom": "^18.3.1",
     "server-only": "^0.0.1",
     "sharp": "^0.33.5",
+    "three": "^0.184.0",
     "tinymce": "^7.9.3",
     "zod": "^3.23.8"
   },
@@ -36,6 +37,7 @@
     "@types/node": "^20.16.10",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
+    "@types/three": "^0.185.4",
     "autoprefixer": "^10.4.20",
     "eslint": "^8.57.1",
     "eslint-config-next": "^14.2.15",

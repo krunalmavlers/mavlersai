@@ -39,7 +39,7 @@ export const SECTION_SCHEMAS: Record<string, FieldDesc[]> = {
       label: 'Hero animation',
       kind: 'select',
       options: ['robot', 'ai-pipeline'],
-      hint: 'Fills the space beside the copy on large screens. "robot" = homepage mascot; "ai-pipeline" = retrieval → LLM → outcomes (AI Development). A hero image or background video overrides it.',
+      hint: 'Fills the space beside the copy on large screens. "robot" = homepage mascot; "ai-pipeline" = the 3D retrieval → LLM → outcomes scene (AI Development). A hero image or background video overrides it.',
     },
     {
       key: 'breadcrumb',

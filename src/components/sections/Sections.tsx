@@ -4,7 +4,7 @@ import { getForm, getSettings } from '@/lib/queries';
 import { DynamicForm } from '@/components/forms/DynamicForm';
 import { HeroVideo } from './HeroVideo';
 import { HeroRobot } from './HeroRobot';
-import { HeroAiPipeline } from './HeroAiPipeline';
+import { HeroAiScene } from './HeroAiScene';
 import { Icon, serviceIconName, connectIconName, stepIconName } from './icons';
 
 /* ----------------------------- shared bits ------------------------------ */
@@ -195,7 +195,7 @@ function Hero({ c }: { c: any }) {
           </div>
           {showVisual && (
             <div className="hidden lg:block">
-              {visual === 'ai-pipeline' ? <HeroAiPipeline /> : <HeroRobot />}
+              {visual === 'ai-pipeline' ? <HeroAiScene /> : <HeroRobot />}
             </div>
           )}
           {showImage && (
