@@ -4,6 +4,7 @@ import { getForm, getSettings } from '@/lib/queries';
 import { DynamicForm } from '@/components/forms/DynamicForm';
 import { HeroVideo } from './HeroVideo';
 import { HeroRobot } from './HeroRobot';
+import { HeroAiPipeline } from './HeroAiPipeline';
 import { Icon, serviceIconName, connectIconName, stepIconName } from './icons';
 
 /* ----------------------------- shared bits ------------------------------ */
@@ -128,7 +129,10 @@ function Hero({ c }: { c: any }) {
   const hasVideo = !!c.bg_video;
   // `image` wins over the animated robot when both are set.
   const showImage = !!c.image && !hasVideo;
-  const showVisual = !!c.animated && !hasVideo && !showImage;
+  // Which animation fills the space beside the copy: the mascot (home) or the
+  // AI-development pipeline. Legacy `animated: true` still means the mascot.
+  const visual: string = c.visual || (c.animated ? 'robot' : '');
+  const showVisual = !!visual && !hasVideo && !showImage;
   const crumbs: any[] = Array.isArray(c.breadcrumb) ? c.breadcrumb : [];
   return (
     <section className="relative overflow-hidden bg-white">
@@ -191,7 +195,7 @@ function Hero({ c }: { c: any }) {
           </div>
           {showVisual && (
             <div className="hidden lg:block">
-              <HeroRobot />
+              {visual === 'ai-pipeline' ? <HeroAiPipeline /> : <HeroRobot />}
             </div>
           )}
           {showImage && (

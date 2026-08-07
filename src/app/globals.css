@@ -74,6 +74,43 @@ a:not([class]):hover {
   50% { opacity: 1; }
 }
 
+/* ---- AI Development hero: RAG → LLM → outcome pipeline ---- */
+/* token travelling down a connector between stages */
+@keyframes pipeDot {
+  0%   { transform: translate(-50%, -3px); opacity: 0; }
+  18%  { opacity: 1; }
+  82%  { opacity: 1; }
+  100% { transform: translate(-50%, 23px); opacity: 0; }
+}
+/* vector-index tiles lighting up as the query is matched */
+@keyframes ragChunk {
+  0%, 62%, 100% { background-color: #F0EEE6; transform: scaleY(1); }
+  30%           { background-color: #FFDB2D; transform: scaleY(1.4); }
+}
+/* the retrieved chunk chips that come back top-k */
+@keyframes chunkPop {
+  0%, 58%, 100% { border-color: #E6E3DA; background-color: #F7F6F1; color: #333; }
+  26%           { border-color: rgba(255,219,45,0.9); background-color: #FFF6CF; color: #000; }
+}
+/* answer tokens streaming in line by line */
+@keyframes tokenLine {
+  0%, 100% { transform: scaleX(0.04); opacity: .45; }
+  45%, 78% { transform: scaleX(1); opacity: 1; }
+}
+@keyframes caretBlink {
+  0%, 50%   { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+/* each shipped outcome takes its turn being the active one */
+@keyframes outcomeGlow {
+  0%, 22%, 100% { border-color: #E6E3DA; box-shadow: 0 10px 26px rgba(0,0,0,0.08); transform: translateY(0); }
+  10%           { border-color: rgba(255,219,45,0.95); box-shadow: 0 14px 30px rgba(255,219,45,0.28); transform: translateY(-4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-pipeline, .ai-pipeline * { animation: none !important; }
+}
+
 /* Card hover treatments (mirrors the reference design) */
 .opp-card { transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease; }
 .opp-card:hover { transform: translateY(-6px); border-color: rgba(255,219,45,0.55) !important; box-shadow: 0 20px 50px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,219,45,0.25); }

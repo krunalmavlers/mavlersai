@@ -33,7 +33,14 @@ export const SECTION_SCHEMAS: Record<string, FieldDesc[]> = {
     { key: 'secondary_cta', label: 'Secondary button', kind: 'cta' },
     { key: 'note', label: 'Note under buttons', kind: 'textarea' },
     { key: 'trust_items', label: 'Trust chips', kind: 'stringList' },
-    { key: 'animated', label: 'Show hero animation (home only)', kind: 'bool' },
+    { key: 'animated', label: 'Show hero animation (mascot)', kind: 'bool' },
+    {
+      key: 'visual',
+      label: 'Hero animation',
+      kind: 'select',
+      options: ['robot', 'ai-pipeline'],
+      hint: 'Fills the space beside the copy on large screens. "robot" = homepage mascot; "ai-pipeline" = retrieval → LLM → outcomes (AI Development). A hero image or background video overrides it.',
+    },
     {
       key: 'breadcrumb',
       label: 'Breadcrumb (leave the last item without a link)',
