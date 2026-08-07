@@ -280,7 +280,9 @@ function FeatureGrid({ c }: { c: any }) {
             {c.eyebrow}
           </div>
         )}
-        {c.heading && <h2 className={`${H2} mt-5 max-w-[20ch] text-white`}>{c.heading}</h2>}
+        {c.heading && (
+          <h2 className={`${H2} mt-5 max-w-[24ch] text-white [text-wrap:balance] lg:max-w-[38ch]`}>{c.heading}</h2>
+        )}
         <div className={`mt-9 grid grid-cols-1 gap-[18px] sm:grid-cols-2 ${cols}`}>
           {(c.items || []).map((it: any, i: number) => (
             <div
