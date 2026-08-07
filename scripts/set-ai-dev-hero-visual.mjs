@@ -1,7 +1,8 @@
-// One-off: turn on the `ai-pipeline` hero animation on /services/ai-development
-// via the service-role REST client — mirrors migration 0013 for environments
-// where only .env.local is available (no DATABASE_URL).
-// Usage: node scripts/set-ai-dev-hero-visual.mjs
+// Sets which hero animation /services/ai-development uses, via the service-role
+// REST client — for environments where only .env.local is available (no
+// DATABASE_URL). Valid values match the `visual` options in
+// src/components/admin/sectionSchemas.ts.
+// Usage: node scripts/set-ai-dev-hero-visual.mjs [signal-lattice]
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
@@ -18,6 +19,12 @@ for (const line of readFileSync(join(root, '.env.local'), 'utf8').split('\n')) {
 const url = env.NEXT_PUBLIC_SUPABASE_URL;
 const key = env.SUPABASE_SERVICE_ROLE_KEY;
 if (!url || !key) throw new Error('Missing Supabase URL or service role key in .env.local');
+
+const VISUALS = ['robot', 'ai-pipeline', 'signal-lattice', 'assembly-floor', 'emergence'];
+const visual = process.argv[2] || 'signal-lattice';
+if (!VISUALS.includes(visual)) {
+  throw new Error(`Unknown visual "${visual}". Expected one of: ${VISUALS.join(', ')}`);
+}
 
 const db = createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } });
 
@@ -40,10 +47,10 @@ if (!heroes?.length) throw new Error('No hero section on /services/ai-developmen
 for (const hero of heroes) {
   const { error } = await db
     .from('page_sections')
-    .update({ content: { ...hero.content, visual: 'ai-pipeline' } })
+    .update({ content: { ...hero.content, visual } })
     .eq('id', hero.id);
   if (error) throw error;
-  console.log(`hero ${hero.id}: visual = ai-pipeline`);
+  console.log(`hero ${hero.id}: visual = ${visual}`);
 }
 
 console.log('Done.');
