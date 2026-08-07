@@ -5,6 +5,7 @@ import { DynamicForm } from '@/components/forms/DynamicForm';
 import { HeroVideo } from './HeroVideo';
 import { HeroRobot } from './HeroRobot';
 import { HeroAiScene } from './HeroAiScene';
+import { HeroSignalLattice, HeroAssemblyFloor, HeroEmergence } from './HeroConcepts';
 import { Icon, serviceIconName, connectIconName, stepIconName } from './icons';
 
 /* ----------------------------- shared bits ------------------------------ */
@@ -125,12 +126,31 @@ function Section({
 
 /* --------------------------------- Hero --------------------------------- */
 
+/**
+ * Animations available to a hero's `visual` field. Keep the keys in sync with
+ * the `visual` options in src/components/admin/sectionSchemas.ts.
+ */
+function renderHeroVisual(visual: string) {
+  switch (visual) {
+    case 'ai-pipeline':
+      return <HeroAiScene />;
+    case 'signal-lattice':
+      return <HeroSignalLattice />;
+    case 'assembly-floor':
+      return <HeroAssemblyFloor />;
+    case 'emergence':
+      return <HeroEmergence />;
+    default:
+      return <HeroRobot />;
+  }
+}
+
 function Hero({ c }: { c: any }) {
   const hasVideo = !!c.bg_video;
   // `image` wins over the animated robot when both are set.
   const showImage = !!c.image && !hasVideo;
-  // Which animation fills the space beside the copy: the mascot (home) or the
-  // AI-development pipeline. Legacy `animated: true` still means the mascot.
+  // Which animation fills the space beside the copy — see HERO_VISUALS below.
+  // Legacy `animated: true` still means the mascot.
   const visual: string = c.visual || (c.animated ? 'robot' : '');
   const showVisual = !!visual && !hasVideo && !showImage;
   const crumbs: any[] = Array.isArray(c.breadcrumb) ? c.breadcrumb : [];
@@ -193,11 +213,7 @@ function Hero({ c }: { c: any }) {
               </div>
             )}
           </div>
-          {showVisual && (
-            <div className="hidden lg:block">
-              {visual === 'ai-pipeline' ? <HeroAiScene /> : <HeroRobot />}
-            </div>
-          )}
+          {showVisual && <div className="hidden lg:block">{renderHeroVisual(visual)}</div>}
           {showImage && (
             <div className="hidden lg:block">
               {/* eslint-disable-next-line @next/next/no-img-element */}

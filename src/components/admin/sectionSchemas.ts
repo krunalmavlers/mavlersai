@@ -38,8 +38,8 @@ export const SECTION_SCHEMAS: Record<string, FieldDesc[]> = {
       key: 'visual',
       label: 'Hero animation',
       kind: 'select',
-      options: ['robot', 'ai-pipeline'],
-      hint: 'Fills the space beside the copy on large screens. "robot" = homepage mascot; "ai-pipeline" = the 3D retrieval → LLM → outcomes scene (AI Development). A hero image or background video overrides it.',
+      options: ['robot', 'ai-pipeline', 'signal-lattice', 'assembly-floor', 'emergence'],
+      hint: 'Fills the space beside the copy on large screens. robot = homepage mascot · ai-pipeline = 3D retrieval → LLM → outcomes scene · signal-lattice / assembly-floor / emergence = the three 9s-loop concept animations. A hero image or background video overrides it.',
     },
     {
       key: 'breadcrumb',
