@@ -23,6 +23,10 @@ A production, fully database-driven marketing site + headless CMS for **Mavlers.
 | Dynamic forms + reCAPTCHA + DB storage + email hook | Admin → Forms / Submissions; `POST /api/forms/submit` |
 | WordPress-style blog: Insights + Implementations (case studies) with **multiple categories** + tags | Admin → Insights & Implementations |
 
+> Onboarding a new developer onto the **existing** Supabase project?
+> See [ONBOARDING.md](ONBOARDING.md) — the migrations below are only for
+> standing up a fresh database.
+
 ## 1. Prerequisites
 
 - Node.js 18.18+ (tested on 20/22)
@@ -58,6 +62,7 @@ supabase/migrations/0002_seed.sql          # settings, menus, taxonomies, author
 supabase/migrations/0003_seed_pages.sql    # pages + sections + the Book a Call form
 supabase/migrations/0004_seed_posts.sql    # 12 implementations + 7 insights
 supabase/migrations/0005_admin_bootstrap.sql  # promote_admin() helper
+...                                        # through 0013 — apply all, in order
 ```
 
 With the CLI:
