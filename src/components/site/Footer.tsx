@@ -75,7 +75,7 @@ export function Footer({
 
         <div className="mt-11 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-[#222] pt-6 text-[13px] text-[#6E6E6E]">
           <span>
-            © {year} {settings.site_name}. All rights reserved.
+            Mavlers AI {year}
           </span>
           <div className="flex gap-5">
             {legal.map((l) => (
