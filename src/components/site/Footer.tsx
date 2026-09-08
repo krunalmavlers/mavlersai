@@ -23,7 +23,6 @@ export function Footer({
   legal: MenuItem[];
 }) {
   const cols = groupByColumn(columns);
-  const year = new Date().getFullYear();
   return (
     <footer className="bg-black text-[#9A9A9A]">
       <div className="mx-auto max-w-page px-6 pb-10 pt-[clamp(52px,6vw,76px)]">
@@ -75,7 +74,7 @@ export function Footer({
 
         <div className="mt-11 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-[#222] pt-6 text-[13px] text-[#6E6E6E]">
           <span>
-            Mavlers AI {year}
+            Mavlers AI 2027
           </span>
           <div className="flex gap-5">
             {legal.map((l) => (
