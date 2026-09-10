@@ -56,6 +56,23 @@ export function connectIconName(label = ''): string {
   return 'plug';
 }
 
+/**
+ * Map an engagement model to an icon describing what it *is*.
+ *
+ * These deliberately carry no sense of rank. An earlier version showed a
+ * filled-bar scale, which reads as signal strength — it implied the lighter
+ * engagements were worth less, rather than differently shaped.
+ */
+export function engagementIconName(title = '', explicit?: string): string {
+  if (explicit && NAMED[explicit]) return explicit;
+  const t = title.toLowerCase();
+  if (t.includes('discovery') || t.includes('feasibility')) return 'search';
+  if (t.includes('proof') || t.includes('poc') || t.includes('pilot')) return 'flask-conical';
+  if (t.includes('pod') || t.includes('dedicated') || t.includes('team')) return 'users';
+  if (t.includes('project') || t.includes('implementation') || t.includes('build')) return 'code-2';
+  return 'sparkles';
+}
+
 /** Roadmap step icons, by 1-based step order (falls back to a sensible default). */
 const STEP_ICONS = [
   'message-circle', 'search', 'pen-tool', 'flask-conical',
