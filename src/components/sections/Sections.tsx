@@ -1,12 +1,15 @@
 import Link from 'next/link';
 import type { PageSection } from '@/lib/types';
-import { getForm, getSettings } from '@/lib/queries';
+import { getForm, getPosts, getSettings } from '@/lib/queries';
 import { DynamicForm } from '@/components/forms/DynamicForm';
 import { HeroVideo } from './HeroVideo';
 import { HeroRobot } from './HeroRobot';
 import { HeroAiScene } from './HeroAiScene';
 import { HeroSignalLattice, HeroAssemblyFloor, HeroEmergence } from './HeroConcepts';
-import { Icon, serviceIconName, connectIconName, stepIconName } from './icons';
+import { Icon, serviceIconName, connectIconName, stepIconName, engagementIconName } from './icons';
+import { CountUp } from './CountUp';
+import { ScrollScene } from './ScrollScene';
+import { CaseStudySlider } from './CaseStudySlider';
 
 /* ----------------------------- shared bits ------------------------------ */
 
@@ -30,6 +33,29 @@ const platformLogo = (name: string) =>
   PLATFORM_LOGOS[name.toLowerCase().replace(/[^a-z0-9]/g, '')];
 const H2 =
   'm-0 font-display font-extrabold leading-[1.1] tracking-[-0.03em] text-[clamp(23px,2.4vw,32px)]';
+
+/**
+ * Splits a heading into words so each can rise on its own slice of the
+ * section's scroll progress. Server-rendered markup only — the motion is CSS
+ * driven by --p, so there is no client cost and the plain heading is what
+ * renders without JavaScript.
+ *
+ * `offset` delays the whole line against --p, for headings that sit lower in
+ * the section than the element driving the scene.
+ */
+function SplitHeading({ text, offset = 0 }: { text?: string; offset?: number }) {
+  const words = String(text || '').trim().split(/\s+/).filter(Boolean);
+  if (!words.length) return null;
+  return (
+    <span className="sx" style={{ '--wo': offset, '--wn': words.length } as React.CSSProperties}>
+      {words.map((w, i) => (
+        <span key={`${w}-${i}`} className="sh-w" style={{ '--w': i } as React.CSSProperties}>
+          <span className="sh-i">{w}</span>
+        </span>
+      ))}
+    </span>
+  );
+}
 
 function Eyebrow({ children, onDark }: { children?: React.ReactNode; onDark?: boolean }) {
   if (!children) return null;
@@ -152,9 +178,14 @@ function Hero({ c }: { c: any }) {
   // Which animation fills the space beside the copy — see HERO_VISUALS below.
   // Legacy `animated: true` still means the mascot.
   const visual: string = c.visual || (c.animated ? 'robot' : '');
-  const showVisual = !!visual && !hasVideo && !showImage;
+  // `layout: 'centered'` drops the side visual entirely and sits the copy on a
+  // spotlight-and-grid backdrop instead. See `layout` in sectionSchemas.ts.
+  const centered = c.layout === 'centered';
+  const showVisual = !centered && !!visual && !hasVideo && !showImage;
+  const showSideImage = !centered && showImage;
   const crumbs: any[] = Array.isArray(c.breadcrumb) ? c.breadcrumb : [];
-  return (
+  const trust: string[] = Array.isArray(c.trust_items) ? c.trust_items : [];
+  const shell = (
     <section className="relative overflow-hidden bg-white">
       {hasVideo && (
         <>
@@ -162,7 +193,19 @@ function Hero({ c }: { c: any }) {
           <div className="pointer-events-none absolute inset-0 bg-white/70" />
         </>
       )}
-      <div className="relative mx-auto max-w-page px-6 pb-[clamp(22px,2.6vw,34px)] pt-[clamp(24px,3vw,44px)]">
+      {centered && !hasVideo && (
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          <div className="hero-dotgrid absolute inset-0" />
+          <div className="hero-glow absolute left-1/2 top-[-32%] h-[640px] w-[1000px] -translate-x-1/2" />
+        </div>
+      )}
+      <div
+        className={`relative mx-auto max-w-page px-6 ${
+          centered
+            ? 'pb-[clamp(46px,5vw,66px)] pt-[clamp(44px,5.4vw,74px)]'
+            : 'pb-[clamp(22px,2.6vw,34px)] pt-[clamp(24px,3vw,44px)]'
+        }`}
+      >
         {crumbs.length > 0 && (
           <nav aria-label="Breadcrumb" className="mb-5 text-[13px] font-semibold text-body-dim">
             {crumbs.map((b: any, i: number) => (
@@ -179,42 +222,73 @@ function Hero({ c }: { c: any }) {
             ))}
           </nav>
         )}
-        <div className={showVisual || showImage ? 'grid items-center gap-9 lg:grid-cols-[1.05fr_0.95fr]' : ''}>
-          <div>
+        <div className={showVisual || showSideImage ? 'grid items-center gap-9 lg:grid-cols-[1.05fr_0.95fr]' : ''}>
+          <div className={centered ? 'flex flex-col items-center text-center' : ''}>
             {c.badge && (
-              <div className="inline-flex items-center gap-2.5 rounded-full border-[1.5px] border-black px-[15px] py-[7px] text-[12.5px] font-bold uppercase tracking-[0.01em] text-black">
+              <div
+                className="hro inline-flex items-center gap-2.5 rounded-full border-[1.5px] border-black bg-white px-[15px] py-[7px] text-[12.5px] font-bold uppercase tracking-[0.01em] text-black"
+                style={{ '--i': 0 } as React.CSSProperties}
+              >
                 <span className="h-2 w-2 rounded-full bg-brand shadow-[0_0_0_3px_rgba(255,219,45,0.35)]" />
                 {c.badge}
               </div>
             )}
             <h1
-              className="m-0 mt-5 max-w-[17ch] font-display text-[clamp(29px,3.7vw,44px)] font-extrabold leading-[1.06] tracking-[-0.03em] text-black [text-wrap:balance] [&_span]:bg-[linear-gradient(180deg,transparent_62%,#FFDB2D_62%)]"
+              style={{ '--i': 1 } as React.CSSProperties}
+              className={`hro hero-mark m-0 font-display font-extrabold tracking-[-0.035em] text-black [text-wrap:balance] ${
+                centered
+                  ? 'mt-7 max-w-[24ch] text-[clamp(30px,4.6vw,54px)] leading-[1.1]'
+                  : 'mt-5 max-w-[17ch] text-[clamp(29px,3.7vw,44px)] leading-[1.06]'
+              }`}
               dangerouslySetInnerHTML={{ __html: c.heading_html || '' }}
             />
             {c.subhead && (
-              <p className="m-0 mt-4 max-w-[54ch] text-[clamp(15px,1.3vw,17px)] leading-relaxed text-body-muted">
+              <p
+                style={{ '--i': 2 } as React.CSSProperties}
+                className={`hro m-0 text-[clamp(15px,1.3vw,17px)] leading-relaxed text-body-muted ${
+                  centered ? 'mt-[22px] max-w-[60ch]' : 'mt-4 max-w-[54ch]'
+                }`}
+              >
                 {c.subhead}
               </p>
             )}
-            <div className="mt-7 flex flex-wrap items-center gap-4">
+            <div
+              style={{ '--i': 3 } as React.CSSProperties}
+              className={`hro mt-7 flex flex-wrap items-center gap-4 ${centered ? 'justify-center' : ''}`}
+            >
               {c.primary_cta?.label && <CtaLink {...c.primary_cta} style={c.primary_cta.style || 'primary'} />}
               {c.secondary_cta?.label && <CtaLink {...c.secondary_cta} style={c.secondary_cta.style || 'link'} />}
             </div>
-            {Array.isArray(c.trust_items) && c.trust_items.length > 0 && (
-              <div className="mt-6 flex flex-wrap gap-2">
-                {c.trust_items.map((t: string) => (
-                  <span
-                    key={t}
-                    className="rounded-full border border-surface-line2 bg-surface-tint2 px-[14px] py-2 text-[13px] font-semibold text-[#222]"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            )}
+            {trust.length > 0 &&
+              (centered ? (
+                // Centred: one quiet credential line, dot-separated — pills here
+                // wrap onto a second row and pull focus off the headline.
+                <div
+                  style={{ '--i': 4 } as React.CSSProperties}
+                  className="hro mt-8 flex flex-wrap items-center justify-center gap-x-[18px] gap-y-2.5"
+                >
+                  {trust.map((t: string, i: number) => (
+                    <span key={t} className="flex items-center gap-x-[18px]">
+                      {i > 0 && <span className="h-[5px] w-[5px] shrink-0 rounded-full bg-brand" />}
+                      <span className="text-[13px] font-bold text-black">{t}</span>
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <div className="mt-6 flex flex-wrap gap-2">
+                  {trust.map((t: string) => (
+                    <span
+                      key={t}
+                      className="rounded-full border border-surface-line2 bg-surface-tint2 px-[14px] py-2 text-[13px] font-semibold text-[#222]"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              ))}
           </div>
           {showVisual && <div className="hidden lg:block">{renderHeroVisual(visual)}</div>}
-          {showImage && (
+          {showSideImage && (
             <div className="hidden lg:block">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -228,6 +302,20 @@ function Hero({ c }: { c: any }) {
       </div>
     </section>
   );
+
+  // The centred hero is already on screen at rest, so it animates its exit
+  // rather than an arrival — see `mode` on ScrollScene.
+  // The centred hero is on screen at rest, so it animates its exit rather than
+  // an arrival — see `mode` on ScrollScene. Deliberately not pinned: a pin
+  // needs a 100vh sticky element, which would leave dead space around a hero
+  // this compact.
+  return centered ? (
+    <ScrollScene className="hero-scene" mode="exit">
+      {shell}
+    </ScrollScene>
+  ) : (
+    shell
+  );
 }
 
 /* -------------------------------- Stats --------------------------------- */
@@ -240,7 +328,7 @@ function StatsBar({ c }: { c: any }) {
           {(c.stats || []).map((s: any, i: number) => (
             <div key={i}>
               <div className="font-display text-[clamp(21px,2.2vw,29px)] font-extrabold leading-none tracking-[-0.03em] text-brand">
-                {s.num}
+                <CountUp value={s.num} />
               </div>
               <div className="mt-2 text-[13px] font-medium text-body-onDark">{s.label}</div>
             </div>
@@ -288,9 +376,245 @@ function StatsBar({ c }: { c: any }) {
 
 /* ---------------------- Feature grid (opportunity) ---------------------- */
 
-function FeatureGrid({ c }: { c: any }) {
+/**
+ * The three scenes the sticky stage moves between — one per statement, drawn
+ * at full size rather than as a thumbnail. Each animates on its own `--t`,
+ * which the stage sets from that statement's centredness.
+ */
+const VIZ_KINDS = ['gap', 'cost', 'fit'] as const;
+type VizKind = (typeof VIZ_KINDS)[number];
+
+/** Keyed off the item's `tag` like the icon helpers, with an index fallback. */
+function vizKind(tag: string | undefined, index: number): VizKind {
+  const t = String(tag || '').toLowerCase();
+  if (t.includes('demand')) return 'gap';
+  if (t.includes('cost') || t.includes('spend')) return 'cost';
+  if (t.includes('fit') || t.includes('context')) return 'fit';
+  return VIZ_KINDS[index] ?? 'gap';
+}
+
+function ProblemScene({ kind }: { kind: VizKind }) {
+  const frame = { viewBox: '0 0 340 300', fill: 'none', className: 'h-full w-full' } as const;
+  const grid = [0, 1, 2, 3].map((i) => (
+    <line key={i} x1="24" y1={64 + i * 52} x2="316" y2={64 + i * 52} stroke="#1E1E1E" strokeWidth="1" />
+  ));
+
+  if (kind === 'gap') {
+    return (
+      <svg {...frame} aria-hidden>
+        {grid}
+        {/* the widening gap is the whole point, so it is drawn, not implied */}
+        <path
+          d="M28 250 C110 244 176 152 312 44 L312 214 C190 226 110 244 28 250 Z"
+          fill="url(#gapFill)"
+          className="pv-fill"
+        />
+        <defs>
+          <linearGradient id="gapFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#FFDB2D" stopOpacity="0.30" />
+            <stop offset="100%" stopColor="#FFDB2D" stopOpacity="0.02" />
+          </linearGradient>
+        </defs>
+        <path d="M28 250 C120 244 200 226 312 214" stroke="#3C3C3C" strokeWidth="2.5" strokeLinecap="round" className="pv-line" />
+        <path d="M28 250 C110 244 176 152 312 44" stroke="#FFDB2D" strokeWidth="3" strokeLinecap="round" className="pv-line" />
+        <circle cx="312" cy="44" r="7" fill="#FFDB2D" className="pv-head" />
+        <circle cx="312" cy="44" r="14" fill="#FFDB2D" opacity="0.16" className="pv-head" />
+        <circle cx="312" cy="214" r="5" fill="#3C3C3C" className="pv-head" />
+        <g className="pv-label">
+          <text x="28" y="36" fill="#FFDB2D" fontSize="13" fontWeight="700" letterSpacing="1.4">DEMAND</text>
+          <text x="28" y="284" fill="#6A6A6A" fontSize="13" fontWeight="700" letterSpacing="1.4">CAPABILITY</text>
+        </g>
+      </svg>
+    );
+  }
+
+  if (kind === 'cost') {
+    // the five costs the copy actually names
+    const bars: [string, number][] = [
+      ['HIRE', 96], ['R&D', 132], ['BUILD', 168], ['SECURE', 204], ['MAINTAIN', 236],
+    ];
+    return (
+      <svg {...frame} aria-hidden>
+        {grid}
+        {bars.map(([label, h], i) => (
+          <g key={label}>
+            <rect
+              x={30 + i * 58}
+              y={258 - h}
+              width="34"
+              height={h}
+              rx="7"
+              fill={i === bars.length - 1 ? '#FFDB2D' : '#2B2B2B'}
+              className="pv-bar"
+              style={{ '--b': i } as React.CSSProperties}
+            />
+            <text
+              x={47 + i * 58}
+              y="278"
+              fill={i === bars.length - 1 ? '#B9911F' : '#5C5C5C'}
+              fontSize="9"
+              fontWeight="700"
+              letterSpacing="0.6"
+              textAnchor="middle"
+              className="pv-label"
+            >
+              {label}
+            </text>
+          </g>
+        ))}
+        <line x1="24" y1="259" x2="316" y2="259" stroke="#3C3C3C" strokeWidth="1.5" strokeLinecap="round" />
+        <text x="28" y="36" fill="#FFDB2D" fontSize="13" fontWeight="700" letterSpacing="1.4" className="pv-label">
+          EVERY YEAR, AGAIN
+        </text>
+      </svg>
+    );
+  }
+
+  // a set that matches, and a piece that does not belong to it
+  return (
+    <svg {...frame} aria-hidden>
+      {[0, 1, 2].map((r) =>
+        [0, 1, 2, 3].map((col) => (
+          <rect
+            key={`${r}-${col}`}
+            x={40 + col * 56}
+            y={92 + r * 56}
+            width="40"
+            height="40"
+            rx="10"
+            fill="#232323"
+          />
+        )),
+      )}
+      {/* the slot it is meant to fill, and the piece that will not */}
+      <rect x={152} y={148} width="40" height="40" rx="10" fill="none" stroke="#3C3C3C" strokeWidth="2" strokeDasharray="5 5" className="pv-slot" />
+      <rect x={152} y={148} width="40" height="40" rx="10" fill="#FFDB2D" className="pv-odd" />
+      <text x="40" y="52" fill="#6A6A6A" fontSize="13" fontWeight="700" letterSpacing="1.4" className="pv-label">
+        YOUR DOMAIN
+      </text>
+      <text x="40" y="284" fill="#FFDB2D" fontSize="13" fontWeight="700" letterSpacing="1.4" className="pv-label">
+        THEIR TEMPLATE
+      </text>
+    </svg>
+  );
+}
+
+function FeatureGridCallout({ c }: { c: any }) {
+  if (!c.callout) return null;
+  return (
+    <div className="mt-10 flex flex-wrap items-center justify-between gap-6 rounded-[22px] bg-brand p-[clamp(24px,3vw,38px)]">
+      <p className="m-0 max-w-[40ch] font-display text-[clamp(18px,1.9vw,23px)] font-bold leading-tight tracking-[-0.02em] text-black">
+        {c.callout.text}
+      </p>
+      {c.callout.cta?.label && <CtaLink {...c.callout.cta} style="primary" />}
+    </div>
+  );
+}
+
+/**
+ * The problem statement. `layout: 'split'` holds the heading in place while the
+ * statements pass it, so the section reads as one argument instead of three
+ * cards — see `layout` in sectionSchemas.ts. Everything else keeps the grid.
+ */
+function FeatureGridSplit({ c }: { c: any }) {
+  const items: any[] = c.items || [];
+  const n = Math.max(1, items.length);
+
+  // No `overflow-hidden` on this section: it would make an ancestor of the
+  // sticky view a scroll container, and `position: sticky` silently stops
+  // working. The orb is clipped by its own wrapper instead.
+  return (
+    <section className="relative bg-ink-900 text-white [background:radial-gradient(1200px_500px_at_78%_-10%,rgba(255,219,45,0.10),transparent_60%),#0A0A0A]">
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <span
+          className="fg-orb left-[-16%] top-[4%] h-[620px] w-[620px] [background:radial-gradient(circle,rgba(255,219,45,0.15),transparent_66%)]"
+          style={{ '--par': -1 } as React.CSSProperties}
+        />
+      </div>
+      <ScrollScene className="fg-pin" mode="pin" style={{ '--n': n } as React.CSSProperties}>
+        <div className="fg-view">
+          <div className="relative mx-auto w-full max-w-page px-6 py-[clamp(24px,3vw,40px)]">
+            <div className="flex flex-wrap items-end justify-between gap-6">
+              <div>
+                {c.eyebrow && (
+                  <div className="inline-flex items-center gap-2.5 rounded-full border border-brand/40 px-5 py-2 text-[13px] font-bold uppercase tracking-[0.14em] text-brand">
+                    <span className="h-2 w-2 rounded-full bg-brand shadow-[0_0_10px_1px_rgba(255,219,45,0.7)]" />
+                    {c.eyebrow}
+                  </div>
+                )}
+                {c.heading && (
+                  <h2 className="m-0 mt-5 max-w-[26ch] font-display text-[clamp(20px,2vw,27px)] font-bold leading-[1.2] tracking-[-0.02em] text-[#8E8E8E]">
+                    {c.heading}
+                  </h2>
+                )}
+              </div>
+              {/* one segment per problem, filling as its leg of the run plays */}
+              <div aria-hidden className="hidden items-center gap-2 md:flex">
+                {items.map((_, i) => (
+                  <span
+                    key={i}
+                    className="fg-seg h-[3px] w-[54px] rounded-full bg-[#2A2A2A]"
+                    style={{ '--i': i, '--n': n } as React.CSSProperties}
+                  >
+                    <span />
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="fg-deck mt-[clamp(28px,4vw,54px)]">
+              {items.map((it, i) => (
+                <article
+                  key={i}
+                  className="fg-slide grid grid-cols-1 items-center gap-[clamp(24px,4vw,64px)] lg:grid-cols-[1.06fr_0.94fr]"
+                  style={
+                    {
+                      '--i': i,
+                      '--n': n,
+                      // the first slide has nothing to cross in from, the last
+                      // nothing to cross out to
+                      '--fi': i === 0 ? 0 : 1,
+                      '--fo': i === n - 1 ? 0 : 1,
+                    } as React.CSSProperties
+                  }
+                >
+                  <div>
+                    {it.tag && (
+                      <span className="text-[12px] font-extrabold uppercase tracking-[0.2em] text-brand">{it.tag}</span>
+                    )}
+                    <h3 className="m-0 mb-5 mt-4 max-w-[17ch] font-display text-[clamp(28px,4.2vw,58px)] font-extrabold leading-[1.04] tracking-[-0.035em] text-white">
+                      {it.title}
+                    </h3>
+                    {it.body && (
+                      <p className="m-0 max-w-[48ch] text-[clamp(15px,1.5vw,18px)] leading-relaxed text-[#9A9A9A]">
+                        {it.body}
+                      </p>
+                    )}
+                  </div>
+                  <div className="aspect-[17/14] w-full max-w-[460px] justify-self-end rounded-[22px] border border-[#232323] p-[clamp(14px,2vw,26px)] [background:radial-gradient(120%_120%_at_20%_0%,#161616,#0C0C0C)]">
+                    <ProblemScene kind={vizKind(it.tag, i)} />
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </ScrollScene>
+      <div className={`relative mx-auto max-w-page px-6 ${PAD_SM}`}>
+        <FeatureGridCallout c={c} />
+      </div>
+    </section>
+  );
+}
+
+function FeatureGridCards({ c }: { c: any }) {
+  const items: any[] = c.items || [];
+  // Items with nothing but a title are a list of labels, not a set of cards —
+  // a card gives each one a large padded box holding a single line.
+  const labelsOnly = items.length > 0 && items.every((it) => !it.body);
   const cols = Number(c.columns) === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3';
-  const numbered = (c.items || []).some((it: any) => it.n);
+  const numbered = !labelsOnly && items.some((it: any) => it.n);
+
   return (
     <section className="bg-ink-900 text-white [background:radial-gradient(1200px_500px_at_78%_-10%,rgba(255,219,45,0.14),transparent_60%),#0A0A0A]">
       <div className={`mx-auto max-w-page px-6 ${PAD}`}>
@@ -303,76 +627,113 @@ function FeatureGrid({ c }: { c: any }) {
         {c.heading && (
           <h2 className={`${H2} mt-5 max-w-[24ch] text-white [text-wrap:balance] lg:max-w-[38ch]`}>{c.heading}</h2>
         )}
-        <div className={`mt-9 grid grid-cols-1 gap-[18px] sm:grid-cols-2 ${cols}`}>
-          {(c.items || []).map((it: any, i: number) => (
-            <div
-              key={i}
-              className="opp-card relative overflow-hidden rounded-[20px] border border-[#232323] p-7 [background:linear-gradient(180deg,#121212,#0D0D0D)]"
-            >
-              {numbered && (
-                <span className="opp-num pointer-events-none absolute right-[22px] top-[14px] font-display text-[110px] font-extrabold leading-none tracking-[-0.04em] text-white/[0.035]">
-                  {it.n || String(i + 1).padStart(2, '0')}
-                </span>
-              )}
-              {it.tag && (
-                <span className="text-[12.5px] font-extrabold uppercase tracking-[0.16em] text-brand">{it.tag}</span>
-              )}
-              <h3 className="m-0 mb-3.5 mt-5 font-display text-[20px] font-bold leading-tight tracking-[-0.015em] text-white">
-                {it.title}
-              </h3>
-              {it.body && <p className="m-0 text-[15px] leading-relaxed text-[#9A9A9A]">{it.body}</p>}
-            </div>
-          ))}
-        </div>
-        {c.callout && (
-          <div className="mt-9 flex flex-wrap items-center justify-between gap-6 rounded-[22px] bg-brand p-[clamp(24px,3vw,38px)]">
-            <p className="m-0 max-w-[40ch] font-display text-[clamp(18px,1.9vw,23px)] font-bold leading-tight tracking-[-0.02em] text-black">
-              {c.callout.text}
-            </p>
-            {c.callout.cta?.label && <CtaLink {...c.callout.cta} style="primary" />}
-          </div>
+        {c.subhead && (
+          <p className="m-0 mt-4 max-w-[60ch] text-[16px] leading-relaxed text-body-onDark">{c.subhead}</p>
         )}
+
+        <ScrollScene>
+          {labelsOnly ? (
+            <div className="mt-9 flex flex-wrap gap-3">
+              {items.map((it, i) => (
+                <span
+                  key={i}
+                  className="sx fgc-chip inline-flex items-center gap-3 rounded-[13px] border border-[#232323] px-[18px] py-[13px] text-[14.5px] font-semibold leading-none text-[#E4E4E4] [background:linear-gradient(180deg,#141414,#0E0E0E)]"
+                >
+                  <span aria-hidden className="fgc-dot h-[6px] w-[6px] flex-none rounded-full bg-brand" />
+                  {it.title}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <div className={`mt-9 grid grid-cols-1 gap-[18px] sm:grid-cols-2 ${cols}`}>
+              {items.map((it: any, i: number) => (
+                <div
+                  key={i}
+                  className="sx opp-card relative overflow-hidden rounded-[20px] border border-[#232323] p-7 [background:linear-gradient(180deg,#121212,#0D0D0D)]"
+                >
+                  {numbered && (
+                    <span className="opp-num pointer-events-none absolute right-[22px] top-[14px] font-display text-[110px] font-extrabold leading-none tracking-[-0.04em] text-white/[0.035]">
+                      {it.n || String(i + 1).padStart(2, '0')}
+                    </span>
+                  )}
+                  {it.tag && (
+                    <span className="text-[12.5px] font-extrabold uppercase tracking-[0.16em] text-brand">{it.tag}</span>
+                  )}
+                  <h3 className="m-0 mb-3.5 mt-5 font-display text-[20px] font-bold leading-tight tracking-[-0.015em] text-white">
+                    {it.title}
+                  </h3>
+                  {it.body && <p className="m-0 text-[15px] leading-relaxed text-[#9A9A9A]">{it.body}</p>}
+                </div>
+              ))}
+            </div>
+          )}
+        </ScrollScene>
+        <FeatureGridCallout c={c} />
       </div>
     </section>
   );
 }
 
-/* --------------------------- Partnership model -------------------------- */
+function FeatureGrid({ c }: { c: any }) {
+  return c.layout === 'split' ? <FeatureGridSplit c={c} /> : <FeatureGridCards c={c} />;
+}
 
 function Partnership({ c }: { c: any }) {
+  const left: string[] = c.left_items || [];
+  const right: string[] = c.right_items || [];
+
+  const column = (title: string, items: string[], side: -1 | 1) => (
+    <div>
+      <p
+        className={`m-0 text-[11px] font-bold uppercase tracking-[0.16em] ${
+          side === -1 ? 'text-body-dim' : 'text-black'
+        }`}
+      >
+        {title}
+      </p>
+      <ul className="relative m-0 mt-6 flex list-none flex-col p-0 pl-8">
+        <span aria-hidden className="pm-rail" />
+        <span aria-hidden className="pm-rail-fill" />
+        {items.map((label, i) => (
+          <li
+            key={label}
+            className="sx pm-item relative border-t border-surface-line2 py-[17px] text-[clamp(15px,1.45vw,17.5px)] font-semibold leading-snug tracking-[-0.015em] text-[#161616] first:border-t-0 first:pt-0"
+            style={{ '--i': i, '--side': side } as React.CSSProperties}
+          >
+            <span
+              aria-hidden
+              className={`pm-dot absolute -left-8 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-[3px] ${
+                side === -1 ? 'bg-black' : 'bg-brand'
+              }`}
+            />
+            {label}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+
   return (
-    <Section theme="light">
-      <Eyebrow>{c.eyebrow}</Eyebrow>
-      {c.heading && <h2 className={`${H2} mt-4 text-black`}>{c.heading}</h2>}
-      <div className="mt-9 grid grid-cols-1 gap-[18px] lg:grid-cols-2">
-        <div className="rounded-[22px] border border-ink-600 bg-ink-card p-7">
-          <h3 className="m-0 mb-4 font-display text-[18px] font-bold tracking-[-0.015em] text-white">
-            {c.left_title}
-          </h3>
-          <div className="flex flex-col gap-2.5">
-            {(c.left_items || []).map((a: string) => (
-              <div key={a} className="flex items-center gap-3 text-[15.5px] text-[#D2D2D2]">
-                <span className="text-[#666]">◇</span>
-                {a}
-              </div>
-            ))}
+    <section className="relative overflow-hidden bg-white">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[520px] w-[820px] -translate-x-1/2 -translate-y-1/2 rounded-full [background:radial-gradient(ellipse,rgba(255,219,45,0.12),transparent_70%)]"
+      />
+      <div className={`relative mx-auto max-w-page px-6 ${PAD}`}>
+        <ScrollScene>
+          <Eyebrow>{c.eyebrow}</Eyebrow>
+          {c.heading && (
+            <h2 className={`${H2} mt-4 max-w-[24ch] text-black`}>
+              <SplitHeading text={c.heading} />
+            </h2>
+          )}
+          <div className="mx-auto mt-12 grid max-w-[940px] grid-cols-1 gap-x-[clamp(32px,7vw,110px)] gap-y-12 md:grid-cols-2">
+            {column(c.left_title, left, -1)}
+            {column(c.right_title, right, 1)}
           </div>
-        </div>
-        <div className="rounded-[22px] bg-brand p-7">
-          <h3 className="m-0 mb-4 font-display text-[18px] font-bold tracking-[-0.015em] text-black">
-            {c.right_title}
-          </h3>
-          <div className="grid grid-cols-1 gap-x-5 gap-y-2.5 sm:grid-cols-2">
-            {(c.right_items || []).map((m: string) => (
-              <div key={m} className="flex items-center gap-2.5 text-[15px] font-semibold text-black">
-                <span>✓</span>
-                {m}
-              </div>
-            ))}
-          </div>
-        </div>
+        </ScrollScene>
       </div>
-    </Section>
+    </section>
   );
 }
 
@@ -420,50 +781,96 @@ function ServiceCapabilities({ c }: { c: any }) {
 /* --------------------------- What we connect ---------------------------- */
 
 function ConnectGrid({ c }: { c: any }) {
+  const items: string[] = c.items || [];
+  const half = Math.ceil(items.length / 2);
+  // Each row carries its set twice and is parked at -25%, so travelling either
+  // way never brings a row end into frame.
+  const rows: [string[], number][] = [
+    [items.slice(0, half), -1],
+    [items.slice(half), 1],
+  ];
+
+  const tile = (label: string, key: string) => (
+    <div
+      key={key}
+      className="sx cg-node flex w-[228px] flex-none items-center gap-3.5 rounded-[16px] border border-[#232323] px-4 py-[15px] [background:linear-gradient(180deg,#141414,#0E0E0E)]"
+    >
+      <span className="cg-ico flex h-10 w-10 flex-none items-center justify-center rounded-[11px] bg-[#1C1C1C] text-brand">
+        <Icon name={connectIconName(label)} size={19} />
+      </span>
+      <span className="text-[14px] font-semibold leading-tight text-[#E4E4E4]">{label}</span>
+    </div>
+  );
+
   return (
     <Section theme="dark">
-      <Eyebrow onDark>{c.eyebrow}</Eyebrow>
-      {c.heading && <h2 className={`${H2} mt-[18px] text-white`}>{c.heading}</h2>}
-      {c.subhead && <p className="m-0 mt-[18px] max-w-[60ch] text-[16px] leading-relaxed text-body-onDark">{c.subhead}</p>}
-      <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {(c.items || []).map((it: string) => (
+      <ScrollScene>
+        <Eyebrow onDark>{c.eyebrow}</Eyebrow>
+        {c.heading && (
+          <h2 className={`${H2} mt-[18px] text-white`}>
+            <SplitHeading text={c.heading} />
+          </h2>
+        )}
+        {c.subhead && (
+          <p className="m-0 mt-[18px] max-w-[60ch] text-[16px] leading-relaxed text-body-onDark">{c.subhead}</p>
+        )}
+
+        <div className="relative mt-12">
           <div
-            key={it}
-            className="conn-tile flex items-center gap-3.5 rounded-[16px] border border-[#262626] bg-ink-700 px-4 py-[14px] text-[14.5px] font-semibold text-[#E4E4E4]"
-          >
-            <span className="conn-ico flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-[11px] bg-[#1C1C1C] text-brand">
-              <Icon name={connectIconName(it)} size={20} />
-            </span>
-            {it}
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[280px] w-full max-w-[900px] -translate-x-1/2 -translate-y-1/2 [background:radial-gradient(ellipse,rgba(255,219,45,0.10),transparent_70%)]"
+          />
+          <div className="hx-mask relative flex flex-col gap-3.5 overflow-hidden">
+            {rows.map(([group, dirx]) => (
+              <div key={dirx} className="hx-row" style={{ '--dirx': dirx } as React.CSSProperties}>
+                {group.map((l, i) => tile(l, `a-${i}`))}
+                {group.map((l, i) => tile(l, `b-${i}`))}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
+      </ScrollScene>
     </Section>
   );
 }
 
 /* --------------------------- Implementations ---------------------------- */
 
-function Implementations({ c }: { c: any }) {
+async function Implementations({ c }: { c: any }) {
+  // Real published case studies, newest first — the same source /implementations
+  // lists from, so this can never drift from what the site actually has.
+  const [posts, settings] = await Promise.all([getPosts('implementation'), getSettings()]);
+  const base = `/${settings.url_config?.implementations_base || 'implementations'}`;
+  const slides = posts.slice(0, 10);
+
   return (
     <Section theme="light">
-      <div className="grid grid-cols-1 items-center gap-9 rounded-[26px] border border-surface-line2 bg-surface-tint p-[clamp(26px,3.6vw,46px)] lg:grid-cols-2">
-        <div>
-          <Eyebrow>{c.eyebrow}</Eyebrow>
-          {c.heading && <h2 className={`${H2} mt-4 text-black [text-wrap:balance]`}>{c.heading}</h2>}
-          {c.subhead && <p className="m-0 mt-5 text-[16px] leading-relaxed text-body-faint">{c.subhead}</p>}
+      <div className="rounded-[26px] border border-surface-line2 bg-surface-tint p-[clamp(26px,3.6vw,46px)]">
+        <div className="grid grid-cols-1 items-end gap-7 lg:grid-cols-[1.15fr_0.85fr]">
+          <div>
+            <Eyebrow>{c.eyebrow}</Eyebrow>
+            {c.heading && <h2 className={`${H2} mt-4 text-black [text-wrap:balance]`}>{c.heading}</h2>}
+            {c.subhead && (
+              <p className="m-0 mt-5 max-w-[54ch] text-[16px] leading-relaxed text-body-faint">{c.subhead}</p>
+            )}
+          </div>
           {c.cta?.label && (
-            <Link
-              href={c.cta.href || '#'}
-              className="mt-6 inline-block rounded-full bg-black px-6 py-[13px] text-[15px] font-bold text-brand"
-            >
-              {c.cta.label} →
-            </Link>
+            <div className="lg:text-right">
+              <Link
+                href={c.cta.href || '#'}
+                className="inline-block rounded-full bg-black px-6 py-[13px] text-[15px] font-bold text-brand"
+              >
+                {c.cta.label} →
+              </Link>
+            </div>
           )}
         </div>
-        <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-[20px] border border-[#EFECE0] [background:radial-gradient(120%_120%_at_30%_20%,#FFFDF4,#FFFFFF)]">
-          <HeroRobot compact />
-        </div>
+
+        {slides.length > 0 && (
+          <div className="mt-9">
+            <CaseStudySlider posts={slides} base={base} />
+          </div>
+        )}
       </div>
     </Section>
   );
@@ -472,27 +879,37 @@ function Implementations({ c }: { c: any }) {
 /* --------------------------- Engagement models -------------------------- */
 
 function EngagementModels({ c }: { c: any }) {
+  const items: any[] = c.items || [];
   return (
     <Section theme="tint2">
       <Eyebrow>{c.eyebrow}</Eyebrow>
       {c.heading && <h2 className={`${H2} mt-4 text-black`}>{c.heading}</h2>}
       <div className="mt-9 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {(c.items || []).map((e: any, i: number) => (
+        {items.map((e: any, i: number) => (
           <div
             key={i}
-            className={`relative rounded-[18px] border p-6 ${
+            className={`eng-card relative rounded-[18px] border p-6 ${
               e.featured ? 'border-black bg-black' : 'border-[#E7E7E3] bg-white'
             }`}
           >
             {e.featured && (
               <span className="absolute -top-[11px] left-[30px] rounded-full bg-brand px-3 py-[5px] text-[11px] font-bold uppercase tracking-[0.04em] text-black">
-                Most popular
+                Deepest partnership
               </span>
             )}
-            <div className="flex h-[34px] w-[34px] items-center justify-center rounded-lg bg-brand font-display text-[15px] font-extrabold text-black">
-              {e.step}
-            </div>
-            <h3 className={`m-0 mb-2.5 mt-4 font-display text-[20px] font-bold tracking-[-0.015em] ${e.featured ? 'text-white' : 'text-black'}`}>
+            {/* describes the engagement rather than ranking it */}
+            <span
+              className={`eng-ico flex h-11 w-11 items-center justify-center rounded-[13px] ${
+                e.featured ? 'bg-brand text-black' : 'bg-surface-tint2 text-black'
+              }`}
+            >
+              <Icon name={engagementIconName(e.title, e.icon)} size={21} />
+            </span>
+            <h3
+              className={`m-0 mb-2.5 mt-[18px] font-display text-[20px] font-bold tracking-[-0.015em] ${
+                e.featured ? 'text-white' : 'text-black'
+              }`}
+            >
               {e.title}
             </h3>
             <p className={`m-0 text-[14.5px] leading-snug ${e.featured ? 'text-body-onDark' : 'text-body-faint'}`}>
@@ -509,35 +926,82 @@ function EngagementModels({ c }: { c: any }) {
 
 function ProcessTimeline({ c }: { c: any }) {
   const steps: any[] = c.steps || [];
+  const total = String(steps.length).padStart(2, '0');
+
+  // No `overflow-hidden` on the section — it would stop the heading column
+  // sticking. The orbs are clipped by their own wrapper.
   return (
-    <Section theme="dark" narrow>
-      <Eyebrow onDark>{c.eyebrow}</Eyebrow>
-      {c.heading && <h2 className={`${H2} mt-[18px] text-white`}>{c.heading}</h2>}
-      {c.subhead && <p className="m-0 mt-[18px] max-w-[60ch] text-[16px] leading-relaxed text-body-onDark">{c.subhead}</p>}
-      <div className="relative mt-10">
-        <div className="absolute bottom-[26px] left-[27px] top-[26px] w-0.5 rounded [background:linear-gradient(180deg,#FFDB2D,rgba(255,219,45,0.12))]" />
-        <div className="flex flex-col gap-3">
-          {steps.map((p, i) => (
-            <div key={i} className="rm-row flex items-center gap-[22px]">
-              <div className="rm-node z-[1] flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-brand font-display text-[18px] font-extrabold text-black">
-                {p.n || i + 1}
-              </div>
-              <div className="rm-card flex flex-1 items-center gap-[18px] rounded-[16px] border border-[#262626] bg-ink-700 px-5 py-4">
-                <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-[12px] bg-[#1C1C1C] text-brand">
-                  <Icon name={stepIconName(i)} size={22} />
-                </div>
-                <div>
-                  <div className="font-display text-[12px] font-extrabold uppercase tracking-[0.1em] text-brand">
-                    Step {p.n || i + 1}
-                  </div>
-                  <div className="mt-1 font-display text-[18px] font-bold text-white">{p.title}</div>
-                </div>
+    <section className="relative bg-black text-white">
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <span
+          className="pt-orb left-[-12%] top-[8%] h-[540px] w-[540px] [background:radial-gradient(circle,rgba(255,219,45,0.13),transparent_66%)]"
+          style={{ '--par': -1 } as React.CSSProperties}
+        />
+        <span
+          className="pt-orb bottom-[-10%] right-[-8%] h-[460px] w-[460px] [background:radial-gradient(circle,rgba(255,219,45,0.09),transparent_66%)]"
+          style={{ '--par': 1 } as React.CSSProperties}
+        />
+      </div>
+
+      <ScrollScene>
+        <div className={`relative mx-auto max-w-page px-6 ${PAD}`}>
+          <div className="grid grid-cols-1 items-start gap-[clamp(30px,5vw,80px)] lg:grid-cols-[0.8fr_1.2fr]">
+            <div className="pt-head lg:sticky lg:top-[104px]">
+              <Eyebrow onDark>{c.eyebrow}</Eyebrow>
+              {c.heading && (
+                <h2 className="m-0 mt-[18px] max-w-[17ch] font-display text-[clamp(25px,3vw,40px)] font-extrabold leading-[1.07] tracking-[-0.035em] text-white">
+                  <SplitHeading text={c.heading} />
+                </h2>
+              )}
+              {c.subhead && (
+                <p className="m-0 mt-5 max-w-[46ch] text-[16px] leading-relaxed text-body-onDark">{c.subhead}</p>
+              )}
+              {/* how far through the sequence the reader has come */}
+              <div className="mt-9 flex items-center gap-4">
+                <span className="pt-prog h-[3px] w-[120px] overflow-hidden rounded-full bg-[#242424]">
+                  <span />
+                </span>
+                <span className="font-display text-[12px] font-extrabold uppercase tracking-[0.16em] text-body-dim">
+                  {total} steps
+                </span>
               </div>
             </div>
-          ))}
+
+            <div className="relative pl-[52px] sm:pl-[64px]">
+              {/* the rail runs node-centre to node-centre, not edge to edge */}
+              <span aria-hidden className="pt-rail bottom-[38px] left-[18px] top-[38px] sm:left-[24px]">
+                <span className="pt-fill" />
+              </span>
+              <div className="pt-track flex flex-col gap-[clamp(16px,2vw,26px)]">
+                {steps.map((p, i) => (
+                  <div key={i} className="sx pt-step relative">
+                    <span
+                      aria-hidden
+                      className="pt-node absolute left-[-52px] top-1/2 flex h-[38px] w-[38px] -translate-y-1/2 items-center justify-center rounded-full bg-brand font-display text-[15px] font-extrabold text-black sm:left-[-58px]"
+                    >
+                      {p.n || i + 1}
+                    </span>
+                    <div className="pt-card flex items-center gap-[18px] rounded-[16px] border border-[#232323] bg-ink-700 px-5 py-4">
+                      <span className="pt-ico flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-[12px] bg-[#1C1C1C] text-brand">
+                        <Icon name={stepIconName(i)} size={22} />
+                      </span>
+                      <div>
+                        <div className="font-display text-[11.5px] font-extrabold uppercase tracking-[0.14em] text-brand">
+                          Step {p.n || i + 1}
+                        </div>
+                        <div className="mt-1 font-display text-[clamp(16px,1.6vw,19px)] font-bold leading-snug text-white">
+                          {p.title}
+                        </div>
+                    </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </Section>
+      </ScrollScene>
+    </section>
   );
 }
 
@@ -586,24 +1050,47 @@ function CtaBand({ c }: { c: any }) {
     );
   }
   if (c.variant === 'final') {
-    // full yellow CTA section (reference footer CTA)
+    // Full yellow closing band. Two dark blooms drift at different rates to give
+    // the flat ground depth, and the copy arrives on the same scroll scrub as
+    // the sections above it.
     return (
-      <section className="bg-brand">
-        <div className={`mx-auto max-w-page px-6 text-center ${PAD}`}>
-          <h2 className="m-0 mx-auto max-w-[18ch] font-display text-[clamp(26px,3.5vw,44px)] font-extrabold leading-[1.02] tracking-[-0.035em] text-black [text-wrap:balance]">
-            {c.heading}
-          </h2>
-          {c.body && (
-            <p className="m-0 mx-auto mt-4 max-w-[56ch] text-[clamp(15px,1.4vw,17px)] leading-relaxed text-[#1A1A1A]">
-              {c.body}
-            </p>
-          )}
-          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-            {(c.ctas || []).map((cta: any, i: number) => (
-              <CtaLink key={i} label={cta.label} href={cta.href} style={cta.style || (i === 0 ? 'primary' : 'outline')} />
-            ))}
+      <section className="cta-final relative overflow-hidden bg-brand">
+        <ScrollScene>
+          <span
+            aria-hidden
+            className="cta-bloom left-[-12%] top-[-40%] h-[520px] w-[520px] [background:radial-gradient(circle,rgba(0,0,0,0.15),transparent_66%)]"
+            style={{ '--par': -1 } as React.CSSProperties}
+          />
+          <span
+            aria-hidden
+            className="cta-bloom bottom-[-46%] right-[-8%] h-[460px] w-[460px] [background:radial-gradient(circle,rgba(0,0,0,0.12),transparent_66%)]"
+            style={{ '--par': 1 } as React.CSSProperties}
+          />
+          <div className={`relative mx-auto max-w-page px-6 text-center ${PAD}`}>
+            <h2
+              className="sx cta-line m-0 mx-auto max-w-[22ch] font-display text-[clamp(26px,3.5vw,44px)] font-extrabold leading-[1.06] tracking-[-0.035em] text-black [text-wrap:balance]"
+              style={{ '--i': 0 } as React.CSSProperties}
+            >
+              <SplitHeading text={c.heading} />
+            </h2>
+            {c.body && (
+              <p
+                className="sx cta-line m-0 mx-auto mt-4 max-w-[56ch] text-[clamp(15px,1.4vw,17px)] leading-relaxed text-[#1A1A1A]"
+                style={{ '--i': 1 } as React.CSSProperties}
+              >
+                {c.body}
+              </p>
+            )}
+            <div
+              className="sx cta-line mt-7 flex flex-wrap items-center justify-center gap-3"
+              style={{ '--i': 2 } as React.CSSProperties}
+            >
+              {(c.ctas || []).map((cta: any, i: number) => (
+                <CtaLink key={i} label={cta.label} href={cta.href} style={cta.style || (i === 0 ? 'primary' : 'outline')} />
+              ))}
+            </div>
           </div>
-        </div>
+        </ScrollScene>
       </section>
     );
   }
@@ -773,7 +1260,7 @@ function ServicesDetail({ c }: { c: any }) {
   return (
     <>
       {items.length > 1 && (
-        <div className="sticky top-[63px] z-40 border-b border-line bg-white/92 backdrop-blur-md">
+        <div className="sticky top-[73px] z-40 border-b border-line bg-white/92 backdrop-blur-md">
           <div className="mx-auto max-w-page px-6 py-3.5">
             <div className="flex flex-wrap gap-2">
               {items.map((s) => (
@@ -795,7 +1282,7 @@ function ServicesDetail({ c }: { c: any }) {
             <article
               key={s.id}
               id={s.id}
-              className="svc-detail scroll-mt-[150px] rounded-[22px] border border-surface-line2 bg-white p-[clamp(24px,3.2vw,40px)]"
+              className="svc-detail scroll-mt-[160px] rounded-[22px] border border-surface-line2 bg-white p-[clamp(24px,3.2vw,40px)]"
             >
               <div className="mb-4 flex flex-wrap items-center gap-3">
                 <span className="inline-flex h-[34px] min-w-[48px] items-center justify-center rounded-[9px] bg-black px-3 font-display text-[12.5px] font-extrabold tracking-[0.04em] text-brand">

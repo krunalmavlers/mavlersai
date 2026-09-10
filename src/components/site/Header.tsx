@@ -23,8 +23,8 @@ export function Header({ settings, items }: { settings: SiteSettings; items: Men
   const tree = nest(items);
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-white/90 backdrop-blur-md">
-      <div className="mx-auto flex max-w-page items-center gap-5 px-6 py-[15px]">
-        <Logo settings={settings} height={31} variant="light" />
+      <div className="mx-auto flex max-w-page items-center gap-5 px-6 py-[18px]">
+        <Logo settings={settings} height={35} variant="light" />
         <div className="flex-1" />
 
         <nav className="hidden items-center gap-[26px] lg:flex">

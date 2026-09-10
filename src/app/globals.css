@@ -40,6 +40,559 @@ a:not([class]):hover {
   background: rgba(255, 219, 45, 0.4);
 }
 
+/* ---- Partnership: two rails ----------------------------------------------
+   Colour is a marker, not a container: ten filled blocks were far too much
+   weight for ten short phrases. Each contribution is a station on its own
+   rail, and the rail fills as the reader scrolls.
+
+   Everything is a pure function of --p, which the client drives from scroll
+   offset — so scrolling back up runs the section in reverse. --p defaults to 1
+   and the transforms sit behind [data-scrub], which only the client sets, so
+   the rows render in place without JavaScript and under reduced motion.
+   --------------------------------------------------------------------------- */
+.pm-scene { --p: 1; }
+
+.pm-rail, .pm-rail-fill {
+  position: absolute;
+  left: 4px;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+}
+.pm-rail { background: #E8E4D8; }
+.pm-rail-fill {
+  transform-origin: top;
+  transform: scaleY(var(--p, 1));
+  background: linear-gradient(180deg, #FFDB2D, rgba(255, 219, 45, .3));
+}
+
+/* the station marker: a small square that turns to a diamond as it lights up */
+.pm-dot {
+  transform-origin: center;
+  box-shadow: 0 0 0 4px #fff;
+}
+
+.pm-scene[data-scrub] .pm-item {
+  /* --e is this row's own progress, so it animates while it is on screen
+     rather than on the section's clock — see ScrollScene */
+  --t: var(--e, 1);
+  opacity: calc(.14 + var(--t) * .86);
+  transform: translateX(calc(var(--side) * (1 - var(--t)) * 26px));
+}
+.pm-scene[data-scrub] .pm-dot {
+  /* --t inherits from the row, so the marker stays in step with its label */
+  transform: scale(calc(.3 + var(--t) * .7)) rotate(calc(var(--t) * 45deg));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-scene[data-scrub] .pm-item { opacity: 1; transform: none; }
+  .pm-scene[data-scrub] .pm-dot { transform: none; }
+}
+
+/* ---- Case study card hover ------------------------------------------------
+   Its own class rather than reusing .svc-card, so tuning the slider cannot
+   disturb the service cards elsewhere. Hover work is behind `hover: hover`,
+   so touch devices never get a state they cannot leave, and the same treatment
+   is bound to :focus-visible for keyboard users.
+   --------------------------------------------------------------------------- */
+.cs-card {
+  position: relative;
+  isolation: isolate;
+  transition:
+    transform .42s cubic-bezier(.22, .61, .36, 1),
+    box-shadow .42s ease,
+    border-color .42s ease;
+}
+
+/* a yellow rule that draws across the top edge */
+.cs-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  border-radius: 18px 18px 0 0;
+  background: linear-gradient(90deg, #FFDB2D, #FFE985);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform .55s cubic-bezier(.22, .61, .36, 1);
+}
+
+/* and a warm wash that rises from the foot of the card */
+.cs-card::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 62%;
+  z-index: -1;
+  border-radius: 0 0 18px 18px;
+  background: linear-gradient(180deg, transparent, rgba(255, 219, 45, .16));
+  opacity: 0;
+  transition: opacity .42s ease;
+}
+
+.cs-go {
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: opacity .38s ease, transform .38s cubic-bezier(.22, .61, .36, 1);
+}
+.cs-chip { transition: border-color .38s ease, background-color .38s ease; }
+
+@media (hover: hover) {
+  .cs-card:hover { transform: translateY(-8px); }
+  .cs-card:hover::before { transform: scaleX(1); }
+  .cs-card:hover::after { opacity: 1; }
+}
+.cs-card:hover,
+.cs-card:focus-visible {
+  border-color: rgba(255, 219, 45, .85);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, .04), 0 26px 52px rgba(31, 28, 18, .16);
+}
+.cs-card:hover .cs-go,
+.cs-card:focus-visible .cs-go { opacity: 1; transform: none; }
+.cs-card:hover .cs-chip,
+.cs-card:focus-visible .cs-chip { border-color: rgba(255, 219, 45, .7); background-color: #FFFDF2; }
+.cs-card:focus-visible::before { transform: scaleX(1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-card, .cs-card::before, .cs-card::after, .cs-go { transition: none; }
+  .cs-card:hover { transform: none; }
+}
+
+/* ---- Hero: depth exit -----------------------------------------------------
+   No pin. Pinning needs a full-viewport sticky element, which forces a compact
+   hero to 100vh and leaves dead space above and below the copy. The impact
+   comes from the size of the move instead: the copy tips back and recedes into
+   depth while the backdrop planes expand the other way, all inside the hero's
+   own height.
+
+   Every transform sits behind [data-scrub], so without JavaScript — or under
+   reduced motion — this is an ordinary hero.
+   --------------------------------------------------------------------------- */
+.hero-scene[data-scrub] .hro {
+  /* the stagger fits inside the runway: 4 x 0.06 + 0.62 = 0.86 of --p */
+  --hp: clamp(0, calc((var(--p) - var(--i, 0) * 0.06) / 0.62), 1);
+  transform:
+    perspective(900px)
+    translateY(calc(var(--hp) * -120px))
+    translateZ(calc(var(--hp) * -300px))
+    rotateX(calc(var(--hp) * 16deg));
+  opacity: calc(1 - var(--hp) * 1.15);
+  filter: blur(calc(var(--hp) * 6px));
+  transform-origin: 50% 0%;
+  will-change: transform, opacity, filter;
+}
+
+/* the backdrop expands as the copy retreats — opposite directions is what
+   separates them into planes */
+.hero-scene[data-scrub] .hero-dotgrid {
+  transform: translateY(calc(var(--p) * 120px)) scale(calc(1 + var(--p) * 0.3));
+  opacity: calc(1 - var(--p) * 0.8);
+}
+.hero-scene[data-scrub] .hero-glow {
+  transform: translateX(-50%) translateY(calc(var(--p) * 170px)) scale(calc(1 + var(--p) * 1.2));
+  opacity: calc(1 - var(--p) * 0.85);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-scene[data-scrub] .hro,
+  .hero-scene[data-scrub] .hero-dotgrid { transform: none; opacity: 1; filter: none; }
+  .hero-scene[data-scrub] .hero-glow { transform: translateX(-50%); opacity: 1; }
+}
+
+/* ---- Scrubbed heading reveal ----------------------------------------------
+   Words rise out of their own overflow mask, each on its own slice of --p, so
+   the line unrolls with scroll rather than firing once. `padding-bottom` with a
+   matching negative margin gives descenders room inside the mask.
+
+   Word transforms sit behind [data-scrub] only, so without JavaScript — or
+   under reduced motion — the heading is just a heading.
+   --------------------------------------------------------------------------- */
+.sh-w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  margin-right: .26em;
+  padding-bottom: .14em;
+  margin-bottom: -.14em;
+}
+.sh-i { display: inline-block; will-change: transform; }
+
+.pm-scene[data-scrub] .sh-i {
+  /* The per-word step is derived from the heading's own word count, so the
+     line always finishes exactly as --e reaches 1 no matter how long it is.
+     A fixed step overruns: at 0.055 a ten-word heading needed --e = 1.115 and
+     its last words stayed half-revealed forever. */
+  --span: .58;
+  --step: calc((1 - var(--span)) / max(1, calc(var(--wn, 1) - 1)));
+  --tw: clamp(0, calc((var(--e, 1) - var(--w) * var(--step)) / var(--span)), 1);
+  transform: translateY(calc((1 - var(--tw)) * 108%));
+  opacity: calc(.15 + var(--tw) * .85);
+}
+
+/* ---- Horizontal travel ----------------------------------------------------
+   Two rows of systems running opposite ways as the section passes — scroll
+   position drives the offset, so it tracks the reader rather than a clock.
+   Content is doubled and parked at -25%, so no row edge is ever in frame.
+   --------------------------------------------------------------------------- */
+.hx-mask {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+.hx-row {
+  display: flex;
+  width: max-content;
+  gap: 14px;
+  transform: translateX(-25%);
+}
+.pm-scene[data-scrub] .hx-row {
+  transform: translateX(calc(-25% + var(--dirx) * (var(--p) - .5) * 220px));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-scene[data-scrub] .sh-i { transform: none; opacity: 1; }
+  .pm-scene[data-scrub] .hx-row { transform: translateX(-25%); }
+}
+
+/* ---- Opportunity: layered parallax ----------------------------------------
+   Four planes moving at different rates is what makes this read as depth
+   rather than a list that fades: two background orbs drifting against each
+   other on section progress, the pinned heading easing back, and the
+   statements arriving out of Z on their own progress.
+
+   On top of that the statements respond to `--c` — how centred each one is —
+   so whichever the reader is level with comes forward and the others hold
+   back. That is the part a plain reveal cannot do.
+   --------------------------------------------------------------------------- */
+.fg-orb { position: absolute; border-radius: 50%; pointer-events: none; }
+.pm-scene[data-scrub] .fg-orb {
+  transform:
+    translateY(calc((var(--p) - .5) * var(--par, 0) * 190px))
+    scale(calc(1 + var(--p) * .18));
+}
+
+.pm-scene[data-scrub] .fg-item {
+  --t: var(--e, 1);
+  /* arrives out of depth, then dims back once the reader has moved past it */
+  transform:
+    perspective(1100px)
+    translateY(calc((1 - var(--t)) * 64px))
+    translateZ(calc((1 - var(--t)) * -260px))
+    rotateX(calc((1 - var(--t)) * 12deg));
+  transform-origin: 50% 100%;
+  opacity: calc((.08 + var(--t) * .92) * (.5 + var(--c, 1) * .5));
+  filter: blur(calc((1 - var(--t)) * 3px));
+  will-change: transform, opacity;
+}
+.fg-item .fg-rule { transform-origin: left; transform: scaleX(var(--t, 1)); }
+
+/* the marker for whichever statement the reader is level with */
+.fg-focus {
+  transform-origin: center;
+  transform: scaleY(var(--c, 0));
+  opacity: var(--c, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-scene[data-scrub] .fg-orb,
+  .pm-scene[data-scrub] .fg-head,
+  .pm-scene[data-scrub] .fg-item { transform: none; opacity: 1; filter: none; }
+  .fg-item .fg-rule { transform: none; }
+  .fg-focus { transform: none; opacity: .35; }
+}
+
+/* ---- Opportunity: one statement at a time ---------------------------------
+   Not a list any more. The section holds for three screens of scroll and each
+   problem takes the whole viewport in turn, sliding through as the reader
+   moves. Cross-fading three drawings in a side panel put two of them on screen
+   at once; here exactly one slide is ever lit.
+
+   Everything below is behind [data-scrub]. Without JavaScript the slides are
+   ordinary stacked blocks and the section is its natural height, so there is
+   no pinned run and no dead scroll.
+   --------------------------------------------------------------------------- */
+.fg-slide + .fg-slide { margin-top: clamp(40px, 6vw, 84px); }
+
+@media (min-width: 768px) {
+  /* one screen of scroll per option, plus one for the slide itself to sit in */
+  .pm-scene[data-scrub].fg-pin { height: calc((var(--n, 3) + 1) * 100vh); }
+  .pm-scene[data-scrub].fg-pin > .fg-view {
+    position: sticky;
+    top: 0;
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    align-items: center;
+    overflow: hidden;
+  }
+  /* All slides share one grid cell, so the deck is as tall as the tallest of
+     them. Stacking them with `position: absolute` sized the deck to the first
+     slide alone — the taller ones overflowed and left a gap below. */
+  .pm-scene[data-scrub].fg-pin .fg-deck { display: grid; width: 100%; }
+  .pm-scene[data-scrub].fg-pin .fg-slide { grid-area: 1 / 1; margin: 0; }
+
+  .pm-scene[data-scrub].fg-pin .fg-slide {
+    /* this slide's own leg of the run: 0 as it takes over, 1 as it hands on */
+    --u: calc(var(--p) * var(--n, 3) - var(--i));
+    /* Legs are adjacent, so a ramp that starts at 0 and ends at 1 leaves both
+       slides dark exactly at the handover. Each fade is instead centred *on*
+       the boundary: the outgoing slide is at 0.5 as the incoming one reaches
+       0.5, so they cross rather than both hitting zero.
+       0.12 either side of the boundary; 4.1667 = 1 / 0.24.
+       --fi / --fo switch off the fade for the first and last slide, which have
+       no neighbour to cross with. */
+    opacity: min(
+      clamp(0, calc((var(--u) + .12) * 4.1667 + (1 - var(--fi, 1)) * 10), 1),
+      clamp(0, calc((1.12 - var(--u)) * 4.1667 + (1 - var(--fo, 1)) * 10), 1)
+    );
+    transform: translateY(calc((0.5 - var(--u)) * 64px));
+    pointer-events: none;
+  }
+}
+
+/* the rail: one segment per problem, filling as its leg runs */
+.fg-seg { position: relative; overflow: hidden; }
+.fg-seg > span {
+  display: block;
+  height: 100%;
+  transform-origin: left;
+  transform: scaleX(1);
+  background: #FFDB2D;
+}
+.pm-scene[data-scrub] .fg-seg > span { transform: scaleX(clamp(0, var(--u, 1), 1)); }
+
+.fg-orb { position: absolute; border-radius: 50%; pointer-events: none; }
+.pm-scene[data-scrub] .fg-orb {
+  transform: translateY(calc((var(--p) - .5) * var(--par, 0) * 190px)) scale(calc(1 + var(--p) * .18));
+}
+
+/* the drawing behind each statement */
+.pv-line { stroke-dasharray: 360; stroke-dashoffset: calc((1 - var(--d, 1)) * 360); }
+.pv-fill, .pv-head, .pv-label { opacity: calc(var(--d, 1) * var(--d, 1)); }
+.pv-bar {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transform: scaleY(clamp(0.02, calc((var(--d, 1) - var(--b) * 0.09) / 0.6), 1));
+}
+.pv-odd {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  transform: translate(calc((1 - var(--d, 1)) * 30px), calc((1 - var(--d, 1)) * -24px))
+             rotate(calc(40deg - var(--d, 1) * 28deg));
+}
+.pv-slot { opacity: calc(var(--d, 1) * .75); }
+.pm-scene[data-scrub] .fg-slide { --d: clamp(0, calc(var(--u) * 2.2), 1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-scene[data-scrub].fg-pin { height: auto; }
+  .pm-scene[data-scrub].fg-pin > .fg-view { position: static; min-height: 0; display: block; }
+  .pm-scene[data-scrub].fg-pin .fg-slide {
+    position: static;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  .pm-scene[data-scrub].fg-pin .fg-slide + .fg-slide { margin-top: clamp(40px, 6vw, 84px); }
+  .pm-scene[data-scrub] .fg-orb { transform: none; }
+  .pm-scene[data-scrub] .fg-seg > span { transform: scaleX(1); }
+  .pv-line { stroke-dashoffset: 0; }
+  .pv-bar, .pv-odd { transform: none; }
+}
+
+/* ---- Feature grid: label-only variant -------------------------------------
+   Some feature grids carry nothing but a title per item — ten job titles, a
+   dozen MVP types. Rendered as full cards those became large padded boxes with
+   one line floating in each. As chips they size to their own text and the
+   dead space goes.
+   --------------------------------------------------------------------------- */
+.fgc-chip { transition: transform .28s cubic-bezier(.22,.61,.36,1), border-color .28s ease, background-color .28s ease; }
+@media (hover: hover) {
+  .fgc-chip:hover { transform: translateY(-3px); border-color: rgba(255,219,45,.55); background-color: #191919; }
+}
+.fgc-chip:hover .fgc-dot { box-shadow: 0 0 12px 2px rgba(255,219,45,.6); }
+.fgc-dot { transition: box-shadow .28s ease; }
+
+.pm-scene[data-scrub] .fgc-chip {
+  --t: var(--e, 1);
+  opacity: calc(.12 + var(--t) * .88);
+  transform: translateY(calc((1 - var(--t)) * 16px));
+}
+@media (prefers-reduced-motion: reduce) {
+  .pm-scene[data-scrub] .fgc-chip { opacity: 1; transform: none; }
+}
+
+/* ---- Delivery timeline ----------------------------------------------------
+   A sticky heading beside a rail that fills as the reader descends. Steps
+   arrive out of depth on their own progress, and the one level with the
+   reader is lit while the rest hold back.
+
+   No pin: this section carries 5 steps on /governance, 8 on /services and 10
+   on /mvp, so a screen-per-step would run to ten screens on the longest page.
+   The rail does the same job at any length.
+   --------------------------------------------------------------------------- */
+.pt-orb { position: absolute; border-radius: 50%; pointer-events: none; }
+.pm-scene[data-scrub] .pt-orb {
+  transform: translateY(calc((var(--p) - .5) * var(--par, 0) * 170px)) scale(calc(1 + var(--p) * .15));
+}
+.pm-scene[data-scrub] .pt-head { transform: translateY(calc(var(--p) * -34px)); }
+
+/* the rail, and how far down it the reader has come */
+.pt-rail { position: absolute; top: 0; bottom: 0; width: 2px; background: #212121; }
+.pt-fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: top;
+  transform: scaleY(1);
+  background: linear-gradient(180deg, #FFDB2D, rgba(255, 219, 45, .25));
+}
+.pm-scene[data-scrub] .pt-fill { transform: scaleY(clamp(0, var(--p, 1), 1)); }
+.pt-prog > span { display: block; height: 100%; transform-origin: left; transform: scaleX(1); background: #FFDB2D; }
+.pm-scene[data-scrub] .pt-prog > span { transform: scaleX(clamp(0, var(--p, 1), 1)); }
+
+/* The whole list drifts as one, so it still moves against the sticky heading
+   and the orbs without any step changing its distance from its neighbours. */
+.pm-scene[data-scrub] .pt-track { transform: translateY(calc((var(--p) - .5) * 30px)); }
+
+.pm-scene[data-scrub] .pt-step {
+  --t: var(--e, 1);
+  /* Horizontal only. An alternating vertical drift made the gaps expand and
+     contract in turn, and translateZ under perspective shifts a row toward the
+     vanishing point — both change the spacing the layout just set. */
+  transform: translateX(calc((1 - var(--t)) * 54px));
+  opacity: calc((.1 + var(--t) * .9) * (.46 + var(--c, 1) * .54));
+  will-change: transform, opacity;
+}
+.pt-node {
+  transform: scale(calc(.55 + var(--t, 1) * .45));
+  box-shadow: 0 0 0 6px #000;
+  transition: box-shadow .3s ease;
+}
+.pt-step:hover .pt-node { box-shadow: 0 0 0 6px #000, 0 0 22px 4px rgba(255, 219, 45, .45); }
+.pt-card { transition: border-color .3s ease, background-color .3s ease, transform .3s cubic-bezier(.22,.61,.36,1); }
+@media (hover: hover) {
+  .pt-step:hover .pt-card { border-color: rgba(255,219,45,.5); background-color: #171717; transform: translateX(6px); }
+}
+.pt-ico { transition: background-color .3s ease, color .3s ease, transform .3s ease; }
+.pt-step:hover .pt-ico { background-color: #FFDB2D; color: #000; transform: rotate(-6deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-scene[data-scrub] .pt-orb,
+  .pm-scene[data-scrub] .pt-head,
+  .pm-scene[data-scrub] .pt-track,
+  .pm-scene[data-scrub] .pt-step { transform: none; opacity: 1; }
+  .pm-scene[data-scrub] .pt-fill { transform: scaleY(1); }
+  .pm-scene[data-scrub] .pt-prog > span { transform: scaleX(1); }
+  .pt-node { transform: none; }
+  .pt-step:hover .pt-card { transform: none; }
+}
+
+/* ---- Engagement: descriptive icons ----------------------------------------
+   Each engagement gets an icon for what it is. The previous filled-bar scale
+   read as signal strength, which implied the lighter engagements were worth
+   less rather than differently shaped.
+   --------------------------------------------------------------------------- */
+.eng-ico { transition: background-color .3s ease, color .3s ease, transform .3s ease; }
+.eng-card:hover .eng-ico { background-color: #FFDB2D; color: #000; transform: rotate(-6deg); }
+.eng-card { transition: transform .3s cubic-bezier(.22,.61,.36,1), border-color .3s ease, box-shadow .3s ease; }
+@media (hover: hover) {
+  .eng-card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(0,0,0,.10); }
+}
+
+/* ---- Closing CTA ----------------------------------------------------------
+   Flat yellow with nothing happening was the last thing a visitor saw. Two
+   dark blooms drift at different rates to give the ground depth, and the copy
+   arrives on the same scrub as everything above it.
+   --------------------------------------------------------------------------- */
+.cta-bloom { position: absolute; border-radius: 50%; pointer-events: none; }
+.pm-scene[data-scrub] .cta-bloom { transform: translateX(calc((var(--p) - .5) * var(--par, 0) * 90px)); }
+.pm-scene[data-scrub] .cta-line {
+  --t: var(--e, 1);
+  opacity: var(--t);
+  transform: translateY(calc((1 - var(--t)) * 26px));
+}
+.cta-final a { transition: transform .28s cubic-bezier(.22,.61,.36,1), box-shadow .28s ease; }
+@media (hover: hover) {
+  .cta-final a:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(0,0,0,.22); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-scene[data-scrub] .fg-item,
+  .pm-scene[data-scrub] .cta-line { opacity: 1; transform: none; }
+  .pm-scene[data-scrub] .cta-bloom { transform: none; }
+  .fg-item .fg-rule { transform: none; }
+  .eng-card:hover { transform: none; }
+}
+
+/* ---- What we connect: parallax grid ---------------------------------------
+   No connecting lines. Depth comes from the columns drifting at different
+   rates as the section passes, over a reveal that runs on each tile's own
+   window on --p. Both are pure functions of scroll offset, so the whole thing
+   reverses on the way back up.
+   --------------------------------------------------------------------------- */
+.cg-node { transition: transform .3s cubic-bezier(.22,.61,.36,1), border-color .3s ease, background-color .3s ease; }
+.cg-ico  { transition: background-color .3s ease, color .3s ease, transform .3s ease; }
+
+@media (hover: hover) {
+  .cg-node:hover { border-color: rgba(255,219,45,.55); background-color: #171717; }
+}
+.cg-node:hover .cg-ico, .cg-node:focus-within .cg-ico {
+  background-color: #FFDB2D;
+  color: #000;
+  transform: rotate(-6deg);
+}
+
+/* the rows carry the motion now, so a tile only needs to fade up as the
+   section arrives — a per-tile drift on top of a travelling row reads as jitter */
+.pm-scene[data-scrub] .cg-node {
+  --t: var(--e, 1);
+  opacity: calc(.18 + var(--t) * .82);
+  transform: translateY(calc((1 - var(--t)) * 20px));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-scene[data-scrub] .cg-node { opacity: 1; transform: none; }
+}
+
+/* ---- Case study slider ----------------------------------------------------
+   The track stays a real scroll container — swipe, trackpad and keyboard all
+   work without JS — so only the scrollbar chrome is hidden.
+   --------------------------------------------------------------------------- */
+.cs-track { scrollbar-width: none; -ms-overflow-style: none; }
+.cs-track::-webkit-scrollbar { display: none; }
+
+/* ---- Hero accent marker ----------------------------------------------------
+   A band of fixed thickness sitting off the baseline. The previous rule filled
+   from 62% to the bottom of the line box, so it had no clearance of its own and
+   collided with whatever followed — reading as a stray rule rather than an
+   underline. `box-decoration-break: clone` keeps it intact when the span wraps.
+   --------------------------------------------------------------------------- */
+.hero-mark span {
+  background-image: linear-gradient(#FFDB2D, #FFDB2D);
+  background-repeat: no-repeat;
+  background-size: 100% 0.17em;
+  background-position: 0 0.88em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* ---- Centred hero backdrop -------------------------------------------------
+   A fine dot grid masked to fade out before the edges, under a soft yellow wash
+   falling from above the fold. Both are decoration only and sit behind the copy.
+   --------------------------------------------------------------------------- */
+.hero-dotgrid {
+  background-image: radial-gradient(circle, #DDDDD6 1.15px, transparent 1.15px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(ellipse 74% 76% at 50% 42%, #000 12%, transparent 74%);
+  mask-image: radial-gradient(ellipse 74% 76% at 50% 42%, #000 12%, transparent 74%);
+}
+.hero-glow {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 219, 45, 0.44),
+    rgba(255, 219, 45, 0.13) 42%,
+    transparent 68%
+  );
+}
+
 /* ---- Reference design: shared animations & hover effects ---- */
 @keyframes marquee {
   from { transform: translateX(0); }
@@ -372,8 +925,45 @@ a:not([class]):hover {
   margin-top: 1.4em;
   font-weight: 700;
 }
-.prose-mavlers p {
+/* `.prose-mavlers p { margin: 0 }` used to sit here. It out-specified the
+   `> * + *` sibling rule (0,1,1 beats 0,1,0), so no paragraph ever got its
+   top margin — prose ran together and every paragraph sat flush against the
+   heading above it. Spacing is left to the sibling rule; only the first child
+   is reset. */
+.prose-mavlers > :first-child { margin-top: 0; }
+
+/* a heading belongs to the paragraph under it, so that gap is much tighter
+   than the one above the heading */
+.prose-mavlers h2 + p,
+.prose-mavlers h3 + p,
+.prose-mavlers h2 + ul,
+.prose-mavlers h3 + ul { margin-top: 0.55em; }
+
+.prose-mavlers strong { color: #111; font-weight: 700; }
+
+/* Lists read as a set of named things rather than bullets: no marker glyph,
+   a small brand square, and room between rows. */
+.prose-mavlers ul {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85em;
+}
+.prose-mavlers ul > li {
+  position: relative;
   margin: 0;
+  padding-left: 1.75em;
+}
+.prose-mavlers ul > li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: #FFDB2D;
 }
 .prose-mavlers a {
   color: #111;
@@ -382,7 +972,6 @@ a:not([class]):hover {
   text-decoration-thickness: 2px;
   text-underline-offset: 3px;
 }
-.prose-mavlers ul,
 .prose-mavlers ol {
   padding-left: 1.3em;
 }
