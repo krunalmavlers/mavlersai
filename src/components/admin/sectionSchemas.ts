@@ -26,6 +26,13 @@ const heading: FieldDesc = { key: 'heading', label: 'Heading', kind: 'text' };
 
 export const SECTION_SCHEMAS: Record<string, FieldDesc[]> = {
   hero: [
+    {
+      key: 'layout',
+      label: 'Layout',
+      kind: 'select',
+      options: ['split', 'centered'],
+      hint: 'split = copy on the left with an animation or image beside it (default). centered = copy centred on a spotlight-and-grid backdrop, with no side visual.',
+    },
     { key: 'badge', label: 'Badge', kind: 'text' },
     { key: 'heading_html', label: 'Heading (HTML — wrap accent words in <span>…</span>)', kind: 'textarea' },
     { key: 'subhead', label: 'Subhead', kind: 'textarea' },
@@ -74,6 +81,13 @@ export const SECTION_SCHEMAS: Record<string, FieldDesc[]> = {
     { key: 'logos', label: 'Logos (marquee)', kind: 'stringList' },
   ],
   feature_grid: [
+    {
+      key: 'layout',
+      label: 'Layout',
+      kind: 'select',
+      options: ['grid', 'split'],
+      hint: 'grid = cards side by side (default). split = the heading holds in place while the points scroll past it.',
+    },
     eyebrow,
     heading,
     { key: 'columns', label: 'Columns', kind: 'select', options: ['3', '4'] },
@@ -99,6 +113,8 @@ export const SECTION_SCHEMAS: Record<string, FieldDesc[]> = {
     },
   ],
   partnership: [
+    { key: 'image', label: 'Visual', kind: 'text', hint: 'Optional. Replaces the built partnership artwork with your own image.' },
+    { key: 'image_alt', label: 'Visual alt text', kind: 'text' },
     eyebrow,
     heading,
     { key: 'left_title', label: 'Left column title', kind: 'text' },
