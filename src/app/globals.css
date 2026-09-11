@@ -211,7 +211,6 @@ a:not([class]):hover {
   display: inline-block;
   overflow: hidden;
   vertical-align: bottom;
-  margin-right: .26em;
   padding-bottom: .14em;
   margin-bottom: -.14em;
 }

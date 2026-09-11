@@ -1,3 +1,4 @@
+import React from 'react';
 import Link from 'next/link';
 import type { PageSection } from '@/lib/types';
 import { getForm, getPosts, getSettings } from '@/lib/queries';
@@ -49,9 +50,15 @@ function SplitHeading({ text, offset = 0 }: { text?: string; offset?: number }) 
   return (
     <span className="sx" style={{ '--wo': offset, '--wn': words.length } as React.CSSProperties}>
       {words.map((w, i) => (
-        <span key={`${w}-${i}`} className="sh-w" style={{ '--w': i } as React.CSSProperties}>
-          <span className="sh-i">{w}</span>
-        </span>
+        // The space between words is a real character, not a CSS margin: a
+        // margin looks right but leaves the heading as one run-on string to
+        // screen readers, search engines and copy-paste.
+        <React.Fragment key={`${w}-${i}`}>
+          <span className="sh-w" style={{ '--w': i } as React.CSSProperties}>
+            <span className="sh-i">{w}</span>
+          </span>
+          {i < words.length - 1 ? ' ' : null}
+        </React.Fragment>
       ))}
     </span>
   );
