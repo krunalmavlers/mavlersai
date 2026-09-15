@@ -1007,7 +1007,12 @@ function ConnectGrid({ c }: { c: any }) {
           />
           <div className="hx-mask relative flex flex-col gap-3.5 overflow-hidden">
             {rows.map(([group, dirx], r) => (
-              <div key={r} className="hx-row" style={{ '--dirx': dirx } as React.CSSProperties}>
+              <div
+                key={r}
+                className="hx-row"
+                data-dir={dirx > 0 ? 'r' : 'l'}
+                style={{ '--dirx': dirx } as React.CSSProperties}
+              >
                 {group.map((l, i) => tile(l, `a-${i}`))}
                 {group.map((l, i) => tile(l, `b-${i}`))}
               </div>

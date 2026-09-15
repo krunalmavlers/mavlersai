@@ -378,13 +378,42 @@ a:not([class]):hover {
   gap: 14px;
   transform: translateX(-25%);
 }
-.pm-scene[data-scrub] .hx-row {
-  transform: translateX(calc(-25% + var(--dirx) * (var(--p) - .5) * 220px));
+
+/* Below the desktop breakpoint the rows run as an infinite marquee instead of
+   travelling with scroll. A 228px tile in a ~327px column shows one and a half
+   options, and scroll-driven travel only reaches a few of them — so most of the
+   list was unreachable on a phone. Looping carries every option past the reader
+   in the height of a single row, rather than stacking twelve of them.
+
+   The gap becomes a right margin here so the loop is seamless: with `gap`, a
+   row of 2N tiles is 2N*T + (2N-1)*G wide, so -50% lands half a gap short and
+   the seam visibly jumps every cycle. As margin, each tile owns its spacing and
+   the row is exactly twice its first half. */
+@keyframes hx-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (max-width: 1023px) {
+  .hx-row {
+    width: max-content;
+    gap: 0;
+    transform: none;
+    animation: hx-marquee 34s linear infinite;
+  }
+  .hx-row > * { margin-right: 14px; }
+  .hx-row[data-dir='r'] { animation-direction: reverse; }
+}
+
+@media (min-width: 1024px) {
+  .pm-scene[data-scrub] .hx-row {
+    transform: translateX(calc(-25% + var(--dirx) * (var(--p) - .5) * 220px));
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .pm-scene[data-scrub] .sh-i { transform: none; opacity: 1; }
   .pm-scene[data-scrub] .hx-row { transform: translateX(-25%); }
+  .hx-row { animation: none; }
 }
 
 /* ---- Opportunity: layered parallax ----------------------------------------
