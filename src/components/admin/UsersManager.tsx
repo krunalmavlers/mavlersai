@@ -92,8 +92,8 @@ export function UsersManager({ users, currentUserId }: { users: AdminUserRow[]; 
           </Field>
           <Field label="Role">
             <select className={inputCls} value={role} onChange={(e) => setRole(e.target.value as 'admin' | 'editor')}>
-              <option value="editor">Editor — content only</option>
-              <option value="admin">Admin — full access</option>
+              <option value="editor">Editor: content only</option>
+              <option value="admin">Admin: full access</option>
             </select>
           </Field>
         </div>

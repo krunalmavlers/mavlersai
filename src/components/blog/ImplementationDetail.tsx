@@ -131,7 +131,7 @@ export function ImplementationDetail({
             Want something like this for your client?
           </h2>
           <p className="m-0 mb-6 text-[15px] text-[#1a1a1a]">
-            Bring us the opportunity — we will map it to the right implementation pathway.
+            Bring us the opportunity and we will map it to the right implementation pathway.
           </p>
           <Link
             href="/book-a-call"

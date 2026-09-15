@@ -13,7 +13,7 @@ export default async function FormEdit({ params }: { params: { id: string } }) {
       title: '',
       description: '',
       submit_label: 'Submit',
-      success_message: 'Thanks — we got it.',
+      success_message: 'Thanks, we got it.',
       recipient_emails: [],
       recaptcha_enabled: true,
       settings: {},

@@ -242,7 +242,7 @@ export default async function CatchAllPage({ params }: { params: Params }) {
         <ListHero
           eyebrow="AI Use Cases"
           title="AI use cases you can build with your clients"
-          subtitle="Explore the workflows, agents and integrations we deliver — filter by industry or by digital lifecycle."
+          subtitle="Explore the workflows, agents and integrations we deliver, filter by industry or by digital lifecycle."
           cms={cmsHero}
         />
         <section className="pb-16 md:pb-20">

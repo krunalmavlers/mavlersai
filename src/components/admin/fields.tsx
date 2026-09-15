@@ -75,7 +75,7 @@ function FieldRenderer({
         <label className="block">
           <Label desc={desc} />
           <select className={inputCls} value={value ?? ''} onChange={(e) => onChange(e.target.value)}>
-            <option value="">—</option>
+            <option value="">None</option>
             {(desc.options || []).map((o) => (
               <option key={o} value={o} className="bg-surface-tint2">
                 {o}

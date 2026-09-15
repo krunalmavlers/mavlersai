@@ -8,7 +8,7 @@ export default async function PostsList() {
     <div>
       <PageHeader
         title="Insights & AI Use Cases"
-        subtitle="Blog posts and case studies — tag into multiple categories."
+        subtitle="Blog posts and case studies. Tag into multiple categories."
         action={
           <div className="flex gap-2">
             <Link href="/admin/posts/new?type=insight" className="rounded-[10px] bg-brand px-4 py-2.5 text-[14px] font-bold text-ink hover:bg-brand-300">

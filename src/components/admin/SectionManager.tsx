@@ -129,7 +129,7 @@ export function SectionManager({ pageId, sections }: { pageId: string; sections:
     <Card>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <h2 className="m-0 font-display text-[18px] font-bold text-black">
-          Sections <span className="ml-1 text-[12px] font-normal text-body-dim">— drag to reorder</span>
+          Sections <span className="ml-1 text-[12px] font-normal text-body-dim">Drag to reorder</span>
         </h2>
         <div className="flex items-center gap-2">
           <select

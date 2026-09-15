@@ -31,7 +31,7 @@ export async function sendSubmissionEmail({
     const rows = Object.entries(data)
       .map(([k, v]) => `<tr><td style="padding:4px 12px 4px 0;color:#555"><b>${escapeHtml(k)}</b></td><td style="padding:4px 0">${escapeHtml(String(v ?? ''))}</td></tr>`)
       .join('');
-    const html = `<h2>New submission — ${escapeHtml(formName)}</h2><table>${rows}</table>`;
+    const html = `<h2>New submission: ${escapeHtml(formName)}</h2><table>${rows}</table>`;
 
     try {
       const res = await fetch('https://api.resend.com/emails', {

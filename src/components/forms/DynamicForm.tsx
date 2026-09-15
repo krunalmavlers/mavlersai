@@ -86,7 +86,7 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
         <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-brand text-2xl text-black">
           ✓
         </div>
-        <h2 className="m-0 mb-3 font-display text-[28px] font-bold text-black">Thanks — we&apos;ve got it.</h2>
+        <h2 className="m-0 mb-3 font-display text-[28px] font-bold text-black">Thanks, we&apos;ve got it.</h2>
         <p className="m-0 mb-6 text-[16px] text-body-muted">
           We received your {kind} and our team will be in touch shortly.
         </p>

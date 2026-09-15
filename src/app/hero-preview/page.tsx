@@ -50,7 +50,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ t
       )}
       <div className="mx-auto max-w-page px-6 pt-10">
         <h1 className="m-0 font-display text-[26px] font-extrabold tracking-[-0.02em] text-black">
-          AI Development hero — animation concepts
+          AI Development hero: animation concepts
         </h1>
         <p className="m-0 mt-2 text-[14px] text-body-muted">
           Three 9s-loop directions in the brand palette. Set the winner on the hero section&apos;s

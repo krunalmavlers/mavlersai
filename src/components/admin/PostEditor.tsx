@@ -66,7 +66,7 @@ export function PostEditor({
             ok: true,
             text:
               f.status === 'published'
-                ? 'Saved & published — it’s now live on the site.'
+                ? 'Saved & published. It’s now live on the site.'
                 : 'Saved as draft.',
           });
         } else {
@@ -167,7 +167,7 @@ export function PostEditor({
             </Field>
             <Field label="Author">
               <select className={inputCls} value={f.author_id || ''} onChange={(e) => set('author_id', e.target.value)}>
-                <option value="">—</option>
+                <option value="">None</option>
                 {authors.map((a) => (
                   <option key={a.id} value={a.id}>
                     {a.name}

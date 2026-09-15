@@ -79,7 +79,7 @@ export function SectionEditor({ section, onDone }: { section: PageSection; onDon
                 setContent(JSON.parse(rawText));
                 setErr('');
               } catch {
-                setErr('Invalid JSON — fix before switching to the visual editor.');
+                setErr('Invalid JSON. Fix before switching to the visual editor.');
                 return;
               }
             }
