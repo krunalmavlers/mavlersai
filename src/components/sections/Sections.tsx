@@ -1124,7 +1124,12 @@ function ProcessTimeline({ c }: { c: any }) {
   // No `overflow-hidden` on the section — it would stop the heading column
   // sticking. The orbs are clipped by their own wrapper.
   return (
-    <section className="relative bg-black text-white">
+    /* `overflow-x: clip` rather than `hidden`: the steps slide in from 54px to
+       the right, which pushed the page 30px wider than the viewport on phones
+       and tablets and gave every page carrying this section a sideways scroll.
+       `clip` contains that without creating a scroll container, so the sticky
+       heading below still works — `hidden` would break it. */
+    <section className="relative bg-black text-white [overflow-x:clip]">
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
         <span
           className="pt-orb left-[-12%] top-[8%] h-[540px] w-[540px] [background:radial-gradient(circle,rgba(255,219,45,0.13),transparent_66%)]"
