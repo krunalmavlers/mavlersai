@@ -117,47 +117,65 @@ export function CaseStudySlider({ posts, base }: { posts: Post[]; base: string }
         className="cs-track -mx-1 -my-7 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-1 py-7"
       >
         {posts.map((p) => {
-          const industry = (p.categories || []).find((c) => c.taxonomy === 'industry')?.name;
+          const cats = p.categories || [];
+          const industry = cats.find((c) => c.taxonomy === 'industry')?.name;
+          // The seeded sample posts carry meta.type and meta.stack; the real
+          // case studies are tagged with `category` and `lifecycle` terms
+          // instead. Reading only the former left every real card without its
+          // badge or chips, so fall back to the taxonomy the author did use.
+          const badge = p.meta?.type || cats.find((c) => c.taxonomy === 'category')?.name;
+          const stack = p.meta?.stack?.length
+            ? p.meta.stack
+            : cats.filter((c) => c.taxonomy === 'lifecycle').map((c) => c.name);
           return (
             <Link
               key={p.id}
               href={`${base}/${p.slug}`}
-              className="cs-card group flex w-[86vw] shrink-0 snap-start flex-col overflow-hidden rounded-[18px] border border-surface-line2 bg-white p-6 sm:w-[330px]"
+              className="cs-card group flex w-[86vw] shrink-0 snap-start flex-col overflow-hidden rounded-[18px] border border-surface-line2 bg-white p-[22px] sm:w-[330px]"
             >
-              <div className="mb-4 flex flex-wrap items-center gap-2">
-                {p.meta?.type && (
-                  <span className="rounded-md bg-brand px-2.5 py-1 text-[11px] font-bold text-black">
-                    {p.meta.type}
+              <div className="mb-[15px] flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
+                {badge && (
+                  <span className="rounded-[5px] bg-brand px-2.5 py-[5px] text-[10.5px] font-extrabold uppercase tracking-[0.05em] leading-none text-black">
+                    {badge}
                   </span>
                 )}
-                {industry && <span className="text-[11.5px] text-body-dim">{industry}</span>}
+                {industry && (
+                  <span className="text-[10.5px] font-bold uppercase tracking-[0.1em] text-body-dim">
+                    {industry}
+                  </span>
+                )}
               </div>
-              <h3 className="m-0 mb-2.5 font-display text-[17px] font-bold leading-snug text-black transition-colors group-hover:text-brand-ink">
+              <h3 className="m-0 mb-2.5 font-display text-[18px] font-extrabold leading-[1.3] tracking-[-0.018em] text-black transition-colors group-hover:text-brand-ink">
                 {p.title}
               </h3>
               {p.meta?.result_headline && (
-                <p className="m-0 mb-3 text-[13px] font-bold leading-snug text-brand-ink">
+                <p className="m-0 mb-2.5 text-[12.5px] font-bold leading-snug text-brand-ink">
                   {p.meta.result_headline}
                 </p>
               )}
-              <p className="m-0 mb-4 flex-1 text-[13.5px] leading-relaxed text-body-faint">{p.excerpt}</p>
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex flex-wrap gap-1.5">
-                  {(p.meta?.stack || []).slice(0, 3).map((t) => (
-                    <span
-                      key={t}
-                      className="cs-chip rounded-md border border-surface-line2 bg-surface-tint px-2 py-0.5 text-[11px] text-body-faint"
-                    >
-                      {t}
-                    </span>
-                  ))}
+              {/* clamped: the excerpts run to wildly different lengths, and left
+                  unbounded they set the card heights and swamped the titles */}
+              <p className="cs-excerpt m-0 text-[13px] leading-[1.62] text-body-faint">{p.excerpt}</p>
+              <div className="mt-auto pt-[18px]">
+                <span aria-hidden className="cs-rule mb-[14px] block h-px w-full" />
+                <div className="flex items-end justify-between gap-3">
+                  <div className="flex flex-wrap gap-1.5">
+                    {stack.slice(0, 3).map((t) => (
+                      <span
+                        key={t}
+                        className="cs-chip rounded-[6px] bg-surface-tint px-2 py-[3px] text-[10.5px] font-semibold text-body-dim"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                  <span
+                    aria-hidden
+                    className="cs-go flex h-[30px] w-[30px] flex-none items-center justify-center rounded-full border-[1.5px] border-black/[0.13] text-black"
+                  >
+                    <Icon name="arrow-up-right" size={15} />
+                  </span>
                 </div>
-                <span
-                  aria-hidden
-                  className="cs-go flex h-8 w-8 flex-none items-center justify-center rounded-full bg-brand text-black"
-                >
-                  <Icon name="arrow-up-right" size={16} />
-                </span>
               </div>
             </Link>
           );

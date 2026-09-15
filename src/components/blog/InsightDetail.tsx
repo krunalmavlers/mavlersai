@@ -16,7 +16,7 @@ export function InsightDetail({
   return (
     <article className="bg-white px-6 py-16 md:py-20">
       <div className="mx-auto max-w-[760px]">
-        <nav className="mb-6 text-[13px] text-body-dim">
+        <nav aria-label="Breadcrumb" className="mb-6 text-[13px] text-body-dim">
           <Link href={base} className="hover:text-black">
             Insights
           </Link>{' '}

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import type { Category, Post } from '@/lib/types';
+import { Icon } from '@/components/sections/icons';
 import { Pagination } from './Pagination';
 
 const PAGE_SIZE = 9;
@@ -48,10 +49,79 @@ export function ImplementationsList({
     return (p.categories || []).find((c) => c.taxonomy === tax)?.name || '';
   }
 
+  /**
+   * One card, shared by the feature and the grid.
+   *
+   * The seeded sample posts carry `meta.type` and `meta.stack`; the real case
+   * studies are tagged with `category` and `lifecycle` terms instead. Reading
+   * only the former left every real card with no badge and no chips, so each
+   * falls back to the taxonomy its author actually used — the same rule the
+   * homepage slider follows, so the two read as one card language.
+   */
+  function Card({ p }: { p: Post }) {
+    const cats = p.categories || [];
+    const badge = p.meta?.type || cats.find((c) => c.taxonomy === 'category')?.name;
+    const label = dimension === 'industry' ? catName(p, 'lifecycle') : catName(p, 'industry');
+    const chips = p.meta?.stack?.length
+      ? p.meta.stack
+      : cats.filter((c) => c.taxonomy === 'lifecycle').map((c) => c.name);
+
+    return (
+      <Link
+        href={`${base}/${p.slug}`}
+        className="cs-card group flex flex-col overflow-hidden rounded-[18px] border border-surface-line2 bg-white p-[22px]"
+      >
+        <div className="mb-[15px] flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
+          {badge && (
+            <span className="rounded-[5px] bg-brand px-2.5 py-[5px] text-[10.5px] font-extrabold uppercase tracking-[0.05em] leading-none text-black">
+              {badge}
+            </span>
+          )}
+          {label && (
+            <span className="text-[10.5px] font-bold uppercase tracking-[0.1em] text-body-dim">{label}</span>
+          )}
+        </div>
+        <h2 className="m-0 mb-2.5 font-display text-[18px] font-extrabold leading-[1.28] tracking-[-0.018em] text-black transition-colors group-hover:text-brand-ink">
+          {p.title}
+        </h2>
+        {p.meta?.result_headline && (
+          <p className="m-0 mb-2.5 text-[12.5px] font-bold leading-snug text-brand-ink">
+            {p.meta.result_headline}
+          </p>
+        )}
+        <p className="cs-excerpt m-0 text-[13px] leading-[1.62] text-body-faint">{p.excerpt}</p>
+        <div className="mt-auto pt-[18px]">
+          <span aria-hidden className="cs-rule mb-[14px] block h-px w-full" />
+          <div className="flex items-end justify-between gap-3">
+            <div className="flex flex-wrap gap-1.5">
+              {chips.slice(0, 2).map((t) => (
+                <span
+                  key={t}
+                  className="cs-chip rounded-[6px] bg-surface-tint px-2 py-[3px] text-[10.5px] font-semibold text-body-dim"
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+            <span
+              aria-hidden
+              className="cs-go flex h-[30px] w-[30px] flex-none items-center justify-center rounded-full border-[1.5px] border-black/[0.13] text-black"
+            >
+              <Icon name="arrow-up-right" size={15} />
+            </span>
+          </div>
+        </div>
+      </Link>
+    );
+  }
+
   return (
     <div>
-      <div className="mb-6 flex flex-wrap items-center gap-3">
-        <div className="inline-flex rounded-[12px] border border-surface-line2 bg-surface-tint2 p-1">
+      {/* Filters as one tray of segments rather than two rows of loose buttons —
+          the same control the service pages use. */}
+      <div className="mb-7 flex flex-wrap items-center gap-x-5 gap-y-3">
+        <span className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-body-dim">View by</span>
+        <div className="inline-flex flex-wrap gap-1 rounded-[14px] border border-surface-line2 bg-surface-tint p-1.5">
           {(['industry', 'lifecycle'] as const).map((d) => (
             <button
               key={d}
@@ -59,29 +129,27 @@ export function ImplementationsList({
                 setDimension(d);
                 setActive('All');
               }}
-              className={`rounded-[9px] px-4 py-2 text-[13px] font-bold capitalize transition-colors ${
-                dimension === d ? 'bg-brand text-black' : 'text-body-soft hover:text-black'
+              aria-pressed={dimension === d}
+              className={`jump-seg rounded-[10px] px-[15px] py-2.5 text-[13.5px] font-bold leading-none ${
+                dimension === d ? 'is-on' : ''
               }`}
             >
-              By {d === 'industry' ? 'Industry' : 'Lifecycle'}
+              {d === 'industry' ? 'Industry' : 'Lifecycle'}
             </button>
           ))}
         </div>
         <span className="text-[13px] text-body-dim">
-          Showing {paged.length} of {filtered.length} AI use cases
+          {filtered.length} AI use {filtered.length === 1 ? 'case' : 'cases'}
         </span>
       </div>
 
-      <div className="mb-9 flex flex-wrap gap-2">
+      <div className="mb-9 flex flex-wrap gap-x-6 gap-y-2.5 border-t border-surface-line2 pt-5">
         {pills.map((p) => (
           <button
             key={p}
             onClick={() => setActive(p)}
-            className={`rounded-full border px-4 py-2 text-[13px] font-semibold transition-colors ${
-              active === p
-                ? 'border-black bg-black text-white'
-                : 'border-surface-line2 bg-white text-body-faint hover:border-black'
-            }`}
+            aria-pressed={active === p}
+            className={`tax-pill relative text-[13.5px] font-bold ${active === p ? 'is-on' : ''}`}
           >
             {p}
           </button>
@@ -89,36 +157,9 @@ export function ImplementationsList({
       </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {paged.map((p) => {
-          const badge = dimension === 'industry' ? catName(p, 'lifecycle') : catName(p, 'industry');
-          return (
-            <Link
-              key={p.id}
-              href={`${base}/${p.slug}`}
-              className="svc-card group flex flex-col rounded-[18px] border border-surface-line2 bg-surface-tint p-6"
-            >
-              <div className="mb-4 flex items-center gap-2">
-                {p.meta?.type && (
-                  <span className="rounded-md bg-brand px-2.5 py-1 text-[11px] font-bold text-black">
-                    {p.meta.type}
-                  </span>
-                )}
-                {badge && <span className="text-[11.5px] text-body-dim">{badge}</span>}
-              </div>
-              <h3 className="m-0 mb-2.5 font-display text-[18px] font-bold leading-snug text-black transition-colors group-hover:text-brand-ink">
-                {p.title}
-              </h3>
-              <p className="m-0 mb-4 flex-1 text-[13.5px] leading-relaxed text-body-faint">{p.excerpt}</p>
-              <div className="flex flex-wrap gap-1.5">
-                {(p.meta?.stack || []).slice(0, 4).map((t) => (
-                  <span key={t} className="rounded-md border border-surface-line2 bg-white px-2 py-0.5 text-[11px] text-body-faint">
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </Link>
-          );
-        })}
+        {paged.map((p) => (
+          <Card key={p.id} p={p} />
+        ))}
       </div>
 
       <Pagination page={page} totalPages={totalPages} onChange={setPage} />

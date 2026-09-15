@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { ChevronDown, Menu, X } from 'lucide-react';
 import type { MenuItem, SiteSettings } from '@/lib/types';
 import { Logo } from './Logo';
 
@@ -20,14 +21,24 @@ function nest(items: MenuItem[]) {
 
 export function Header({ settings, items }: { settings: SiteSettings; items: MenuItem[] }) {
   const [open, setOpen] = useState(false);
+  /**
+   * Which dropdown is open, held in state rather than driven by CSS `:hover`.
+   *
+   * Hover alone could not be made to close on click. Hiding the menu on click
+   * fires `mouseleave` on the group, and re-showing it on that event put a
+   * visible menu back under a pointer that had not moved — so `:hover` matched
+   * again and it reopened. Opening now needs a fresh `mouseenter`, which does
+   * not fire while the pointer is stationary, so a click closes it for good.
+   */
+  const [openId, setOpenId] = useState<string | null>(null);
   const tree = nest(items);
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-white/90 backdrop-blur-md">
       <div className="mx-auto flex max-w-page items-center gap-5 px-6 py-[18px]">
-        <Logo settings={settings} height={35} variant="light" />
+        <Logo settings={settings} height={37} variant="light" />
         <div className="flex-1" />
 
-        <nav className="hidden items-center gap-[26px] lg:flex">
+        <nav aria-label="Primary" className="hidden items-center gap-[26px] lg:flex">
           {tree.map(({ item, children }) =>
             children.length === 0 ? (
               <Link
@@ -39,23 +50,38 @@ export function Header({ settings, items }: { settings: SiteSettings; items: Men
                 {item.label}
               </Link>
             ) : (
-              <div key={item.id} className="nav-dd relative">
-                <Link
-                  href={item.url}
-                  target={item.target}
+              <div
+                key={item.id}
+                className="nav-dd relative"
+                data-open={openId === item.id ? '' : undefined}
+                onMouseEnter={() => setOpenId(item.id)}
+                onMouseLeave={() => setOpenId(null)}
+              >
+                <button
+                  type="button"
+                  aria-haspopup="true"
+                  aria-expanded={openId === item.id}
+                  onClick={() => setOpenId(openId === item.id ? null : item.id)}
                   className="inline-flex items-center gap-1.5 text-[15px] font-semibold text-body-soft transition-colors hover:text-black"
                 >
                   {item.label}
-                  <span aria-hidden className="text-[10px] leading-none opacity-60">▼</span>
-                </Link>
-                <div className="nav-dd-menu absolute left-1/2 top-[calc(100%+14px)] z-[60] min-w-[260px] -translate-x-1/2 rounded-[14px] border border-line bg-white p-2.5 shadow-[0_18px_40px_rgba(0,0,0,0.12)]">
+                  {/* A drawn chevron that turns with the menu. The previous
+                      marker was a ▼ text character — it rendered in whatever
+                      the system font offered, sat off the text baseline, and
+                      could not animate. */}
+                  <ChevronDown aria-hidden className="nav-dd-chev" size={15} strokeWidth={2.4} />
+                </button>
+                <div className="nav-dd-menu absolute left-1/2 top-[calc(100%+15px)] z-[60] min-w-[286px] -translate-x-1/2 rounded-[16px] border border-line bg-white p-2 shadow-[0_24px_54px_rgba(17,17,17,0.14),0_2px_6px_rgba(17,17,17,0.05)]">
+                  <span aria-hidden className="nav-dd-notch" />
                   {children.map((child) => (
                     <Link
                       key={child.id}
                       href={child.url}
                       target={child.target}
-                      className="block rounded-[10px] px-3.5 py-2.5 text-[14px] font-semibold text-[#333] transition-colors hover:bg-surface-tint hover:text-black"
+                      onClick={() => setOpenId(null)}
+                      className="nav-dd-item group relative flex items-center rounded-[11px] py-[11px] pl-[15px] pr-4 text-[14px] font-bold text-[#3A3A3A]"
                     >
+                      <span aria-hidden className="nav-dd-rail" />
                       {child.label}
                     </Link>
                   ))}
@@ -77,23 +103,29 @@ export function Header({ settings, items }: { settings: SiteSettings; items: Men
           aria-label="Toggle menu"
           className="flex h-10 w-10 items-center justify-center rounded-lg border border-black/10 text-black lg:hidden"
         >
-          <span className="text-lg">{open ? '✕' : '☰'}</span>
+          {open ? <X size={19} strokeWidth={2.3} /> : <Menu size={19} strokeWidth={2.3} />}
         </button>
       </div>
 
       {open && (
         <div className="border-t border-line bg-white px-6 py-4 lg:hidden">
-          <nav className="flex flex-col gap-1">
+          <nav aria-label="Primary (mobile)" className="flex flex-col gap-1">
             {tree.map(({ item, children }) => (
               <div key={item.id}>
-                <Link
-                  href={item.url}
-                  target={item.target}
-                  onClick={() => setOpen(false)}
-                  className="block rounded-lg px-3 py-2.5 text-[15px] font-semibold text-body-soft hover:text-black"
-                >
-                  {item.label}
-                </Link>
+                {children.length === 0 ? (
+                  <Link
+                    href={item.url}
+                    target={item.target}
+                    onClick={() => setOpen(false)}
+                    className="block rounded-lg px-3 py-2.5 text-[15px] font-semibold text-body-soft hover:text-black"
+                  >
+                    {item.label}
+                  </Link>
+                ) : (
+                  <div className="px-3 py-2.5 text-[12px] font-extrabold uppercase tracking-[0.14em] text-body-dim">
+                    {item.label}
+                  </div>
+                )}
                 {children.map((child) => (
                   <Link
                     key={child.id}

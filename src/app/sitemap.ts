@@ -24,6 +24,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .eq('status', 'published');
   for (const p of pages || []) {
     if (p.slug === '') continue;
+    // the two listing routes are already listed above; their CMS records exist
+    // only to make the hero copy editable and must not produce a second entry
+    if (p.slug === implBase || p.slug === insBase) continue;
     entries.push({ url: siteUrl(`/${p.slug}`), lastModified: p.updated_at });
   }
 

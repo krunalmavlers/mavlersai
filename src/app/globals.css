@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 :root {
+  /* Header: 18px padding x2 + 35px logo + 1px border. Sticky offsets key
+     off this so they cannot drift from the real header again. */
+  --header-h: 72px;
   color-scheme: light;
 }
 
@@ -104,17 +107,36 @@ a:not([class]):hover {
     border-color .42s ease;
 }
 
-/* a yellow rule that draws across the top edge */
+/* A yellow rule along the top edge. It shows as a short tick at rest and runs
+   the full width on hover — hiding it entirely left every card a plain white
+   box until the pointer arrived, which is most of the time and all of the time
+   on touch. */
 .cs-card::before {
   content: '';
   position: absolute;
   inset: 0 0 auto 0;
   height: 3px;
   border-radius: 18px 18px 0 0;
-  background: linear-gradient(90deg, #FFDB2D, #FFE985);
-  transform: scaleX(0);
+  background: linear-gradient(90deg, #FFDB2D, #FFC53A 62%, #F0903C);
+  transform: scaleX(.2);
   transform-origin: left center;
-  transition: transform .55s cubic-bezier(.22, .61, .36, 1);
+  transition: transform .55s cubic-bezier(.22, .61, .36, 1), opacity .4s ease;
+}
+
+/* clamp the excerpt: three lines, so every card is the same shape and the
+   title stays the loudest thing on it */
+.cs-excerpt {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+
+/* hairline above the footer, fading out to the right so it reads as a margin
+   note rather than a table border */
+.cs-rule {
+  background: linear-gradient(90deg, rgba(17, 17, 17, .11), rgba(17, 17, 17, .04) 58%, transparent);
 }
 
 /* and a warm wash that rises from the foot of the card */
@@ -130,12 +152,13 @@ a:not([class]):hover {
   transition: opacity .42s ease;
 }
 
+/* the affordance is always present, and fills with brand on hover rather than
+   appearing from nothing */
 .cs-go {
-  opacity: 0;
-  transform: translateX(-10px);
-  transition: opacity .38s ease, transform .38s cubic-bezier(.22, .61, .36, 1);
+  transition: background-color .38s ease, border-color .38s ease,
+    transform .38s cubic-bezier(.22, .61, .36, 1);
 }
-.cs-chip { transition: border-color .38s ease, background-color .38s ease; }
+.cs-chip { transition: background-color .38s ease, color .38s ease; }
 
 @media (hover: hover) {
   .cs-card:hover { transform: translateY(-8px); }
@@ -148,9 +171,13 @@ a:not([class]):hover {
   box-shadow: 0 4px 10px rgba(0, 0, 0, .04), 0 26px 52px rgba(31, 28, 18, .16);
 }
 .cs-card:hover .cs-go,
-.cs-card:focus-visible .cs-go { opacity: 1; transform: none; }
+.cs-card:focus-visible .cs-go {
+  background-color: #FFDB2D;
+  border-color: #FFDB2D;
+  transform: translate(2px, -2px);
+}
 .cs-card:hover .cs-chip,
-.cs-card:focus-visible .cs-chip { border-color: rgba(255, 219, 45, .7); background-color: #FFFDF2; }
+.cs-card:focus-visible .cs-chip { background-color: #FFF8DC; color: #6B5A12; }
 .cs-card:focus-visible::before { transform: scaleX(1); }
 
 @media (prefers-reduced-motion: reduce) {
@@ -169,34 +196,130 @@ a:not([class]):hover {
    reduced motion — this is an ordinary hero.
    --------------------------------------------------------------------------- */
 .hero-scene[data-scrub] .hro {
-  /* the stagger fits inside the runway: 4 x 0.06 + 0.62 = 0.86 of --p */
-  --hp: clamp(0, calc((var(--p) - var(--i, 0) * 0.06) / 0.62), 1);
+  /* Phase A — parallax drift. Runs from the first pixel of scroll and carries
+     no fade, so it is the part actually watched rather than glimpsed. Each
+     line sits on its own plane via --hz, so the block fans apart instead of
+     sliding as one slab. */
+  --hd: clamp(0, calc(var(--p) / 0.55), 1);
+  --hz: calc(0.55 + var(--i, 0) * 0.3);
+
+  /* Phase B — recede. Holds off until the drift has registered, then peels the
+     block away from the top down. The stagger fits the runway exactly:
+     0.3 + 4 x 0.045 + 0.52 = 1. */
+  --hp: clamp(0, calc((var(--p) - 0.3 - var(--i, 0) * 0.045) / 0.52), 1);
+
   transform:
-    perspective(900px)
-    translateY(calc(var(--hp) * -120px))
-    translateZ(calc(var(--hp) * -300px))
-    rotateX(calc(var(--hp) * 16deg));
-  opacity: calc(1 - var(--hp) * 1.15);
+    perspective(1000px)
+    translateY(calc(var(--hd) * var(--hz) * -70px + var(--hp) * -70px))
+    translateZ(calc(var(--hp) * -320px))
+    rotateX(calc(var(--hp) * 15deg))
+    scale(calc(1 - var(--hd) * 0.03));
+  opacity: calc(1 - var(--hp) * 1.2);
   filter: blur(calc(var(--hp) * 6px));
   transform-origin: 50% 0%;
   will-change: transform, opacity, filter;
 }
 
-/* the backdrop expands as the copy retreats — opposite directions is what
-   separates them into planes */
-.hero-scene[data-scrub] .hero-dotgrid {
-  transform: translateY(calc(var(--p) * 120px)) scale(calc(1 + var(--p) * 0.3));
-  opacity: calc(1 - var(--p) * 0.8);
+
+/* ---- Hero circuit traces --------------------------------------------------
+   Two mirrored fans of PCB track entering from the left and right edges. Every
+   path is authored with `pathLength="1"`, so one rule retracts all of them by
+   the same fraction no matter how long each actually is.
+
+   dasharray "1 1" plus a rising dashoffset withdraws each track from its tip
+   back towards the edge it entered from — so scrolling out pulls the lines off
+   the sides, and scrolling back up draws them in again. Nothing latches, so the
+   two directions are the same rule run forwards and backwards.
+   --------------------------------------------------------------------------- */
+.ct-fan {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  /* stop short of the middle: the headline needs clean ground */
+  width: min(42%, 560px);
 }
-.hero-scene[data-scrub] .hero-glow {
-  transform: translateX(-50%) translateY(calc(var(--p) * 170px)) scale(calc(1 + var(--p) * 1.2));
-  opacity: calc(1 - var(--p) * 0.85);
+.ct-fan-l { left: 0; }
+.ct-fan-r { right: 0; }
+/* On load the fans draw themselves out from each edge, 0 -> 100%.
+   `backwards` fill is load-bearing: it holds the from-state during the stagger
+   delay so nothing flashes in fully drawn, and — because it is not `forwards` —
+   the property reverts to the scrubbed value the moment the run finishes, so
+   the load animation hands over to the scroll rules instead of pinning them. */
+@keyframes ctDraw {
+  from { stroke-dashoffset: 1; }
+  to   { stroke-dashoffset: 0; }
+}
+@keyframes ctNode {
+  from { opacity: 0; transform: scale(.3); }
+  to   { opacity: 1; transform: none; }
 }
 
+.ct-line {
+  stroke-dasharray: 1 1;
+  animation: ctDraw 2.6s cubic-bezier(.22, .61, .36, 1) backwards;
+  animation-delay: calc(var(--i, 0) * .14s);
+}
+.ct-dot {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  /* the node lands just after its own track reaches it */
+  animation: ctNode .5s cubic-bezier(.22, .61, .36, 1) backwards;
+  animation-delay: calc(var(--i, 0) * .14s + 2.1s);
+}
+
+/* Once drawn, the fans never stop: each track creeps a little further inward
+   on its own clock, so the hero keeps breathing rather than freezing after the
+   load run. It sits on the group, not the path, so it composes with the scroll
+   retract on .ct-line instead of overriding it — an animation on the same
+   element would win outright and kill the scrub.
+   `alternate` keeps it bounded: a one-way creep would eventually cross the
+   middle, and looping it back would show a visible jump. Each track gets its
+   own duration and a negative delay, so they drift out of step immediately
+   rather than moving as one slab.
+
+   The range runs -22px -> 0, never 0 -> +22px. Both read as advancing inward,
+   but the negative half pushes the track's tail out through the SVG viewport,
+   where it is clipped — so the track still meets the screen edge at every
+   point in the cycle. Creeping the other way would walk the tail inward and
+   leave a widening gap at the edge. */
+@keyframes ctCreep {
+  from { transform: translateX(-22px); }
+  to   { transform: translateX(0); }
+}
+.ct-g {
+  animation-name: ctCreep;
+  animation-duration: calc(26s + var(--i, 0) * 1.8s);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-delay: calc(var(--i, 0) * -1.7s);
+}
+
+.hero-scene[data-scrub] .ct-g {
+  /* staggered outward: tracks nearest the edge leave last, so the fan peels
+     from the tip inwards. 11 x 0.03 + 0.62 = 0.95, inside the runway. */
+  --ct: clamp(0, calc((var(--p) - var(--i, 0) * 0.03) / 0.62), 1);
+}
+.hero-scene[data-scrub] .ct-line {
+  stroke-dashoffset: var(--ct);
+  transform: translateX(calc(var(--ct) * -26px));
+}
+.hero-scene[data-scrub] .ct-dot {
+  /* the node goes before its track, so nothing is left floating unattached */
+  opacity: calc(1 - var(--ct) * 2.4);
+  transform: scale(calc(1 - var(--ct) * 0.6));
+}
+.hero-scene[data-scrub] .ct-wrap { opacity: calc(1 - var(--p) * 0.45); }
+
 @media (prefers-reduced-motion: reduce) {
-  .hero-scene[data-scrub] .hro,
-  .hero-scene[data-scrub] .hero-dotgrid { transform: none; opacity: 1; filter: none; }
-  .hero-scene[data-scrub] .hero-glow { transform: translateX(-50%); opacity: 1; }
+  .hero-scene[data-scrub] .hro { transform: none; opacity: 1; filter: none; }
+  .ct-line, .ct-dot, .ct-g, .hro, .hr-caret { animation: none; }
+  .hs-rail, .hs-packet, .hs-tile, .hs-ring, .hs-core, .hs-arc, .hs-station,
+  .hs-bar { animation: none; }
+  .hs-packet, .hs-ring { opacity: 0; }
+  .hero-scene[data-scrub] .ct-line { stroke-dashoffset: 0; transform: none; }
+  .hero-scene[data-scrub] .ct-dot { opacity: 1; transform: none; }
+  .hero-scene[data-scrub] .ct-wrap { opacity: 1; }
 }
 
 /* ---- Scrubbed heading reveal ----------------------------------------------
@@ -233,9 +356,14 @@ a:not([class]):hover {
    position drives the offset, so it tracks the reader rather than a clock.
    Content is doubled and parked at -25%, so no row edge is ever in frame.
    --------------------------------------------------------------------------- */
+/* The rows are wider than the section and travel sideways, so a tile is always
+   part-way through the edge. This softens that cut — but only just. At 7% the
+   fade ran ~85px into a 1220px section, better than a third of a 228px tile,
+   and the end labels washed out before they could be read. A fixed 26px band
+   hides the hard clip without touching the label. */
 .hx-mask {
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 26px, #000 calc(100% - 26px), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 26px, #000 calc(100% - 26px), transparent);
 }
 .hx-row {
   display: flex;
@@ -316,9 +444,12 @@ a:not([class]):hover {
   .pm-scene[data-scrub].fg-pin { height: calc((var(--n, 3) + 1) * 100vh); }
   .pm-scene[data-scrub].fg-pin > .fg-view {
     position: sticky;
-    top: 0;
+    /* The site header is `sticky top-0`, so pinning at 0 parked the eyebrow and
+       heading underneath it. Offset by the header and take only the space that
+       is actually left. */
+    top: var(--header-h);
     display: flex;
-    min-height: 100vh;
+    min-height: calc(100vh - var(--header-h));
     width: 100%;
     align-items: center;
     overflow: hidden;
@@ -372,13 +503,18 @@ a:not([class]):hover {
   transform-origin: 50% 100%;
   transform: scaleY(clamp(0.02, calc((var(--d, 1) - var(--b) * 0.09) / 0.6), 1));
 }
+/* The piece travels in and lands flush: at --d = 1 every term resolves to
+   identity, so it sits exactly on the slot rather than stopping 12deg short of
+   it. That final seat is what makes the set read as complete. */
 .pv-odd {
   transform-box: fill-box;
   transform-origin: 50% 50%;
-  transform: translate(calc((1 - var(--d, 1)) * 30px), calc((1 - var(--d, 1)) * -24px))
-             rotate(calc(40deg - var(--d, 1) * 28deg));
+  transform: translate(calc((1 - var(--d, 1)) * 34px), calc((1 - var(--d, 1)) * -28px))
+             rotate(calc((1 - var(--d, 1)) * 42deg))
+             scale(calc(1 - (1 - var(--d, 1)) * 0.12));
 }
-.pv-slot { opacity: calc(var(--d, 1) * .75); }
+/* the empty slot fades out as the piece fills it */
+.pv-slot { opacity: calc((1 - var(--d, 1)) * .8); }
 .pm-scene[data-scrub] .fg-slide { --d: clamp(0, calc(var(--u) * 2.2), 1); }
 
 @media (prefers-reduced-motion: reduce) {
@@ -532,6 +668,8 @@ a:not([class]):hover {
 
 @media (hover: hover) {
   .cg-node:hover { border-color: rgba(255,219,45,.55); background-color: #171717; }
+  /* on the light ground the tile must not darken — only its edge warms */
+  .cg-node.cg-light:hover { background-color: #FFFDF4; }
 }
 .cg-node:hover .cg-ico, .cg-node:focus-within .cg-ico {
   background-color: #FFDB2D;
@@ -564,32 +702,75 @@ a:not([class]):hover {
    collided with whatever followed — reading as a stray rule rather than an
    underline. `box-decoration-break: clone` keeps it intact when the span wraps.
    --------------------------------------------------------------------------- */
-.hero-mark span {
-  background-image: linear-gradient(#FFDB2D, #FFDB2D);
-  background-repeat: no-repeat;
-  background-size: 100% 0.17em;
-  background-position: 0 0.88em;
+/* The highlighted words carry the gradient themselves — no marker band under
+   them any more. The paint is clipped to the glyphs, so the fill has to be
+   transparent for it to show through; `background-clip: text` is guarded so a
+   browser without it keeps solid brand yellow instead of invisible text.
+   `clone` gives each line its own full sweep if the span ever wraps. */
+.hm {
+  color: #FFDB2D;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
-
-/* ---- Centred hero backdrop -------------------------------------------------
-   A fine dot grid masked to fade out before the edges, under a soft yellow wash
-   falling from above the fold. Both are decoration only and sit behind the copy.
-   --------------------------------------------------------------------------- */
-.hero-dotgrid {
-  background-image: radial-gradient(circle, #DDDDD6 1.15px, transparent 1.15px);
-  background-size: 28px 28px;
-  -webkit-mask-image: radial-gradient(ellipse 74% 76% at 50% 42%, #000 12%, transparent 74%);
-  mask-image: radial-gradient(ellipse 74% 76% at 50% 42%, #000 12%, transparent 74%);
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hm {
+    background-image: linear-gradient(90deg, #FFDB2D 0%, #FFC53A 46%, #F09A3C 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    /* The heading runs -0.035em letter-spacing, which shortens the last
+       glyph's advance so the paint box ends before its ink does and the final
+       letter loses its right edge. Widen the box and pull the extra back out
+       of the layout so nothing shifts. */
+    padding-right: 0.08em;
+    margin-right: -0.08em;
+  }
 }
-.hero-glow {
-  background: radial-gradient(
-    ellipse at center,
-    rgba(255, 219, 45, 0.44),
-    rgba(255, 219, 45, 0.13) 42%,
-    transparent 68%
-  );
+
+/* ---- Rotating headline phrase ---------------------------------------------
+   The lead is its own block, so it never shares a line with the phrase and
+   never rewraps as the phrase changes length. The phrase line below it centres
+   normally — pinning its width to the longest alternative left the spare width
+   bunched on one side and made the line look off-centre.
+
+   The caret takes the gradient's warm end explicitly rather than
+   `currentColor`, because the phrase around it sets
+   `-webkit-text-fill-color: transparent` to let the gradient through — a caret
+   inheriting that would be invisible. Its own background is unaffected by the
+   ancestor's `background-clip: text`, which only clips that element's own
+   background.
+   --------------------------------------------------------------------------- */
+.hr-lead,
+.hr-line { display: block; }
+.hr-caret {
+  display: inline-block;
+  width: .06em;
+  height: .76em;
+  margin-left: .05em;
+  vertical-align: -.04em;
+  background: #F09A3C;
+  animation: hrBlink 1.05s steps(1) infinite;
+}
+@keyframes hrBlink {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+/* ---- Hero copy: arrival ----------------------------------------------------
+   The hero is above the fold, so it introduces itself once on load and then
+   stays put. `backwards` fill holds the from-state through each element's
+   stagger delay; because it is not `forwards`, the scroll scrub takes the
+   property back the moment the run ends. At --p = 0 the scrub resolves to the
+   same resting values the keyframes end on, so the handover is seamless.
+   --------------------------------------------------------------------------- */
+@keyframes hroIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+.hro {
+  animation: hroIn .8s cubic-bezier(.22, .61, .36, 1) backwards;
+  animation-delay: calc(var(--i, 0) * .13s);
 }
 
 /* ---- Reference design: shared animations & hover effects ---- */
@@ -691,6 +872,100 @@ a:not([class]):hover {
      The first declaration is the fallback for engines without CSS trig. */
   transform: scale(0.86);
   transform: scale(tan(atan2(100cqw, calc(var(--sw) * 1px))));
+}
+
+/* ---- Service hero scenes (hs-) --------------------------------------------
+   Shared by the automation and validation stages. Every animation is on a 9s
+   loop so the two pages read as siblings, and all of them are switched off
+   under reduced motion at the foot of this file.
+   --------------------------------------------------------------------------- */
+@keyframes hs-spin { to { transform: rotate(360deg); } }
+@keyframes hs-breathe { 0%, 100% { opacity: .4; } 50% { opacity: .85; } }
+@keyframes hs-pulse {
+  0%, 100% { transform: scale(1); border-radius: 12px; }
+  50% { transform: scale(.86) rotate(45deg); border-radius: 14px; }
+}
+/* the rail draws in, holds most of the loop, then resets while off-attention */
+@keyframes hs-rail {
+  0% { stroke-dashoffset: 1; }
+  22%, 92% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 1; }
+}
+.hs-rail {
+  stroke-dasharray: 1 1;
+  animation: hs-rail var(--loop, 9s) ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+/* A packet rides its rail. `offset-distance` walks the element along the very
+   same `d` string the rail is drawn from, so the dot cannot drift off the line
+   — which is exactly what a hand-positioned translate did as soon as the rail
+   began to curve. Hidden where offset-path is unsupported, since the fallback
+   would strand every dot in the corner. */
+@keyframes hs-packet {
+  0% { offset-distance: 0%; opacity: 0; }
+  12% { opacity: 1; }
+  78% { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+.hs-packet { display: none; }
+@supports (offset-path: path('M0 0 L1 1')) {
+  .hs-packet {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    offset-rotate: 0deg;
+    animation: hs-packet 2.6s cubic-bezier(.5, 0, .5, 1) infinite;
+    animation-delay: var(--d, 0s);
+  }
+}
+/* tiles settle in once on load rather than looping — the packets carry the
+   continuous motion, and re-animating the furniture reads as flicker */
+@keyframes hs-tile {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+.hs-tile { animation: hs-tile .7s cubic-bezier(.22, .61, .36, 1) backwards; }
+@keyframes hs-ring {
+  0% { transform: scale(1); opacity: .5; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+.hs-ring {
+  border-radius: 26px;
+  border: 2px solid rgba(255, 219, 45, .7);
+  animation: hs-ring 3.2s ease-out infinite;
+  pointer-events: none;
+}
+.hs-core { animation: hs-tile .7s cubic-bezier(.22, .61, .36, 1) .3s backwards; }
+/* the lit arc sweeps the ring once per loop, tracking the marker */
+@keyframes hs-arc {
+  0% { stroke-dashoffset: 1; }
+  100% { stroke-dashoffset: 0; }
+}
+.hs-arc {
+  stroke-dasharray: 1 1;
+  animation: hs-arc var(--loop, 9s) linear infinite;
+}
+/* each station lights as the marker reaches it — thirds of the same loop */
+@keyframes hs-station {
+  0%, 6% { border-color: rgba(255, 219, 45, .95); box-shadow: 0 10px 26px rgba(17,17,17,.09), 0 0 0 5px rgba(255,219,45,.16); }
+  22%, 100% { border-color: #ECECE8; box-shadow: 0 10px 26px rgba(17,17,17,.09); }
+}
+.hs-station {
+  animation: hs-station var(--loop, 9s) ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+@keyframes hs-bar {
+  0%, 40% { transform: scaleX(.45); opacity: .5; }
+  60%, 100% { transform: scaleX(1); opacity: 1; }
+}
+.hs-bar {
+  transform-origin: left center;
+  animation: hs-bar var(--loop, 9s) cubic-bezier(.22, .61, .36, 1) infinite;
+  animation-delay: var(--d, 0s);
 }
 
 @keyframes hc-spin { to { transform: rotate(360deg); } }
@@ -836,10 +1111,180 @@ a:not([class]):hover {
 }
 
 /* Card hover treatments (mirrors the reference design) */
-.opp-card { transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease; }
-.opp-card:hover { transform: translateY(-6px); border-color: rgba(255,219,45,0.55) !important; box-shadow: 0 20px 50px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,219,45,0.25); }
-.opp-num { transition: color .35s ease; }
-.opp-card:hover .opp-num { color: rgba(255,219,45,0.28) !important; }
+/* ---- Featured insights: the page's black band --------------------------------
+   The listing is white top to bottom, so the three featured pieces sit on black
+   to separate them from the archive below rather than being three slightly
+   larger white cards among ten. Yellow carries the accents; the rule inside a
+   dark card has to be light, since the light-card rule is a dark gradient and
+   would vanish here.
+   --------------------------------------------------------------------------- */
+.ins-plane {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  top: -30%;
+  bottom: -30%;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(255, 219, 45, .12) 1.1px, transparent 1.1px);
+  background-size: 40px 40px;
+  -webkit-mask-image: radial-gradient(84% 64% at 50% 45%, #000 8%, transparent 74%);
+  mask-image: radial-gradient(84% 64% at 50% 45%, #000 8%, transparent 74%);
+}
+.ins-rule {
+  background: linear-gradient(90deg, rgba(255, 255, 255, .16), rgba(255, 255, 255, .05) 58%, transparent);
+}
+.ins-card {
+  position: relative;
+  isolation: isolate;
+  transition: transform .42s cubic-bezier(.22, .61, .36, 1), border-color .42s ease, box-shadow .42s ease;
+}
+.ins-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  border-radius: 18px 18px 0 0;
+  background: linear-gradient(90deg, #FFDB2D, #FFC53A 62%, #F0903C);
+  transform: scaleX(.2);
+  transform-origin: left center;
+  transition: transform .55s cubic-bezier(.22, .61, .36, 1);
+}
+.ins-go {
+  transition: background-color .38s ease, border-color .38s ease, color .38s ease,
+    transform .38s cubic-bezier(.22, .61, .36, 1);
+}
+@media (hover: hover) {
+  .ins-card:hover { transform: translateY(-6px); }
+}
+.ins-card:hover, .ins-card:focus-visible {
+  border-color: rgba(255, 219, 45, .5);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, .5);
+}
+.ins-card:hover::before, .ins-card:focus-visible::before { transform: scaleX(1); }
+.ins-card:hover .ins-go, .ins-card:focus-visible .ins-go {
+  background-color: #FFDB2D;
+  border-color: #FFDB2D;
+  color: #000;
+  transform: translate(2px, -2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ins-card, .ins-card::before, .ins-go { transition: none; }
+  .ins-card:hover { transform: none; }
+}
+
+/* ---- Principles: dark manifesto band ---------------------------------------
+   Two planes drift against each other behind the type at different rates, the
+   same depth device the capability lanes use, so the band has air behind it
+   rather than being a flat black rectangle. Each principle carries a rule that
+   draws as the item arrives; there is no hover state because nothing here is
+   clickable.
+   --------------------------------------------------------------------------- */
+/* This band follows another dark section on both pages it appears on. Without
+   a boundary the two run together as one long black stretch with an accidental
+   seam where their grounds differ; a brand hairline makes the change of
+   movement deliberate. */
+.pl-band::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 219, 45, .5) 22%, rgba(240, 144, 60, .45) 68%, transparent);
+  z-index: 2;
+}
+
+.pl-plane {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  top: -24%;
+  bottom: -24%;
+  pointer-events: none;
+}
+.pl-plane-far {
+  background-image: radial-gradient(circle, rgba(255, 219, 45, .14) 1.1px, transparent 1.1px);
+  background-size: 40px 40px;
+  -webkit-mask-image: radial-gradient(86% 66% at 50% 45%, #000 8%, transparent 74%);
+  mask-image: radial-gradient(86% 66% at 50% 45%, #000 8%, transparent 74%);
+}
+.pl-plane-near {
+  background-image:
+    linear-gradient(90deg, rgba(255, 255, 255, .035) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, .028) 1px, transparent 1px);
+  background-size: 148px 148px;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 22%, #000 78%, transparent);
+  mask-image: linear-gradient(180deg, transparent, #000 22%, #000 78%, transparent);
+}
+.pm-scene[data-scrub] .pl-plane {
+  transform: translateY(calc((var(--p) - .5) * var(--par, 0) * 240px));
+}
+
+/* the hairline sits between items rather than boxing each one */
+.pl-item + .pl-item { border-top: 1px solid rgba(255, 255, 255, .08); }
+@media (min-width: 768px) {
+  /* in two columns the first item of each column starts a fresh run, so the
+     rule belongs above every item except the top one in its own column */
+  .pl-item:nth-child(-n + 2) { border-top: 0; }
+  .pl-item:nth-child(n + 3) { border-top: 1px solid rgba(255, 255, 255, .08); }
+}
+
+.pl-mark {
+  display: block;
+  height: 2px;
+  width: 22px;
+  margin-bottom: 18px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #FFDB2D, #F0903C);
+}
+.pm-scene[data-scrub] .pl-mark {
+  width: calc(14px + var(--e, 1) * 30px);
+  opacity: var(--e, 1);
+}
+.pm-scene[data-scrub] .pl-item {
+  opacity: calc(.22 + var(--e, 1) * .78);
+  transform: translateY(calc((1 - var(--e, 1)) * 18px));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-scene[data-scrub] .pl-plane { transform: none; }
+  .pm-scene[data-scrub] .pl-item { opacity: 1; transform: none; }
+  .pm-scene[data-scrub] .pl-mark { width: 22px; opacity: 1; }
+}
+
+/* ---- Capability grid: ruled cells, not cards -------------------------------
+   The rule above each item fills with the brand gradient on that item's own
+   scroll progress, so the set draws itself in as the reader reaches it. Using
+   --e rather than the section's --p means the bottom row animates when it is
+   actually on screen, not while it is still below the fold.
+   --------------------------------------------------------------------------- */
+.fgx-rule { background: #1E1E1E; overflow: hidden; }
+.fgx-rule::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #FFDB2D, #FFC53A 55%, #F0903C);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+.pm-scene[data-scrub] .fgx-rule::after { transform: scaleX(var(--e, 1)); }
+
+.fgx-ico {
+  transition: background-color .3s ease, color .3s ease, border-color .3s ease,
+    transform .3s cubic-bezier(.22, .61, .36, 1);
+}
+.fgx-cell:hover .fgx-ico {
+  background-color: #FFDB2D;
+  border-color: #FFDB2D;
+  color: #000;
+  transform: translateY(-2px);
+}
+.fgx-cell h3 { transition: color .3s ease; }
+.fgx-cell:hover h3 { color: #FFDB2D; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-scene[data-scrub] .fgx-rule::after { transform: scaleX(1); }
+  .fgx-ico { transition: none; }
+}
 .svc-card { transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease, background .28s ease; }
 .svc-card:hover { transform: translateY(-6px); border-color: #000 !important; box-shadow: 0 22px 44px rgba(0,0,0,0.10); }
 .svc-ico { transition: background .28s ease, color .28s ease, transform .28s ease; }
@@ -857,15 +1302,80 @@ a:not([class]):hover {
 .hero-learn:hover .hero-learn-ico { transform: translateX(4px); }
 
 /* ---- Header dropdown (menu items with children) ---- */
-.nav-dd-menu { opacity: 0; pointer-events: none; transition: opacity .18s ease; }
-.nav-dd:hover .nav-dd-menu, .nav-dd:focus-within .nav-dd-menu { opacity: 1; pointer-events: auto; }
+/* ---- Primary nav dropdown --------------------------------------------------
+   The panel rises into place and is pinned to its trigger by a notch, so it
+   reads as attached to "Services" rather than floating loose above the page.
+   Items carry a brand rail that grows on approach and a chevron that travels.
+   --------------------------------------------------------------------------- */
+.nav-dd-menu {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -7px);
+  transition: opacity .2s ease, transform .26s cubic-bezier(.22, .61, .36, 1);
+}
+/* Opened by state (`data-open`) or by keyboard focus — never by :hover alone.
+   See the note in Header.tsx: a hover-driven menu could not be closed by a
+   click, because hiding it fired mouseleave and showing it again put it back
+   under a pointer that had not moved. */
+.nav-dd[data-open] .nav-dd-menu, .nav-dd:focus-within .nav-dd-menu {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+
+/* the notch — a rotated square with only its two upper edges showing */
+.nav-dd-notch {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  margin-left: -6px;
+  transform: rotate(45deg);
+  background: #FFFFFF;
+  /* #EDEDED is the `line` token the panel's own border uses — the notch has to
+     match it exactly or the join shows as a seam */
+  border-left: 1px solid #EDEDED;
+  border-top: 1px solid #EDEDED;
+  border-radius: 2px 0 0 0;
+}
+
+.nav-dd-chev { transition: transform .26s cubic-bezier(.22, .61, .36, 1); opacity: .55; }
+.nav-dd[data-open] .nav-dd-chev, .nav-dd:focus-within .nav-dd-chev {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+.nav-dd-item { transition: background-color .2s ease, color .2s ease; }
+.nav-dd-rail {
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  width: 3px;
+  height: 0;
+  margin-top: 0;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #FFDB2D, #F0903C);
+  transition: height .26s cubic-bezier(.22, .61, .36, 1), margin-top .26s cubic-bezier(.22, .61, .36, 1);
+}
+.nav-dd-item:hover, .nav-dd-item:focus-visible {
+  background-color: #FAFAF7;
+  color: #111111;
+  outline: none;
+}
+.nav-dd-item:hover .nav-dd-rail,
+.nav-dd-item:focus-visible .nav-dd-rail { height: 18px; margin-top: -9px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-dd-menu, .nav-dd-chev, .nav-dd-rail, .nav-dd-item { transition: none; }
+}
 /* Bridge the gap between the trigger and the panel, so moving the pointer
    down to the submenu doesn't leave .nav-dd and close it mid-travel. The
    bridge spans the panel's width, not just the trigger's, so diagonal
    travel toward the panel edges stays inside the hover area. Scoped to the
    open state so the invisible strip never intercepts clicks on page
    content while the menu is closed. */
-.nav-dd:hover::after, .nav-dd:focus-within::after {
+.nav-dd[data-open]::after, .nav-dd:focus-within::after {
   content: '';
   position: absolute;
   top: 100%;
@@ -876,18 +1386,210 @@ a:not([class]):hover {
 }
 
 /* ---- Services hub capability cards ---- */
-.cat-card { transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease; }
-.cat-card:hover { transform: translateY(-6px); border-color: rgba(255,219,45,0.55) !important; box-shadow: 0 20px 50px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,219,45,0.25); }
-.cat-num { transition: color .35s ease; }
-.cat-card:hover .cat-num { color: rgba(255,219,45,0.28) !important; }
-.cat-ico { transition: background .28s ease, color .28s ease, transform .28s ease; }
-.cat-card:hover .cat-ico { background: #FFDB2D !important; color: #000 !important; transform: rotate(-6deg); }
-.cat-arrow { transition: transform .25s ease; }
-.cat-card:hover .cat-arrow { transform: translateX(4px); }
+/* ---- Capability lanes ------------------------------------------------------
+   The numeral is the structure here, not a watermark: outlined at rest and
+   filling on approach, so the three lanes read as an index. Everything else is
+   restrained — one rail, one wash, one arrow — because a lane this wide does
+   not need chrome to separate it from its neighbour.
+   --------------------------------------------------------------------------- */
+/* A rule that grows rather than a numeral: it anchors the lane without
+   implying an order the three capabilities do not have. */
+.cat-mark {
+  width: 26px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #FFDB2D, #F0903C);
+  transition: width .45s cubic-bezier(.22, .61, .36, 1);
+}
+.cat-tag { color: #8A8A8A; transition: color .35s ease; }
+
+@keyframes cat-hit {
+  0% { box-shadow: 0 0 0 0 rgba(255, 219, 45, .6); }
+  100% { box-shadow: 0 0 0 22px rgba(255, 219, 45, 0); }
+}
+.cat-title { transition: transform .45s cubic-bezier(.22, .61, .36, 1), color .3s ease; }
+.cat-go { transition: background-color .35s ease, border-color .35s ease, color .35s ease, transform .35s cubic-bezier(.22, .61, .36, 1); }
+.cat-cta { transition: color .3s ease; }
+.cat-chip { position: relative; transition: color .3s ease; }
+.cat-chip + .cat-chip::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  margin-top: -1.5px;
+  border-radius: 50%;
+  background: #3A3A3A;
+}
+
+.cat-lane:hover .cat-mark,
+.cat-lane:focus-visible .cat-mark { width: 56px; }
+.cat-lane:hover .cat-tag,
+.cat-lane:focus-visible .cat-tag { color: #FFDB2D; }
+.cat-lane:hover .cat-title,
+.cat-lane:focus-visible .cat-title { transform: translateX(6px); }
+.cat-lane:hover .cat-cta,
+.cat-lane:focus-visible .cat-cta { color: #FFDB2D; }
+.cat-lane:hover .cat-chip,
+.cat-lane:focus-visible .cat-chip { color: #B4B4B4; }
+.cat-lane:hover .cat-go,
+.cat-lane:focus-visible .cat-go {
+  background-color: #FFDB2D;
+  border-color: #FFDB2D;
+  color: #000;
+  transform: translateX(5px);
+  animation: cat-hit .6s .28s cubic-bezier(.2, .7, .3, 1);
+}
+.cat-lane:focus-visible { outline: none; }
+
+/* ---- Parallax --------------------------------------------------------------
+   Three planes, not one move: the blooms drift against each other on the
+   section's own progress, the lanes arrive on theirs, and inside each lane the
+   flanking columns travel further than the copy between them — which is what
+   gives the row depth rather than just sliding it up.
+   --------------------------------------------------------------------------- */
+/* Two planes, each keyed to the section's progress at its own rate and in its
+   own direction. Nothing pulses or breathes — the depth comes from the far
+   plane lagging the near one as the section passes, which is what parallax
+   actually is. Both are taller than the section so the travel never exposes an
+   edge. */
+.cat-plane {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  top: -22%;
+  bottom: -22%;
+  pointer-events: none;
+}
+.cat-plane-far {
+  background-image: radial-gradient(circle, rgba(255, 219, 45, .13) 1.1px, transparent 1.1px);
+  background-size: 38px 38px;
+  -webkit-mask-image: radial-gradient(90% 70% at 50% 45%, #000 10%, transparent 72%);
+  mask-image: radial-gradient(90% 70% at 50% 45%, #000 10%, transparent 72%);
+}
+.cat-plane-near {
+  background-image:
+    linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, .03) 1px, transparent 1px);
+  background-size: 132px 132px;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 24%, #000 76%, transparent);
+  mask-image: linear-gradient(180deg, transparent, #000 24%, #000 76%, transparent);
+}
+.pm-scene[data-scrub] .cat-plane {
+  transform: translateY(calc((var(--p) - .5) * var(--par, 0) * 260px));
+}
+
+.pm-scene[data-scrub] .cat-lane {
+  opacity: calc(.25 + var(--e, 1) * .75);
+  transform: translateY(calc((1 - var(--e, 1)) * 26px));
+}
+/* the outer columns lag the middle, so the lane assembles from its edges */
+.pm-scene[data-scrub] .cat-col-l {
+  transform: translateX(calc((1 - var(--e, 1)) * -34px));
+  opacity: var(--e, 1);
+}
+.pm-scene[data-scrub] .cat-col-r {
+  transform: translateX(calc((1 - var(--e, 1)) * 34px));
+  opacity: var(--e, 1);
+}
+.pm-scene[data-scrub] .cat-title {
+  transform: translateX(calc((1 - var(--e, 1)) * 16px));
+}
+/* No transition on these two: --e updates every frame, so a transition would
+   smear the scrub instead of tracking it. */
+
+/* The lane has to stay lit while the pointer is on it — the sweep is the
+   arrival flourish, this is the state. Holding the other lanes back is what
+   makes it read as highlighted: brightening one of three barely registers,
+   dimming the other two is unmistakable.
+
+   These must sit after the scrub rules above. Both set `opacity` on
+   `.cat-lane` at the same specificity (0,3,0), so source order decides the
+   winner — placed earlier, the scrub's `opacity: 1` cancelled the dim and the
+   highlight silently did nothing. */
+.cat-lane {
+  background-color: transparent;
+  transition: background-color .38s ease, opacity .38s ease;
+}
+.cat-lanes:hover .cat-lane,
+.cat-lanes:focus-within .cat-lane { opacity: .34; }
+.cat-lanes:hover .cat-lane:hover,
+.cat-lanes .cat-lane:focus-visible {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, .035);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cat-mark, .cat-title, .cat-go, .cat-lane,
+  .cat-col-l, .cat-col-r { transition: none; }
+  .pm-scene[data-scrub] .cat-plane,
+  .pm-scene[data-scrub] .cat-col-l,
+  .pm-scene[data-scrub] .cat-col-r,
+  .pm-scene[data-scrub] .cat-title { transform: none; opacity: 1; }
+  .cat-lanes:hover .cat-lane { opacity: 1; }
+  .cat-lane:hover .cat-go { animation: none; }
+  .pm-scene[data-scrub] .cat-lane { opacity: 1; transform: none; }
+}
 
 /* ---- Service detail pages: quick-jump bar + service cards ---- */
-.jump-pill { transition: border-color .2s ease, color .2s ease, background .2s ease, transform .2s ease, box-shadow .2s ease; }
-.jump-pill:hover { border-color: #000 !important; color: #000 !important; background: #fff !important; transform: translateY(-1px); }
+/* Segmented control for the in-page jump. The tray carries the border and the
+   tint; a segment only lifts out of it on approach, which is what separates a
+   selector from a row of buttons. */
+.jump-seg {
+  color: #6E6E6E;
+  background-color: transparent;
+  box-shadow: 0 0 0 0 rgba(17, 17, 17, 0);
+  transition: background-color .22s ease, color .22s ease, box-shadow .22s ease;
+}
+.jump-seg:hover,
+.jump-seg:focus-visible {
+  background-color: #FFFFFF;
+  color: #111111;
+  box-shadow: 0 2px 6px rgba(17, 17, 17, .07), 0 0 0 1px rgba(17, 17, 17, .06);
+}
+.jump-seg:focus-visible { outline: none; }
+
+/* the listing reuses the segmented control, and adds a selected state it does
+   not need on the service pages (there, the segments are links, not a filter) */
+.jump-seg.is-on {
+  background-color: #111111;
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(17, 17, 17, .18);
+}
+.jump-seg.is-on:hover { background-color: #111111; color: #FFFFFF; }
+
+/* taxonomy filters: text with a rule under the selected one, rather than a
+   second row of pills competing with the segmented control above it */
+.tax-pill {
+  color: #6E6E6E;
+  padding-bottom: 5px;
+  transition: color .2s ease;
+}
+.tax-pill::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #FFDB2D, #F0903C);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform .26s cubic-bezier(.22, .61, .36, 1);
+}
+.tax-pill:hover { color: #111111; }
+.tax-pill.is-on { color: #111111; }
+.tax-pill.is-on::after, .tax-pill:hover::after { transform: scaleX(1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .tax-pill, .tax-pill::after { transition: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jump-seg { transition: none; }
+}
 .svc-detail { transition: border-color .25s ease, box-shadow .25s ease; }
 .svc-detail:hover, .svc-detail:target { border-color: rgba(255,219,45,0.72) !important; box-shadow: 0 12px 32px rgba(0,0,0,0.05), 0 0 0 1px rgba(255,219,45,0.28); outline: none; }
 .svc-detail:target { border-color: rgba(255,219,45,0.88) !important; box-shadow: 0 14px 36px rgba(0,0,0,0.06), 0 0 0 1px rgba(255,219,45,0.42); }

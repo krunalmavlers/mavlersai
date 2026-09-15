@@ -16,10 +16,11 @@ import {
   faqSchema,
   storedSchema,
 } from '@/lib/schema';
-import { SectionRenderer } from '@/components/sections/Sections';
+import { AccentTitle, SectionRenderer } from '@/components/sections/Sections';
 import { JsonLd } from '@/components/site/JsonLd';
 import { ImplementationsList } from '@/components/blog/ImplementationsList';
 import { InsightsList } from '@/components/blog/InsightsList';
+import { FeaturedInsights, pickFeatured } from '@/components/blog/FeaturedInsights';
 import { ImplementationDetail } from '@/components/blog/ImplementationDetail';
 import { InsightDetail } from '@/components/blog/InsightDetail';
 
@@ -138,17 +139,47 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   }
 }
 
-function ListHero({ eyebrow, title, subtitle }: { eyebrow: string; title: string; subtitle: string }) {
+/**
+ * Hero for the two listing routes. The copy lives in the CMS like every other
+ * page's — Admin → Pages → "Insights" / "AI Use Cases" — and the arguments here
+ * are only the fallback for a site that has not created those records yet.
+ *
+ * An authored `<span>` marks the gradient accent, exactly as on a normal hero;
+ * with no span the closing phrase is accented automatically.
+ */
+function ListHero({
+  eyebrow,
+  title,
+  subtitle,
+  cms,
+}: {
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  cms?: Record<string, any> | null;
+}) {
+  const badge = cms?.badge || eyebrow;
+  const headingHtml: string = cms?.heading_html || '';
+  const sub = cms?.subhead || subtitle;
   return (
     <section className="bg-white pb-6 pt-10 md:pt-14">
       <div className="mx-auto max-w-page px-6">
         <p className="m-0 inline-block border-b-[3px] border-brand pb-1 text-[12px] font-bold uppercase tracking-[0.1em] text-black">
-          {eyebrow}
+          {badge}
         </p>
-        <h1 className="m-0 mb-4 mt-5 max-w-[720px] font-display text-[clamp(34px,4.6vw,52px)] font-extrabold leading-[1.06] tracking-[-0.03em] text-black">
-          {title}
-        </h1>
-        <p className="m-0 max-w-[620px] text-[17px] leading-relaxed text-body-muted">{subtitle}</p>
+        {headingHtml && /<span/i.test(headingHtml) ? (
+          <h1
+            className="m-0 mb-4 mt-5 max-w-[720px] font-display text-[clamp(34px,4.6vw,52px)] font-extrabold leading-[1.06] tracking-[-0.03em] text-black"
+            dangerouslySetInnerHTML={{
+              __html: headingHtml.replace(/<span(?![^>]*class=)/g, '<span class="hm"'),
+            }}
+          />
+        ) : (
+          <h1 className="m-0 mb-4 mt-5 max-w-[720px] font-display text-[clamp(34px,4.6vw,52px)] font-extrabold leading-[1.06] tracking-[-0.03em] text-black">
+            <AccentTitle text={headingHtml.replace(/<[^>]+>/g, '') || title} />
+          </h1>
+        )}
+        <p className="m-0 max-w-[620px] text-[17px] leading-relaxed text-body-muted">{sub}</p>
       </div>
     </section>
   );
@@ -174,9 +205,15 @@ export default async function CatchAllPage({ params }: { params: Params }) {
     return (
       <>
         <JsonLd data={schemas} />
-        {r.page.sections.map((s) => (
-          <SectionRenderer key={s.id} section={s} />
-        ))}
+        {(() => {
+          // Every page needs exactly one H1. Most get it from their hero; a
+          // page without one (the legal pages) promotes its first section
+          // instead, so the outline never opens at H2.
+          const hasHero = r.page.sections.some((s) => s.type === 'hero');
+          return r.page.sections.map((s, i) => (
+            <SectionRenderer key={s.id} section={s} primary={!hasHero && i === 0} />
+          ));
+        })()}
       </>
     );
   }
@@ -184,6 +221,8 @@ export default async function CatchAllPage({ params }: { params: Params }) {
   if (r.kind === 'impl-list') {
     const posts = await getPosts('implementation');
     const settings = await getSettings();
+    const cmsPage = await getPageBySlug(r.base.replace(/^\//, ''));
+    const cmsHero = cmsPage?.sections?.find((s) => s.type === 'hero')?.content ?? null;
     return (
       <>
         <JsonLd
@@ -204,6 +243,7 @@ export default async function CatchAllPage({ params }: { params: Params }) {
           eyebrow="AI Use Cases"
           title="AI use cases you can build with your clients"
           subtitle="Explore the workflows, agents and integrations we deliver — filter by industry or by digital lifecycle."
+          cms={cmsHero}
         />
         <section className="pb-16 md:pb-20">
           <div className="mx-auto max-w-page px-5 md:px-10">
@@ -217,6 +257,12 @@ export default async function CatchAllPage({ params }: { params: Params }) {
   if (r.kind === 'insight-list') {
     const posts = await getPosts('insight');
     const settings = await getSettings();
+    // the band and the list below it must not show the same piece twice
+    const cmsPage = await getPageBySlug(r.base.replace(/^\//, ''));
+    const cmsHero = cmsPage?.sections?.find((s) => s.type === 'hero')?.content ?? null;
+    const featuredInsights = pickFeatured(posts);
+    const featuredIds = new Set(featuredInsights.map((p) => p.id));
+    const restInsights = posts.filter((p) => !featuredIds.has(p.id));
     return (
       <>
         <JsonLd
@@ -237,10 +283,12 @@ export default async function CatchAllPage({ params }: { params: Params }) {
           eyebrow="Insights"
           title="Practical AI thinking for agencies."
           subtitle="How to sell, scope, build and deliver AI and automation under your brand."
+          cms={cmsHero}
         />
-        <section className="pb-16 md:pb-20">
+        <FeaturedInsights posts={featuredInsights} base={r.base} />
+        <section className="pb-16 pt-[clamp(34px,4vw,54px)] md:pb-20">
           <div className="mx-auto max-w-page px-5 md:px-10">
-            <InsightsList posts={posts} base={r.base} />
+            <InsightsList posts={restInsights} base={r.base} />
           </div>
         </section>
       </>
