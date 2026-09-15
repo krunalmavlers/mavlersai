@@ -469,15 +469,22 @@ function StatsBar({ c }: { c: any }) {
   return (
     <>
       <section className="bg-black text-white">
-        <div className="mx-auto grid max-w-page grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-x-6 gap-y-7 px-6 py-[clamp(32px,3.4vw,46px)]">
-          {(c.stats || []).map((s: any, i: number) => (
-            <div key={i}>
-              <div className="font-display text-[clamp(21px,2.2vw,29px)] font-extrabold leading-none tracking-[-0.03em] text-brand">
-                <CountUp value={s.num} />
+        {/* Six stats stacked two-up is a tall block on a phone. Below the
+            desktop breakpoint they run as one looping row instead, so the
+            section costs a single line of height and every figure still passes
+            the reader. The second pass is what makes the loop seamless and is
+            dropped again on desktop, where the grid returns. */}
+        <div className="stats-wrap mx-auto max-w-page overflow-hidden px-6 py-[clamp(32px,3.4vw,46px)]">
+          <div className="stats-row">
+            {[...(c.stats || []), ...(c.stats || [])].map((s: any, i: number) => (
+              <div key={i} className={i >= (c.stats || []).length ? 'stat-cell stat-dup' : 'stat-cell'}>
+                <div className="font-display text-[clamp(21px,2.2vw,29px)] font-extrabold leading-none tracking-[-0.03em] text-brand">
+                  <CountUp value={s.num} />
+                </div>
+                <div className="mt-2 text-[13px] font-medium text-body-onDark">{s.label}</div>
               </div>
-              <div className="mt-2 text-[13px] font-medium text-body-onDark">{s.label}</div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
       {Array.isArray(c.logos) && c.logos.length > 0 && (
@@ -489,7 +496,7 @@ function StatsBar({ c }: { c: any }) {
               </p>
             )}
             <div className="overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
-              <div className="flex w-max animate-marquee items-center gap-[52px]">
+              <div className="logo-row flex w-max animate-marquee items-center">
                 {[...c.logos, ...c.logos].map((l: string, i: number) => {
                   const src = platformLogo(l);
                   return src ? (

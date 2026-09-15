@@ -810,6 +810,54 @@ a:not([class]):hover {
 }
 
 /* ---- Reference design: shared animations & hover effects ---- */
+/* ---- Stats: grid on desktop, looping row on phones -------------------------
+   Spacing is a right margin, never `gap`. A duplicated row using `gap` spans
+   2N*W + (2N-1)*G, so translating -50% stops half a gap short and the loop
+   jumps every cycle. As margin each cell owns its spacing and half the row is
+   exactly one full set. The same bug was live in the logo strip below, which
+   used a 52px gap — a 26px jump on every pass.
+   --------------------------------------------------------------------------- */
+.stats-row {
+  display: flex;
+  width: max-content;
+  align-items: flex-start;
+  animation: marquee 30s linear infinite;
+}
+/* soften the edges the way the logo strip below does, so cells leave and enter
+   rather than being sliced by the container */
+.stats-wrap {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 34px, #000 calc(100% - 34px), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 34px, #000 calc(100% - 34px), transparent);
+}
+.stat-cell {
+  flex: none;
+  width: 190px;
+  margin-right: 34px;
+}
+.logo-row > * { margin-right: 52px; }
+
+@media (min-width: 1024px) {
+  .stats-wrap {
+    overflow: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .stats-row {
+    display: grid;
+    width: auto;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    column-gap: 24px;
+    row-gap: 28px;
+    animation: none;
+  }
+  .stat-cell { width: auto; margin-right: 0; }
+  .stat-dup { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stats-row, .logo-row { animation: none; }
+}
+
 @keyframes marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
