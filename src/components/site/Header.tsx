@@ -31,6 +31,22 @@ export function Header({ settings, items }: { settings: SiteSettings; items: Men
    * not fire while the pointer is stationary, so a click closes it for good.
    */
   const [openId, setOpenId] = useState<string | null>(null);
+
+  /**
+   * Close, and drop focus when the click came from a pointer.
+   *
+   * The menu is also held open by `:focus-within`, which is what keeps it
+   * reachable by keyboard. Clicking a link or the trigger focuses that element
+   * — inside the same group — so `:focus-within` matched and the menu stayed
+   * open no matter what this state said. Blurring removes that hold.
+   *
+   * `detail > 0` means a real pointer click; keyboard activation reports 0, and
+   * there we leave focus alone so tabbing still works.
+   */
+  const closeMenu = (e: React.MouseEvent<HTMLElement>) => {
+    setOpenId(null);
+    if (e.detail > 0) e.currentTarget.blur();
+  };
   const tree = nest(items);
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-white/90 backdrop-blur-md">
@@ -61,7 +77,10 @@ export function Header({ settings, items }: { settings: SiteSettings; items: Men
                   type="button"
                   aria-haspopup="true"
                   aria-expanded={openId === item.id}
-                  onClick={() => setOpenId(openId === item.id ? null : item.id)}
+                  onClick={(e) => {
+                    if (openId === item.id) closeMenu(e);
+                    else setOpenId(item.id);
+                  }}
                   className="inline-flex items-center gap-1.5 text-[15px] font-semibold text-body-soft transition-colors hover:text-black"
                 >
                   {item.label}
@@ -78,7 +97,7 @@ export function Header({ settings, items }: { settings: SiteSettings; items: Men
                       key={child.id}
                       href={child.url}
                       target={child.target}
-                      onClick={() => setOpenId(null)}
+                      onClick={closeMenu}
                       className="nav-dd-item group relative flex items-center rounded-[11px] py-[11px] pl-[15px] pr-4 text-[14px] font-bold text-[#3A3A3A]"
                     >
                       <span aria-hidden className="nav-dd-rail" />
