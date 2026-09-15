@@ -238,6 +238,13 @@ a:not([class]):hover {
   /* stop short of the middle: the headline needs clean ground */
   width: min(42%, 560px);
 }
+/* Below the desktop breakpoint the two fans are 42% of a narrow screen each,
+   so they meet behind the centred copy and the tracks run straight through the
+   headline. There is no width to give them, so they are removed rather than
+   shrunk. */
+@media (max-width: 1023px) {
+  .ct-wrap { display: none; }
+}
 .ct-fan-l { left: 0; }
 .ct-fan-r { right: 0; }
 /* On load the fans draw themselves out from each edge, 0 -> 100%.

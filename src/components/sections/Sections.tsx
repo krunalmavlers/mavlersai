@@ -360,12 +360,16 @@ function Hero({ c }: { c: any }) {
             centered ? (
               <div
                 style={{ '--i': 4 } as React.CSSProperties}
-                className="hro mt-8 flex flex-wrap items-center justify-center gap-x-[18px] gap-y-2.5"
+                className="hro mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2.5 lg:gap-x-[18px]"
               >
+                {/* The dot belongs to the item before it, so a wrapped line can
+                    never open with a stray separator. */}
                 {trust.map((t: string, i: number) => (
                   <span key={t} className="flex items-center gap-x-[18px]">
-                    {i > 0 && <span className="h-[5px] w-[5px] shrink-0 rounded-full bg-brand" />}
                     <span className={`text-[13px] font-bold ${onDark ? 'text-white' : 'text-black'}`}>{t}</span>
+                    {i < trust.length - 1 && (
+                      <span aria-hidden className="hidden h-[5px] w-[5px] shrink-0 rounded-full bg-brand lg:block" />
+                    )}
                   </span>
                 ))}
               </div>

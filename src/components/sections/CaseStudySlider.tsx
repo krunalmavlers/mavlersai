@@ -131,7 +131,7 @@ export function CaseStudySlider({ posts, base }: { posts: Post[]; base: string }
             <Link
               key={p.id}
               href={`${base}/${p.slug}`}
-              className="cs-card group flex w-[86vw] shrink-0 snap-start flex-col overflow-hidden rounded-[18px] border border-surface-line2 bg-white p-[22px] sm:w-[330px]"
+              className="cs-card group flex w-[calc(100vw-118px)] shrink-0 snap-start flex-col overflow-hidden rounded-[18px] border border-surface-line2 bg-white p-[22px] sm:w-[330px]"
             >
               <div className="mb-[15px] flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
                 {badge && (
