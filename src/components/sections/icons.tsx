@@ -4,7 +4,8 @@ import {
   BookOpen, Brain, Webhook, FileText, MessageCircle, Search, PenTool,
   FlaskConical, Code2, CheckCheck, TrendingUp, Settings2, ArrowRight,
   ArrowUpRight, ShieldCheck, UserCheck, Activity, Layers, Gauge, LifeBuoy,
-  Lock, KeyRound, Boxes, GitBranch, ScrollText, Scale, type LucideIcon,
+  Lock, KeyRound, Boxes, GitBranch, ScrollText, Scale, Clock, CalendarCheck,
+  type LucideIcon,
 } from 'lucide-react';
 
 const NAMED: Record<string, LucideIcon> = {
@@ -20,6 +21,7 @@ const NAMED: Record<string, LucideIcon> = {
   'user-check': UserCheck, activity: Activity, layers: Layers, gauge: Gauge,
   'life-buoy': LifeBuoy, lock: Lock, 'key-round': KeyRound, boxes: Boxes,
   'git-branch': GitBranch, 'scroll-text': ScrollText, scale: Scale,
+  clock: Clock, 'calendar-check': CalendarCheck,
 };
 
 export function Icon({ name, size = 20, className }: { name?: string; size?: number; className?: string }) {

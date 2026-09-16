@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import type { FormDef, FormField } from '@/lib/types';
 import { useRecaptcha } from './useRecaptcha';
 import { CalendlyEmbed } from './CalendlyEmbed';
+import { Icon } from '@/components/sections/icons';
 
 export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string }) {
   const modes = form.settings?.modes || [];
@@ -27,6 +28,13 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
   const calendlyModes = calendly?.modes || ['call'];
   const showCalendly = !!(calendly?.url && (mode ? calendlyModes.includes(mode) : true));
   const hasNextSteps = (form.settings?.next_steps?.length || 0) > 0;
+
+  // The strip of reassurances above the calendar. `helper_text` already held
+  // these, separated by middots, but only the written form ever rendered it.
+  const callFacts = (form.settings?.helper_text || '')
+    .split('·')
+    .map((t) => t.trim())
+    .filter(Boolean);
 
   const visibleFields = useMemo(() => {
     return (form.fields || []).filter((f) => {
@@ -120,31 +128,53 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
     </div>
   );
 
+  const steps = form.settings?.next_steps || [];
   const supportPanel = (
-    <aside className="flex flex-col gap-4">
+    <aside className="flex flex-col gap-4 lg:sticky lg:top-[calc(var(--header-h)+24px)]">
       {hasNextSteps && (
-        <div className="rounded-[18px] border border-surface-line2 bg-surface-tint p-6">
-          <div className="mb-4 font-display text-[16px] font-bold text-black">What happens next</div>
-          <div className="flex flex-col gap-4">
-            {form.settings!.next_steps!.map((s, i) => (
-              <div key={i} className="flex gap-3">
-                <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-brand text-[13px] font-bold text-black">
+        <div className="rounded-[20px] border border-surface-line2 bg-surface-tint p-6 md:p-7">
+          <div className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.14em] text-brand-ink">
+            {form.settings?.next_steps_eyebrow || 'Step by step'}
+          </div>
+          <h3 className="m-0 mb-5 font-display text-[18px] font-bold tracking-[-0.02em] text-black">
+            {form.settings?.next_steps_heading || 'What happens next'}
+          </h3>
+          <ol className="m-0 list-none p-0">
+            {steps.map((s, i) => (
+              <li key={i} className="relative flex gap-3.5 pb-5 last:pb-0">
+                {/* The rule that makes this read as one sequence rather than
+                    three loose rows. Not drawn under the final step. */}
+                {i < steps.length - 1 && (
+                  <span
+                    aria-hidden
+                    className="absolute left-[15px] top-[30px] bottom-[2px] w-px bg-surface-line2"
+                  />
+                )}
+                <span className="relative z-10 flex h-[30px] w-[30px] flex-none items-center justify-center rounded-full bg-brand font-display text-[13px] font-extrabold text-black ring-4 ring-surface-tint">
                   {i + 1}
                 </span>
-                <div>
-                  <div className="text-[14px] font-semibold text-black">{s.title}</div>
-                  <div className="text-[13px] text-body-faint">{s.body}</div>
+                <div className="min-w-0 pt-[3px]">
+                  <div className="text-[14.5px] font-bold leading-snug text-black">{s.title}</div>
+                  <div className="mt-1 text-[13px] leading-relaxed text-body-faint">{s.body}</div>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       )}
-      <div className="rounded-[18px] border border-brand-ink/30 bg-brand/10 p-6">
-        <div className="mb-2 font-display text-[15px] font-bold text-black">Your brand, protected</div>
-        <p className="m-0 text-[13px] leading-relaxed text-body-soft">
-          Non-disclosure agreements available on request. Whether you&apos;re an agency protecting a client relationship
-          or a brand building directly, we can operate behind the scenes or alongside your team.
+      <div className="rounded-[20px] bg-brand p-6 md:p-7">
+        <div className="mb-2.5 flex items-center gap-2.5">
+          <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-black text-brand">
+            <Icon name="lock" size={16} />
+          </span>
+          <h3 className="m-0 font-display text-[16px] font-extrabold tracking-[-0.01em] text-black">
+            Your brand, protected
+          </h3>
+        </div>
+        <p className="m-0 text-[13.5px] leading-relaxed text-[#1A1A1A]">
+          Non-disclosure agreements available on request. Whether you&apos;re an agency protecting a
+          client relationship or a brand building directly, we can operate behind the scenes or
+          alongside your team.
         </p>
       </div>
     </aside>
@@ -152,21 +182,33 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
 
   // BOOK A CALL — when a Calendly scheduler is configured for this mode, show
   // ONLY the scheduler (Calendly collects the details, so no form is needed).
+  //
+  // Everything that decides whether someone books — who they are meeting, how
+  // long it takes, what happens afterwards, what it commits them to — is on
+  // our side of the frame. Calendly is left to do one job: show times.
   if (showCalendly) {
     return (
       <div>
         {modeToggle}
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.5fr_1fr]">
-          <div>
-            {title && <h2 className="m-0 mb-1.5 font-display text-[24px] font-bold text-black">{title}</h2>}
-            {subtitle && <p className="m-0 mb-5 text-[14.5px] text-body-faint">{subtitle}</p>}
-            <CalendlyEmbed
-              url={calendly!.url!}
-              note={calendly?.note}
-              host={calendly?.host}
-              height={700}
-            />
-          </div>
+        <div className="mx-auto mb-7 max-w-[760px] text-center lg:mx-0 lg:mb-8 lg:text-left">
+          {title && (
+            <h2 className="m-0 font-display text-[clamp(24px,2.6vw,32px)] font-extrabold leading-[1.12] tracking-[-0.03em] text-black [text-wrap:balance]">
+              {title}
+            </h2>
+          )}
+          {subtitle && (
+            <p className="m-0 mt-3 max-w-[62ch] text-[15.5px] leading-relaxed text-body-faint">{subtitle}</p>
+          )}
+        </div>
+        <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1.62fr)_minmax(0,1fr)] lg:gap-8">
+          <CalendlyEmbed
+            url={calendly!.url!}
+            note={calendly?.note}
+            host={calendly?.host}
+            duration={calendly?.duration}
+            facts={callFacts}
+            height={700}
+          />
           {supportPanel}
         </div>
       </div>

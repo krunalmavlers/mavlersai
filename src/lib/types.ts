@@ -164,6 +164,8 @@ export interface FormDef {
   settings: {
     modes?: FormMode[];
     helper_text?: string;
+    next_steps_eyebrow?: string;
+    next_steps_heading?: string;
     consent?: { name: string; label: string; required?: boolean }[];
     next_steps?: { title: string; body: string }[];
     calendly?: {
@@ -171,6 +173,8 @@ export interface FormDef {
       modes?: string[];
       heading?: string;
       note?: string;
+      /** e.g. "30 minutes". Shown beside the consultant. */
+      duration?: string;
       /** The consultant shown above the scheduler. */
       host?: { name?: string; role?: string; photo?: string };
     };
