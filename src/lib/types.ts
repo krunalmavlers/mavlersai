@@ -142,6 +142,11 @@ export interface FormField {
   conditional: { field?: string; equals?: string };
 }
 
+export interface NextStep {
+  title: string;
+  body: string;
+}
+
 export interface FormMode {
   key: string;
   label: string;
@@ -149,6 +154,10 @@ export interface FormMode {
   subtitle: string;
   submit: string;
   kind: string;
+  /** Overrides the form-level step list while this mode is selected. */
+  next_steps?: NextStep[];
+  next_steps_eyebrow?: string;
+  next_steps_heading?: string;
 }
 
 export interface FormDef {
@@ -164,12 +173,10 @@ export interface FormDef {
   settings: {
     modes?: FormMode[];
     helper_text?: string;
-    /** Segmented control linking the ways of getting in touch, one per page. */
-    page_switch?: { label: string; href: string }[];
     next_steps_eyebrow?: string;
     next_steps_heading?: string;
     consent?: { name: string; label: string; required?: boolean }[];
-    next_steps?: { title: string; body: string }[];
+    next_steps?: NextStep[];
     calendly?: {
       url?: string;
       modes?: string[];

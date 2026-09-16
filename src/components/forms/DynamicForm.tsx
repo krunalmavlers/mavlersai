@@ -1,8 +1,6 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import type { FormDef, FormField } from '@/lib/types';
 import { useRecaptcha } from './useRecaptcha';
 import { CalendlyEmbed } from './CalendlyEmbed';
@@ -29,7 +27,6 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
   const calendly = form.settings?.calendly;
   const calendlyModes = calendly?.modes || ['call'];
   const showCalendly = !!(calendly?.url && (mode ? calendlyModes.includes(mode) : true));
-  const hasNextSteps = (form.settings?.next_steps?.length || 0) > 0;
 
   // The strip of reassurances above the calendar. `helper_text` already held
   // these, separated by middots, but only the written form ever rendered it.
@@ -113,15 +110,26 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
     );
   }
 
+  // The two ways of getting in touch, switched in place. Radio semantics
+  // rather than plain buttons: the choice is exclusive and one is always
+  // already made, which is what a screen reader needs to hear.
   const modeToggle = modes.length > 1 && (
-    <div className="mb-6 inline-flex rounded-[12px] border border-surface-line2 bg-surface-tint2 p-1">
+    <div
+      role="radiogroup"
+      aria-label="How would you like to get in touch?"
+      className="inline-flex rounded-[14px] border border-surface-line2 bg-surface-tint2 p-1"
+    >
       {modes.map((m) => (
         <button
           key={m.key}
           type="button"
+          role="radio"
+          aria-checked={mode === m.key}
           onClick={() => setMode(m.key)}
-          className={`rounded-[9px] px-4 py-2 text-[13.5px] font-bold transition-colors ${
-            mode === m.key ? 'bg-brand text-black shadow-sm' : 'text-body-soft hover:text-black'
+          className={`rounded-[10px] px-5 py-2.5 text-[13.5px] font-bold transition-colors ${
+            mode === m.key
+              ? 'bg-brand text-black shadow-[0_1px_2px_rgba(0,0,0,0.12)]'
+              : 'text-body-soft hover:text-black'
           }`}
         >
           {m.label}
@@ -130,17 +138,21 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
     </div>
   );
 
-  const pageSwitch = form.settings?.page_switch || [];
-  const steps = form.settings?.next_steps || [];
+  // Each mode can carry its own step list; otherwise the form-level one is used.
+  const steps = activeMode?.next_steps || form.settings?.next_steps || [];
+  const stepsEyebrow =
+    activeMode?.next_steps_eyebrow || form.settings?.next_steps_eyebrow || 'Step by step';
+  const stepsHeading =
+    activeMode?.next_steps_heading || form.settings?.next_steps_heading || 'What happens next';
   const supportPanel = (
     <aside className="flex flex-col gap-4 lg:sticky lg:top-[calc(var(--header-h)+24px)]">
-      {hasNextSteps && (
+      {steps.length > 0 && (
         <div className="rounded-[20px] border border-surface-line2 bg-surface-tint p-6 md:p-7">
           <div className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.14em] text-brand-ink">
-            {form.settings?.next_steps_eyebrow || 'Step by step'}
+            {stepsEyebrow}
           </div>
           <h3 className="m-0 mb-5 font-display text-[18px] font-bold tracking-[-0.02em] text-black">
-            {form.settings?.next_steps_heading || 'What happens next'}
+            {stepsHeading}
           </h3>
           <ol className="m-0 list-none p-0">
             {steps.map((s, i) => (
@@ -192,7 +204,6 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
   if (showCalendly) {
     return (
       <div>
-        {modeToggle}
         <div className="mx-auto mb-7 max-w-[760px] text-center lg:mx-0 lg:mb-8 lg:text-left">
           {title && (
             <h2 className="m-0 font-display text-[clamp(24px,2.6vw,32px)] font-extrabold leading-[1.12] tracking-[-0.03em] text-black [text-wrap:balance]">
@@ -202,11 +213,7 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
           {subtitle && (
             <p className="m-0 mt-3 max-w-[62ch] text-[15.5px] leading-relaxed text-body-faint">{subtitle}</p>
           )}
-          {pageSwitch.length > 1 && (
-            <div className="mt-6">
-              <PageSwitch options={pageSwitch} />
-            </div>
-          )}
+          {modeToggle && <div className="mt-6">{modeToggle}</div>}
         </div>
         <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1.62fr)_minmax(0,1fr)] lg:gap-8">
           <CalendlyEmbed
@@ -226,17 +233,19 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
   // SUBMIT A REQUIREMENT (and any non-Calendly mode) — the dynamic form.
   return (
     <div>
-      {modeToggle}
-      {pageSwitch.length > 1 && (
-        <div className="mb-7">
-          <PageSwitch options={pageSwitch} />
-        </div>
-      )}
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.6fr_1fr]">
-        <div className="rounded-[20px] border border-surface-line2 bg-surface-tint p-6 md:p-9">
-          {title && <h2 className="m-0 mb-1.5 font-display text-[24px] font-bold text-black">{title}</h2>}
-          {subtitle && <p className="m-0 mb-6 text-[14.5px] text-body-faint">{subtitle}</p>}
-
+      <div className="mx-auto mb-7 max-w-[760px] text-center lg:mx-0 lg:mb-8 lg:text-left">
+        {title && (
+          <h2 className="m-0 font-display text-[clamp(24px,2.6vw,32px)] font-extrabold leading-[1.12] tracking-[-0.03em] text-black [text-wrap:balance]">
+            {title}
+          </h2>
+        )}
+        {subtitle && (
+          <p className="m-0 mt-3 max-w-[62ch] text-[15.5px] leading-relaxed text-body-faint">{subtitle}</p>
+        )}
+        {modeToggle && <div className="mt-6">{modeToggle}</div>}
+      </div>
+      <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1.62fr)_minmax(0,1fr)] lg:gap-8">
+        <div className="rounded-[22px] border border-surface-line2 bg-surface-tint p-6 md:p-9">
           <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {visibleFields.map((f) => (
               <Field
@@ -287,42 +296,6 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
 
         {supportPanel}
       </div>
-    </div>
-  );
-}
-
-/**
- * Switches between the two ways of getting in touch, each of which is its own
- * page. A segmented control rather than two links because the choice is
- * exclusive and one of them is always already true — the active option is
- * whichever page you are on, so it is derived from the URL rather than stored.
- */
-function PageSwitch({ options }: { options: { label: string; href: string }[] }) {
-  const pathname = usePathname();
-  if (options.length < 2) return null;
-  return (
-    <div
-      role="group"
-      aria-label="How would you like to get in touch?"
-      className="inline-flex rounded-[14px] border border-surface-line2 bg-surface-tint2 p-1"
-    >
-      {options.map((o) => {
-        const active = pathname === o.href;
-        return (
-          <Link
-            key={o.href}
-            href={o.href}
-            aria-current={active ? 'page' : undefined}
-            className={`rounded-[10px] px-5 py-2.5 text-[13.5px] font-bold transition-colors ${
-              active
-                ? 'bg-brand text-black shadow-[0_1px_2px_rgba(0,0,0,0.12)]'
-                : 'text-body-soft hover:text-black'
-            }`}
-          >
-            {o.label}
-          </Link>
-        );
-      })}
     </div>
   );
 }
