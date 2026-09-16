@@ -160,7 +160,12 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
           <div>
             {title && <h2 className="m-0 mb-1.5 font-display text-[24px] font-bold text-black">{title}</h2>}
             {subtitle && <p className="m-0 mb-5 text-[14.5px] text-body-faint">{subtitle}</p>}
-            <CalendlyEmbed url={calendly!.url!} note={calendly?.note} height={700} />
+            <CalendlyEmbed
+              url={calendly!.url!}
+              note={calendly?.note}
+              host={calendly?.host}
+              height={700}
+            />
           </div>
           {supportPanel}
         </div>

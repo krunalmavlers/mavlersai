@@ -166,7 +166,14 @@ export interface FormDef {
     helper_text?: string;
     consent?: { name: string; label: string; required?: boolean }[];
     next_steps?: { title: string; body: string }[];
-    calendly?: { url?: string; modes?: string[]; heading?: string; note?: string };
+    calendly?: {
+      url?: string;
+      modes?: string[];
+      heading?: string;
+      note?: string;
+      /** The consultant shown above the scheduler. */
+      host?: { name?: string; role?: string; photo?: string };
+    };
   };
   fields?: FormField[];
 }

@@ -13,6 +13,9 @@ export function FormEditor({ form, isNew }: { form: FormDef; isNew: boolean }) {
   });
   const [fieldsText, setFieldsText] = useState(JSON.stringify(form.fields || [], null, 2));
   const [calendlyUrl, setCalendlyUrl] = useState(form.settings?.calendly?.url || '');
+  const [hostName, setHostName] = useState(form.settings?.calendly?.host?.name || '');
+  const [hostRole, setHostRole] = useState(form.settings?.calendly?.host?.role || '');
+  const [hostPhoto, setHostPhoto] = useState(form.settings?.calendly?.host?.photo || '');
   const [pending, start] = useTransition();
   const [msg, setMsg] = useState('');
   const [err, setErr] = useState('');
@@ -34,6 +37,12 @@ export function FormEditor({ form, isNew }: { form: FormDef; isNew: boolean }) {
       ...(settingsObj.calendly || {}),
       url: calendlyUrl.trim(),
       modes: settingsObj.calendly?.modes || ['call'],
+      host: {
+        ...(settingsObj.calendly?.host || {}),
+        name: hostName.trim(),
+        role: hostRole.trim(),
+        photo: hostPhoto.trim(),
+      },
     };
     start(async () => {
       await saveForm({ ...f, settings: JSON.stringify(settingsObj) });
@@ -103,6 +112,32 @@ export function FormEditor({ form, isNew }: { form: FormDef; isNew: boolean }) {
               value={calendlyUrl}
               onChange={(e) => setCalendlyUrl(e.target.value)}
               placeholder="https://calendly.com/..."
+            />
+          </Field>
+        </div>
+        <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+          <Field label="Consultant name" hint="Shown above the scheduler, on our side of the Calendly frame.">
+            <input
+              className={inputCls}
+              value={hostName}
+              onChange={(e) => setHostName(e.target.value)}
+              placeholder="Krunal Bakraniya"
+            />
+          </Field>
+          <Field label="Consultant role">
+            <input
+              className={inputCls}
+              value={hostRole}
+              onChange={(e) => setHostRole(e.target.value)}
+              placeholder="Expert AI Consultant"
+            />
+          </Field>
+          <Field label="Consultant photo URL" hint="Upload in Media, then paste the /images/... path. Shown as a circle; initials are used if empty.">
+            <input
+              className={inputCls}
+              value={hostPhoto}
+              onChange={(e) => setHostPhoto(e.target.value)}
+              placeholder="/images/content/..."
             />
           </Field>
         </div>
