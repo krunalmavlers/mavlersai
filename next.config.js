@@ -7,6 +7,18 @@ const nextConfig = {
       { protocol: 'https', hostname: '**' },
     ],
   },
+  async redirects() {
+    return [
+      {
+        // /services is retired: the three service pages are the destinations
+        // now. A 301 rather than a 404 because the URL is in the sitemap, is
+        // likely indexed, and may be bookmarked.
+        source: '/services',
+        destination: '/services/ai-development',
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

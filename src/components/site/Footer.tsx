@@ -47,8 +47,19 @@ export function Footer({
                 ))}
               </div>
             )}
+            {/* The contact address was configured in settings but never shown —
+                only the phone numbers were rendered. */}
+            {settings.contact?.emails && settings.contact.emails.length > 0 && (
+              <div className="mt-4 flex flex-col gap-1 text-[13px]">
+                {settings.contact.emails.map((e) => (
+                  <a key={e} href={`mailto:${e}`} className="font-semibold text-[#C9C9C9] transition-colors hover:text-brand">
+                    {e}
+                  </a>
+                ))}
+              </div>
+            )}
             {settings.contact?.phones && settings.contact.phones.length > 0 && (
-              <div className="mt-4 flex flex-col gap-1 text-[12.5px] text-[#8A8A8A]">
+              <div className="mt-3 flex flex-col gap-1 text-[12.5px] text-[#8A8A8A]">
                 {settings.contact.phones.map((p) => (
                   <span key={p.region}>
                     <span className="text-[#6E6E6E]">{p.region}</span> {p.number}
