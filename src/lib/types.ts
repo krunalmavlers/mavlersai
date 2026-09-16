@@ -164,6 +164,8 @@ export interface FormDef {
   settings: {
     modes?: FormMode[];
     helper_text?: string;
+    /** Segmented control linking the ways of getting in touch, one per page. */
+    page_switch?: { label: string; href: string }[];
     next_steps_eyebrow?: string;
     next_steps_heading?: string;
     consent?: { name: string; label: string; required?: boolean }[];

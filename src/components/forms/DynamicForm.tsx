@@ -1,6 +1,8 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import type { FormDef, FormField } from '@/lib/types';
 import { useRecaptcha } from './useRecaptcha';
 import { CalendlyEmbed } from './CalendlyEmbed';
@@ -128,6 +130,7 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
     </div>
   );
 
+  const pageSwitch = form.settings?.page_switch || [];
   const steps = form.settings?.next_steps || [];
   const supportPanel = (
     <aside className="flex flex-col gap-4 lg:sticky lg:top-[calc(var(--header-h)+24px)]">
@@ -199,6 +202,11 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
           {subtitle && (
             <p className="m-0 mt-3 max-w-[62ch] text-[15.5px] leading-relaxed text-body-faint">{subtitle}</p>
           )}
+          {pageSwitch.length > 1 && (
+            <div className="mt-6">
+              <PageSwitch options={pageSwitch} />
+            </div>
+          )}
         </div>
         <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1.62fr)_minmax(0,1fr)] lg:gap-8">
           <CalendlyEmbed
@@ -219,6 +227,11 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
   return (
     <div>
       {modeToggle}
+      {pageSwitch.length > 1 && (
+        <div className="mb-7">
+          <PageSwitch options={pageSwitch} />
+        </div>
+      )}
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.6fr_1fr]">
         <div className="rounded-[20px] border border-surface-line2 bg-surface-tint p-6 md:p-9">
           {title && <h2 className="m-0 mb-1.5 font-display text-[24px] font-bold text-black">{title}</h2>}
@@ -274,6 +287,42 @@ export function DynamicForm({ form, siteKey }: { form: FormDef; siteKey?: string
 
         {supportPanel}
       </div>
+    </div>
+  );
+}
+
+/**
+ * Switches between the two ways of getting in touch, each of which is its own
+ * page. A segmented control rather than two links because the choice is
+ * exclusive and one of them is always already true — the active option is
+ * whichever page you are on, so it is derived from the URL rather than stored.
+ */
+function PageSwitch({ options }: { options: { label: string; href: string }[] }) {
+  const pathname = usePathname();
+  if (options.length < 2) return null;
+  return (
+    <div
+      role="group"
+      aria-label="How would you like to get in touch?"
+      className="inline-flex rounded-[14px] border border-surface-line2 bg-surface-tint2 p-1"
+    >
+      {options.map((o) => {
+        const active = pathname === o.href;
+        return (
+          <Link
+            key={o.href}
+            href={o.href}
+            aria-current={active ? 'page' : undefined}
+            className={`rounded-[10px] px-5 py-2.5 text-[13.5px] font-bold transition-colors ${
+              active
+                ? 'bg-brand text-black shadow-[0_1px_2px_rgba(0,0,0,0.12)]'
+                : 'text-body-soft hover:text-black'
+            }`}
+          >
+            {o.label}
+          </Link>
+        );
+      })}
     </div>
   );
 }
