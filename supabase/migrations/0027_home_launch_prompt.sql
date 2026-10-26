@@ -49,7 +49,7 @@ select id, v.type, v.ord, v.content::jsonb from public.pages, (values
     "heading_html": "Tell us where the build <span>stalled.</span>",
     "subhead": "A plan appears on this page. A Mavlers engineer takes it the rest of the way — most calls are the same week.",
     "field_label": "What’s in the way?",
-    "placeholder": "Built it in Lovable. It works in the preview, and it isn’t safe to launch.",
+    "placeholder": "The preview works. It isn’t safe to launch.",
     "button": "Show me a plan",
     "chips": [
       "The prototype isn’t safe to launch",
@@ -87,7 +87,7 @@ select id, v.type, v.ord, v.content::jsonb from public.pages, (values
       {
         "kicker": "The preview works",
         "title": "It isn’t safe to put in front of customers",
-        "body": "A Lovable, Bolt, v0, or Cursor build that stops at the preview. We turn it into a production app, with a real boundary around the data.",
+        "body": "A build that stops at the preview. We turn it into a production app, with a real boundary around the data.",
         "prompt": "The prototype isn’t safe to launch"
       }
     ]
@@ -107,7 +107,7 @@ select id, v.type, v.ord, v.content::jsonb from public.pages, (values
       {"n": "03", "title": "AI builds", "body": "AI SDK chatbots trained on your content, multi-step agents, search over a site or catalogue, and a pass on what the models cost."},
       {"n": "04", "title": "MVP to production", "body": "Auth, database, payments, an admin panel, transactional email, and a real deploy on Vercel."},
       {"n": "05", "title": "Vercel platform ops", "body": "Move with no downtime. Domains, secrets, preview links, CI, firewall and bot protection, monitoring, and a team handover."},
-      {"n": "06", "title": "AI code rescue", "body": "A Lovable, Bolt, v0, or Cursor prototype, closed up and ready to run — and someone still on it after launch."}
+      {"n": "06", "title": "AI code rescue", "body": "A generated prototype, closed up and ready to run — and someone still on it after launch."}
     ]
   }$json$),
   ('partnership', 6, $json${

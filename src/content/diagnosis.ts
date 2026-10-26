@@ -11,7 +11,7 @@ export const HERO_DEFAULTS = {
   subhead:
     'A plan appears on this page. A Mavlers engineer takes it the rest of the way — most calls are the same week.',
   fieldLabel: 'What’s in the way?',
-  placeholder: 'Built it in Lovable. It works in the preview, and it isn’t safe to launch.',
+  placeholder: 'The preview works. It isn’t safe to launch.',
   button: 'Show me a plan',
   chips: [
     'The prototype isn’t safe to launch',

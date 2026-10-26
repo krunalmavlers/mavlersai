@@ -14,7 +14,7 @@ const AUDIENCES = [
   {
     n: '02',
     title: 'A prototype that has hit the wall',
-    body: 'Lovable, Bolt, v0, or Cursor got you a preview. Security, structure, and integrations are the part the tool does not finish.',
+    body: 'The tool got you a preview. Security, structure, and integrations are the part it does not finish.',
     prompt: 'The prototype isn’t safe to launch',
   },
   {
@@ -130,7 +130,7 @@ export function V4Line({ siteKey }: { siteKey: string }) {
                     id="v4-stall"
                     rows={6}
                     value={session.draft}
-                    placeholder="Built it in Lovable. The preview works. It isn’t safe to launch."
+                    placeholder="The preview works. It isn’t safe to launch."
                     onChange={(e) => session.setDraft(e.target.value)}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' && !e.shiftKey) {
@@ -286,12 +286,12 @@ export function V4Line({ siteKey }: { siteKey: string }) {
                   170 <span className="text-white/35">of</span> 1,645
                 </p>
                 <p className="m-0 mt-4 max-w-[26ch] text-[clamp(20px,2.2vw,30px)] font-semibold leading-[1.2] tracking-[-0.03em] text-white/85">
-                  Lovable apps, in a May 2025 study, exposed personal data.
+                  Vibe-coded apps, in a May 2025 study, exposed personal data.
                 </p>
               </div>
             </div>
             <p className="m-0 mt-8 max-w-[62ch] text-[16px] leading-relaxed text-white/60">
-              The category is already huge. Lovable reports a run rate above $500M, a million new projects a week, and 50 million projects, most of them built by people who are not engineers. Maintenance, security, and integrations are the harder problem. That gap is the offer.
+              The category is already huge, and most of these projects are built by people who are not engineers. Maintenance, security, and integrations are the harder problem. That gap is the offer.
             </p>
           </div>
         </ScrollScene>
