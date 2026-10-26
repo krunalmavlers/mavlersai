@@ -209,7 +209,7 @@ export default async function CatchAllPage({ params }: { params: Params }) {
           // Every page needs exactly one H1. Most get it from their hero; a
           // page without one (the legal pages) promotes its first section
           // instead, so the outline never opens at H2.
-          const hasHero = r.page.sections.some((s) => s.type === 'hero');
+          const hasHero = r.page.sections.some((s) => s.type === 'hero' || s.type === 'launch_prompt');
           return r.page.sections.map((s, i) => (
             <SectionRenderer key={s.id} section={s} primary={!hasHero && i === 0} />
           ));

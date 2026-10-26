@@ -27,6 +27,10 @@ const SECTION_TYPES = [
   'packages',
   'newsletter',
   'form',
+  'launch_prompt',
+  'lead_doors',
+  'pinned_stat',
+  'pillar_rail',
 ];
 
 const TEMPLATES: Record<string, any> = {
@@ -61,7 +65,25 @@ const TEMPLATES: Record<string, any> = {
   engagement_models: { eyebrow: '', heading: '', items: [{ step: '01', title: 'Model', body: '', featured: false }] },
   trust_band: { eyebrow: '', text: '' },
   comparison_table: { eyebrow: '', heading: '', columns: ['', 'A', 'B'], rows: [{ label: 'Row', values: ['x', 'y'] }] },
-  packages: { eyebrow: '', heading: '', items: [{ name: 'Package', duration: '', desc: '', featured: false }] },
+  packages: { eyebrow: '', heading: '', variant: 'cards', items: [{ name: 'Package', duration: '', hours: '', price: '', desc: '', featured: false }], retainers: [], footnote: '' },
+  launch_prompt: {
+    eyebrow: 'Next.js on Vercel',
+    heading_html: 'Tell us where the build <span>stalled.</span>',
+    subhead: '',
+    field_label: 'What’s in the way?',
+    placeholder: '',
+    button: 'Show me the fix',
+    chips: [],
+    form_key: 'homepage-diagnosis',
+    calendly_url: 'https://calendly.com/mavlers-ai/30min',
+    calendly_duration: '30 minutes',
+    host_name: '',
+    host_role: '',
+    host_photo: '',
+  },
+  lead_doors: { eyebrow: '', heading: '', items: [{ kicker: '', title: 'Offer', body: '', price: '', time: '', prompt: '' }] },
+  pinned_stat: { eyebrow: '', figure: '60%', sentence: '' },
+  pillar_rail: { eyebrow: '', heading: '', subhead: '', items: [{ n: '01', title: 'Pillar', body: '' }] },
   newsletter: { heading: 'Subscribe', body: '', placeholder: 'you@agency.com', button: 'Subscribe' },
 };
 
