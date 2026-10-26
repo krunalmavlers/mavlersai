@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { ChevronDown, Menu, X } from 'lucide-react';
 import type { MenuItem, SiteSettings } from '@/lib/types';
 import { Logo } from './Logo';
@@ -21,6 +22,21 @@ function nest(items: MenuItem[]) {
 
 export function Header({ settings, items }: { settings: SiteSettings; items: MenuItem[] }) {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const darkLead = pathname === '/' || pathname === '/v1' || pathname === '/v3' || pathname === '/v4';
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    if (!darkLead) return;
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [darkLead]);
+
+  // Dark first screens: the bar sits over them until the page moves
+  // or the mobile menu opens.
+  const overlay = darkLead && !scrolled && !open;
   /**
    * Which dropdown is open, held in state rather than driven by CSS `:hover`.
    *
@@ -48,10 +64,15 @@ export function Header({ settings, items }: { settings: SiteSettings; items: Men
     if (e.detail > 0) e.currentTarget.blur();
   };
   const tree = nest(items);
+  const linkTone = overlay ? 'text-white/85 hover:text-white' : 'text-body-soft hover:text-black';
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-white/90 backdrop-blur-md">
+    <header
+      className={`sticky top-0 z-50 border-b transition-colors duration-300 ${
+        overlay ? 'border-transparent bg-transparent' : 'border-line bg-white/90 backdrop-blur-md'
+      }`}
+    >
       <div className="mx-auto flex max-w-page items-center gap-5 px-6 py-[18px]">
-        <Logo settings={settings} height={37} variant="light" />
+        <Logo settings={settings} height={37} variant={overlay ? 'dark' : 'light'} />
         <div className="flex-1" />
 
         <nav aria-label="Primary" className="hidden items-center gap-[26px] lg:flex">
@@ -61,7 +82,7 @@ export function Header({ settings, items }: { settings: SiteSettings; items: Men
                 key={item.id}
                 href={item.url}
                 target={item.target}
-                className="text-[15px] font-semibold text-body-soft transition-colors hover:text-black"
+                className={`text-[15px] font-semibold transition-colors ${linkTone}`}
               >
                 {item.label}
               </Link>
@@ -81,7 +102,7 @@ export function Header({ settings, items }: { settings: SiteSettings; items: Men
                     if (openId === item.id) closeMenu(e);
                     else setOpenId(item.id);
                   }}
-                  className="inline-flex items-center gap-1.5 text-[15px] font-semibold text-body-soft transition-colors hover:text-black"
+                  className={`inline-flex items-center gap-1.5 text-[15px] font-semibold transition-colors ${linkTone}`}
                 >
                   {item.label}
                   {/* A drawn chevron that turns with the menu. The previous
@@ -120,7 +141,9 @@ export function Header({ settings, items }: { settings: SiteSettings; items: Men
         <button
           onClick={() => setOpen((v) => !v)}
           aria-label="Toggle menu"
-          className="flex h-10 w-10 items-center justify-center rounded-lg border border-black/10 text-black lg:hidden"
+          className={`flex h-10 w-10 items-center justify-center rounded-lg border lg:hidden ${
+            overlay ? 'border-white/25 text-white' : 'border-black/10 text-black'
+          }`}
         >
           {open ? <X size={19} strokeWidth={2.3} /> : <Menu size={19} strokeWidth={2.3} />}
         </button>

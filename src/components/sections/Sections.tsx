@@ -14,6 +14,8 @@ import { ScrollScene } from './ScrollScene';
 import { CaseStudySlider } from './CaseStudySlider';
 import { HeroCircuit } from './HeroCircuit';
 import { HeroHeading } from './HeroHeading';
+import { LaunchPrompt } from '@/components/home/LaunchPrompt';
+import { LeadDoors, PackageGrid, PillarRail, PinnedStat } from '@/components/home/HomeSections';
 
 /* ----------------------------- shared bits ------------------------------ */
 
@@ -1760,9 +1762,17 @@ function ComparisonTable({ c }: { c: any }) {
   );
 }
 
+/* ----------------------------- Launch prompt ---------------------------- */
+
+async function LaunchPromptSection({ c }: { c: any }) {
+  const settings = await getSettings();
+  return <LaunchPrompt c={c} siteKey={settings.recaptcha_site_key || ''} />;
+}
+
 /* ------------------------------- Packages ------------------------------- */
 
 function Packages({ c }: { c: any }) {
+  if (c.variant === 'editorial') return <PackageGrid c={c} />;
   return (
     <Section theme="tint2">
       <ScrollScene>
@@ -1853,6 +1863,14 @@ export async function SectionRenderer({
   switch (section.type) {
     case 'hero':
       return <Hero c={c} />;
+    case 'launch_prompt':
+      return <LaunchPromptSection c={c} />;
+    case 'lead_doors':
+      return <LeadDoors c={c} />;
+    case 'pinned_stat':
+      return <PinnedStat c={c} />;
+    case 'pillar_rail':
+      return <PillarRail c={c} />;
     case 'stats_bar':
       return <StatsBar c={c} />;
     case 'feature_grid':
