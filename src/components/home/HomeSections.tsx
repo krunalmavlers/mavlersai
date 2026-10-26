@@ -82,24 +82,54 @@ export function PillarRail({ c }: { c: any }) {
           {c.subhead && <p className="m-0 mt-4 max-w-[52ch] text-[16px] leading-relaxed text-body-muted">{c.subhead}</p>}
           <div className="pillar-scroller mt-10">
             <div className="pillar-track">
-              {items.map((item: any, i: number) => (
-                <article
-                  key={item.title || i}
-                  className="pillar-card flex min-h-[280px] flex-col rounded-[24px] border border-[#E7E7E3] bg-white p-7"
-                >
-                  <span className="font-display text-[13px] font-extrabold tracking-[0.14em] text-brand-ink">
-                    {item.n || String(i + 1).padStart(2, '0')}
-                  </span>
-                  <h3 className="m-0 mt-5 font-display text-[24px] font-extrabold leading-[1.1] tracking-[-0.03em]">
-                    {item.title}
-                  </h3>
-                  {item.body && <p className="m-0 mt-3 text-[15px] leading-relaxed text-body-muted">{item.body}</p>}
-                </article>
-              ))}
+              {items.map((item: any, i: number) => {
+                const hot = item.kicker === 'Lead' || item.kicker === 'Entry';
+                const card = (
+                  <>
+                    <span className="flex items-center justify-between gap-3">
+                      <span className="font-display text-[13px] font-extrabold tracking-[0.14em] text-brand-ink">
+                        {item.n || String(i + 1).padStart(2, '0')}
+                      </span>
+                      {item.kicker && (
+                        <span className={`rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.14em] ${hot ? 'bg-brand text-black' : 'text-black/45'}`}>
+                          {item.kicker}
+                        </span>
+                      )}
+                    </span>
+                    <span className="mt-5 block font-display text-[24px] font-extrabold leading-[1.1] tracking-[-0.03em]">
+                      {item.title}
+                    </span>
+                    {item.body && <span className="mt-3 block text-[15px] leading-relaxed text-body-muted">{item.body}</span>}
+                    {item.prompt && <span className="mt-auto pt-6 text-[13.5px] font-bold">See a plan →</span>}
+                  </>
+                );
+                const className = `pillar-card flex min-h-[320px] cursor-pointer flex-col rounded-[24px] border bg-white p-7 text-left text-black ${hot ? 'border-brand' : 'border-[#E7E7E3]'}`;
+                return item.prompt ? (
+                  <PromptFill key={item.title || i} text={item.prompt} className={className}>
+                    {card}
+                  </PromptFill>
+                ) : (
+                  <article key={item.title || i} className={className}>
+                    {card}
+                  </article>
+                );
+              })}
             </div>
           </div>
         </div>
       </ScrollScene>
+      {Array.isArray(c.features) && c.features.length > 0 && (
+        <div className="mx-auto max-w-page px-6 pb-[clamp(48px,6vw,80px)]">
+          <p className="m-0 text-[11px] font-extrabold uppercase tracking-[0.14em] text-brand-ink">Named on the build</p>
+          <ul className="m-0 mt-4 flex list-none flex-wrap gap-2 p-0">
+            {c.features.map((name: string) => (
+              <li key={name} className="rounded-full border border-[#E7E7E3] bg-white px-3 py-1.5 text-[13px] font-semibold">
+                {name}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </section>
   );
 }
@@ -109,38 +139,46 @@ export function PackageGrid({ c }: { c: any }) {
   const retainers = Array.isArray(c.retainers) ? c.retainers : [];
   return (
     <section id="packages" className="bg-white text-black">
-      <div className="mx-auto max-w-page px-6 py-[clamp(56px,7vw,96px)]">
+      <div className="mx-auto max-w-[1440px] px-6 py-[clamp(56px,7vw,96px)] lg:px-10">
         {c.eyebrow && (
           <p className="m-0 text-[12px] font-bold uppercase tracking-[0.14em]">
             <span className="border-b-[3px] border-brand pb-1">{c.eyebrow}</span>
           </p>
         )}
         {c.heading && <h2 className={`${H2} mt-5 max-w-[18ch]`}>{c.heading}</h2>}
-        <div className="mt-10 border-t border-[#E7E7E3]">
-          {items.map((p: any, i: number) => (
-            <article key={p.name || i} className="grid gap-3 border-b border-[#E7E7E3] py-6 md:grid-cols-[1.4fr_1.6fr_auto] md:items-center md:gap-8 md:py-7">
-              <div>
-                <div className="flex flex-wrap items-center gap-2">
-                  {p.featured && (
-                    <span className="rounded-full bg-brand px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-black">
-                      Lead
-                    </span>
+        {c.subhead && <p className="m-0 mt-4 max-w-[52ch] text-[16px] leading-relaxed text-body-muted">{c.subhead}</p>}
+        {items.some((p: any) => p.pillar) ? (
+          <RateTable items={items} />
+        ) : (
+          <div className="mt-10 border-t border-[#E7E7E3]">
+            {items.map((p: any, i: number) => (
+              <article key={p.name || i} className="grid gap-3 border-b border-[#E7E7E3] py-6 md:grid-cols-[1.4fr_1.6fr_auto] md:items-center md:gap-8 md:py-7">
+                <div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    {p.featured && (
+                      <span className="rounded-full bg-brand px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-black">
+                        Lead
+                      </span>
+                    )}
+                    <h3 className="m-0 font-display text-[20px] font-extrabold tracking-[-0.03em]">{p.name}</h3>
+                  </div>
+                  {(p.hours || p.duration) && (
+                    <p className="m-0 mt-1 text-[13px] font-semibold text-body-dim">
+                      {[p.hours && `${p.hours} hrs`, p.duration].filter(Boolean).join(' · ')}
+                    </p>
                   )}
-                  <h3 className="m-0 font-display text-[20px] font-extrabold tracking-[-0.03em]">{p.name}</h3>
                 </div>
-                {(p.hours || p.duration) && (
-                  <p className="m-0 mt-1 text-[13px] font-semibold text-body-dim">
-                    {[p.hours, p.duration].filter(Boolean).join(' · ')}
+                {p.desc && <p className="m-0 text-[15px] leading-relaxed text-body-muted">{p.desc}</p>}
+                {p.price && (
+                  <p className="m-0 font-display text-[22px] font-extrabold tracking-[-0.03em] md:text-right">
+                    {p.price}
+                    {p.price_note && <span className="mt-1 block text-[12px] font-bold uppercase tracking-[0.12em] text-body-dim">{p.price_note}</span>}
                   </p>
                 )}
-              </div>
-              {p.desc && <p className="m-0 text-[15px] leading-relaxed text-body-muted">{p.desc}</p>}
-              {p.price && (
-                <p className="m-0 font-display text-[22px] font-extrabold tracking-[-0.03em] md:text-right">{p.price}</p>
-              )}
-            </article>
-          ))}
-        </div>
+              </article>
+            ))}
+          </div>
+        )}
 
         {retainers.length > 0 && (
           <div className="mt-12">
@@ -162,5 +200,72 @@ export function PackageGrid({ c }: { c: any }) {
         {c.footnote && <p className="m-0 mt-8 max-w-[70ch] text-[13.5px] leading-relaxed text-body-dim">{c.footnote}</p>}
       </div>
     </section>
+  );
+}
+
+function RateTable({ items }: { items: any[] }) {
+  return (
+    <>
+      <div className="mt-10 space-y-4 lg:hidden">
+        {items.map((p, i) => (
+          <article key={p.name || i} className="rounded-[24px] border border-[#E7E7E3] bg-surface-tint p-6">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                {p.pillar && (
+                  <p className="m-0 text-[11px] font-extrabold uppercase tracking-[0.14em] text-brand-ink">{p.pillar}</p>
+                )}
+                <h3 className="m-0 mt-2 font-display text-[20px] font-extrabold tracking-[-0.03em]">{p.name}</h3>
+              </div>
+              <p className="m-0 text-right font-display text-[20px] font-extrabold tracking-[-0.03em]">
+                {p.price}
+                {p.price_note && <span className="mt-1 block text-[11px] font-bold uppercase tracking-[0.1em] text-body-dim">{p.price_note}</span>}
+              </p>
+            </div>
+            {p.desc && <p className="m-0 mt-3 text-[14.5px] leading-relaxed text-body-muted">{p.desc}</p>}
+            <p className="m-0 mt-4 text-[13px] font-semibold text-body-dim">
+              {[p.hours && `${p.hours} ${p.hours === '1' ? 'hour' : 'hours'}`, p.duration].filter(Boolean).join(' · ')}
+            </p>
+          </article>
+        ))}
+      </div>
+      <div className="mt-10 hidden lg:block">
+        <table className="w-full table-fixed border-collapse text-left">
+          <caption className="sr-only">Packages and pricing</caption>
+          <colgroup>
+            <col className="w-[18%]" />
+            <col className="w-[9%]" />
+            <col className="w-[37%]" />
+            <col className="w-[9%]" />
+            <col className="w-[16%]" />
+            <col className="w-[11%]" />
+          </colgroup>
+          <thead>
+            <tr className="border-b border-[#E7E7E3] text-[11px] font-bold uppercase tracking-[0.14em] text-body-dim">
+              <th className="py-3 pr-4 font-bold">Package</th>
+              <th className="py-3 pr-4 font-bold">Pillar</th>
+              <th className="py-3 pr-4 font-bold">What’s included</th>
+              <th className="py-3 pr-4 font-bold">Hours</th>
+              <th className="py-3 pr-4 font-bold">Price (USD)</th>
+              <th className="py-3 font-bold">Timeline</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.map((p, i) => (
+              <tr key={p.name || i} className="border-b border-[#E7E7E3] align-top">
+                <th className="py-5 pr-4 font-display text-[16px] font-extrabold leading-snug tracking-[-0.02em]">{p.name}</th>
+                <td className="py-5 pr-4 text-[12px] font-extrabold uppercase tracking-[0.12em] text-brand-ink">{p.pillar}</td>
+                <td className="py-5 pr-6 text-[14.5px] font-medium leading-relaxed text-body-muted">{p.desc}</td>
+                <td className="py-5 pr-4 text-[14px] font-semibold">{p.hours}</td>
+                <td className="py-5 pr-4 font-display text-[16px] font-extrabold leading-snug tracking-[-0.02em]">
+                  {p.price}
+                  {p.price_note && <span className="mt-1 block font-sans text-[11px] font-bold uppercase tracking-[0.1em] text-body-dim">{p.price_note}</span>}
+                </td>
+                <td className="py-5 text-[14px] font-semibold">{p.duration}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 }

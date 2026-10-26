@@ -321,6 +321,7 @@ export const SECTION_SCHEMAS: Record<string, FieldDesc[]> = {
   packages: [
     eyebrow,
     heading,
+    { key: 'subhead', label: 'Subhead', kind: 'textarea' },
     {
       key: 'variant',
       label: 'Layout',
@@ -334,10 +335,12 @@ export const SECTION_SCHEMAS: Record<string, FieldDesc[]> = {
       kind: 'objectList',
       itemFields: [
         { key: 'name', label: 'Name', kind: 'text' },
-        { key: 'duration', label: 'Duration', kind: 'text' },
+        { key: 'pillar', label: 'Pillar', kind: 'text' },
+        { key: 'duration', label: 'Timeline', kind: 'text' },
         { key: 'hours', label: 'Hours', kind: 'text' },
-        { key: 'price', label: 'Price', kind: 'text' },
-        { key: 'desc', label: 'Description', kind: 'textarea' },
+        { key: 'price', label: 'Price (USD)', kind: 'text' },
+        { key: 'price_note', label: 'Price note', kind: 'text' },
+        { key: 'desc', label: "What's included", kind: 'textarea' },
         { key: 'featured', label: 'Lead offer', kind: 'bool' },
       ],
     },
@@ -400,10 +403,13 @@ export const SECTION_SCHEMAS: Record<string, FieldDesc[]> = {
       kind: 'objectList',
       itemFields: [
         { key: 'n', label: 'Number', kind: 'text' },
+        { key: 'kicker', label: 'Role', kind: 'text', hint: 'Lead, Build, Care, or Entry.' },
         { key: 'title', label: 'Title', kind: 'text' },
         { key: 'body', label: 'Body', kind: 'textarea' },
+        { key: 'prompt', label: 'Prompt text', kind: 'textarea', hint: 'Filled into the hero input when this service is chosen.' },
       ],
     },
+    { key: 'features', label: 'Named Vercel features', kind: 'stringList' },
   ],
   newsletter: [
     heading,

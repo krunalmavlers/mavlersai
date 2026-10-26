@@ -65,7 +65,7 @@ const TEMPLATES: Record<string, any> = {
   engagement_models: { eyebrow: '', heading: '', items: [{ step: '01', title: 'Model', body: '', featured: false }] },
   trust_band: { eyebrow: '', text: '' },
   comparison_table: { eyebrow: '', heading: '', columns: ['', 'A', 'B'], rows: [{ label: 'Row', values: ['x', 'y'] }] },
-  packages: { eyebrow: '', heading: '', variant: 'cards', items: [{ name: 'Package', duration: '', hours: '', price: '', desc: '', featured: false }], retainers: [], footnote: '' },
+  packages: { eyebrow: '', heading: '', subhead: '', variant: 'editorial', items: [{ name: 'Package', pillar: '', duration: '', hours: '', price: '', price_note: '', desc: '', featured: false }], retainers: [], footnote: '' },
   launch_prompt: {
     eyebrow: 'Next.js on Vercel',
     heading_html: 'Tell us where the build <span>stalled.</span>',
@@ -83,7 +83,7 @@ const TEMPLATES: Record<string, any> = {
   },
   lead_doors: { eyebrow: '', heading: '', items: [{ kicker: '', title: 'Offer', body: '', price: '', time: '', prompt: '' }] },
   pinned_stat: { eyebrow: '', figure: '60%', sentence: '' },
-  pillar_rail: { eyebrow: '', heading: '', subhead: '', items: [{ n: '01', title: 'Pillar', body: '' }] },
+  pillar_rail: { eyebrow: '', heading: '', subhead: '', items: [{ n: '01', kicker: 'Lead', title: 'Pillar', body: '', prompt: '' }], features: [] },
   newsletter: { heading: 'Subscribe', body: '', placeholder: 'you@agency.com', button: 'Subscribe' },
 };
 

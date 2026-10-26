@@ -100,14 +100,23 @@ select id, v.type, v.ord, v.content::jsonb from public.pages, (values
   ('pillar_rail', 5, $json${
     "eyebrow": "The line",
     "heading": "From a preview to something your team can run.",
-    "subhead": "A CMS, a calmer Vercel bill, an assistant, a launch. Same idea every time: a build your team can operate.",
+    "subhead": "CMS and the cost audit are the ways in. AI and the MVP are the build. Platform ops and care keep a team on. Rescue is how a preview gets there.",
     "items": [
-      {"n": "01", "title": "Next.js + custom CMS", "body": "An editor-friendly CMS on Next.js. Draft previews, scheduled publishing, roles, and a handover marketers can run."},
-      {"n": "02", "title": "The Vercel bill, read properly", "body": "Where the spend comes from, what can move off the server, and what to change before the next invoice."},
-      {"n": "03", "title": "AI builds", "body": "AI SDK chatbots trained on your content, multi-step agents, search over a site or catalogue, and a pass on what the models cost."},
-      {"n": "04", "title": "MVP to production", "body": "Auth, database, payments, an admin panel, transactional email, and a real deploy on Vercel."},
-      {"n": "05", "title": "Vercel platform ops", "body": "Move with no downtime. Domains, secrets, preview links, CI, firewall and bot protection, monitoring, and a team handover."},
-      {"n": "06", "title": "AI code rescue", "body": "A generated prototype, closed up and ready to run — and someone still on it after launch."}
+      {"n": "01", "kicker": "Lead", "title": "Next.js + custom CMS", "body": "An editor on the Next.js site you already have, or a new marketing site the team can run. Payload in the repo by default. Sanity when the studio should be hosted.", "prompt": "Marketing can’t edit the Next.js site. We need a CMS they can run."},
+      {"n": "02", "kicker": "Lead", "title": "Vercel cost audit", "body": "The bill, read before anyone rebuilds the site. Where the spend comes from, what can leave the server, and the limits that stop the next jump.", "prompt": "The Vercel bill jumped and we need to know why."},
+      {"n": "03", "kicker": "Build", "title": "AI builds", "body": "Assistants and agents on the AI SDK, trained on content you already trust, with a ceiling on what they spend.", "prompt": "Add an AI assistant."},
+      {"n": "04", "kicker": "Build", "title": "MVP to production", "body": "An AI prototype cleaned up, or a SaaS MVP finished with the parts a customer actually needs.", "prompt": "We need to launch the MVP."},
+      {"n": "05", "kicker": "Care", "title": "Vercel platform ops", "body": "The move onto Vercel with no downtime, then the guardrails and the handover that keep a team on it.", "prompt": "Move the site onto Vercel."},
+      {"n": "06", "kicker": "Entry", "title": "AI code rescue", "body": "A limited AI prototype, hardened into an app that is safe to run. This is the way into platform ops and the care that follows launch.", "prompt": "The prototype isn’t safe to launch."}
+    ],
+    "features": [
+      "AI SDK",
+      "Firewall and Bot Protection",
+      "Fluid compute and spend management",
+      "ISR and Cache Components",
+      "Preview Deployments",
+      "Speed Insights and Analytics",
+      "Vercel storage — Postgres, Blob, Edge Config, Redis"
     ]
   }$json$),
   ('partnership', 6, $json${

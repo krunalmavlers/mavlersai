@@ -1,10 +1,16 @@
 'use client';
 
-import { STALLS, WORK } from '@/content/variants';
+import { LINE, STALLS, SURFACE, WORK } from '@/content/variants';
 import { EngineerAsk, usePlanSession, VariantNav } from './planSession';
 
 export function V2Field({ siteKey }: { siteKey: string }) {
   const session = usePlanSession(siteKey, 'homepage-v2');
+
+  function ask(text: string) {
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    document.getElementById('prompt')?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    session.reveal(text);
+  }
 
   return (
     <div className="v2 bg-[#F4F1EA] text-black">
@@ -131,21 +137,30 @@ export function V2Field({ siteKey }: { siteKey: string }) {
             <h2 className="m-0 max-w-[14ch] font-display text-[clamp(32px,4vw,52px)] font-extrabold leading-[0.98] tracking-[-0.04em]">
               What we actually take on.
             </h2>
-            <p className="m-0 max-w-[32ch] text-[15px] leading-relaxed text-black/60">
-              You bring the prototype, the repo, or the client relationship. We bring the production layer.
-            </p>
+            <p className="m-0 max-w-[36ch] text-[15px] leading-relaxed text-black/60">{LINE.subhead}</p>
           </div>
           <div className="mt-12 grid gap-x-10 gap-y-0 md:grid-cols-2">
             {WORK.map((item) => (
-              <article key={item.n} className="group border-t border-black/15 py-6">
-                <div className="flex items-baseline justify-between gap-4">
-                  <h3 className="m-0 font-display text-[20px] font-extrabold tracking-[-0.03em]">{item.title}</h3>
-                  <span className="font-display text-[12px] font-extrabold text-brand-ink">{item.n}</span>
-                </div>
-                <p className="m-0 mt-2 max-w-[46ch] text-[14.5px] leading-relaxed text-black/60">{item.body}</p>
-              </article>
+              <button key={item.n} type="button" onClick={() => ask(item.prompt)} className="group cursor-pointer border-t border-black/15 py-6 text-left text-black">
+                <span className="flex items-baseline justify-between gap-4">
+                  <span className="font-display text-[20px] font-extrabold tracking-[-0.03em]">{item.title}</span>
+                  <span className={`font-display text-[12px] font-extrabold uppercase tracking-[0.12em] ${item.lead ? 'text-brand-ink' : 'text-black/35'}`}>
+                    {item.mark}
+                  </span>
+                </span>
+                <span className="mt-2 block max-w-[46ch] text-[14.5px] leading-relaxed text-black/60">{item.body}</span>
+                <span className="mt-3 block text-[13px] font-bold">Start from this →</span>
+              </button>
             ))}
           </div>
+          <p className="m-0 mt-10 text-[11px] font-bold uppercase tracking-[0.16em] text-black/45">Named on the build</p>
+          <ul className="m-0 mt-4 flex list-none flex-wrap gap-2 p-0">
+            {SURFACE.map((name) => (
+              <li key={name} className="rounded-full border border-black/15 px-3 py-1.5 text-[13px] font-semibold">
+                {name}
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
