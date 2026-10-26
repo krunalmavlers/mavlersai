@@ -19,7 +19,7 @@ export function V2Field({ siteKey }: { siteKey: string }) {
         <div className="mt-14 grid items-start gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-20">
           <div className="v2-essay order-2 lg:order-1">
             <p>
-              Most of what arrives here started in a tool that was supposed to be the product. Lovable, Bolt, v0, Cursor. The preview works. The keys are in the browser. Marketing files a ticket to change a sentence.
+              Most of what arrives here started in a tool that was supposed to be the product. The preview works. The keys are in the browser. Marketing files a ticket to change a sentence.
             </p>
             <p>
               The agencies we already work with know the shape of this. They have brought us WordPress and Shopify for fifteen years, white-label, and stayed. Next.js on Vercel is that same partnership, on the stack their clients are asking for now.

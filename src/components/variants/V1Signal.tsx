@@ -56,7 +56,7 @@ export function V1Signal({ siteKey }: { siteKey: string }) {
                   id="v1-stall"
                   rows={2}
                   value={session.draft}
-                  placeholder="Built it in Lovable. The preview works. It isn’t safe to launch."
+                  placeholder="The preview works. It isn’t safe to launch."
                   onChange={(e) => session.setDraft(e.target.value)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
