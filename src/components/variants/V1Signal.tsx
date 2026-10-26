@@ -1,12 +1,18 @@
 'use client';
 
 import { ScrollScene } from '@/components/sections/ScrollScene';
-import { PROOF, STALLS, WORK } from '@/content/variants';
+import { LINE, PROOF, STALLS, SURFACE, WORK } from '@/content/variants';
 import { EngineerAsk, usePlanSession, VariantNav } from './planSession';
 
 export function V1Signal({ siteKey }: { siteKey: string }) {
   const session = usePlanSession(siteKey, 'homepage-v1');
   const open = session.phase !== 'idle';
+
+  function ask(text: string) {
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    document.getElementById('prompt')?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    session.reveal(text);
+  }
 
   return (
     <div className="v1 bg-ink-900 text-white">
@@ -158,15 +164,30 @@ export function V1Signal({ siteKey }: { siteKey: string }) {
           <h2 className="m-0 mt-4 max-w-[16ch] font-display text-[clamp(32px,4vw,56px)] font-extrabold leading-[0.98] tracking-[-0.045em]">
             Six ways a preview becomes something a team can run.
           </h2>
+          <p className="m-0 mt-5 max-w-[54ch] text-[16px] leading-relaxed text-white/60">{LINE.subhead}</p>
           <div className="mt-12 grid gap-px bg-white/10 sm:grid-cols-2 lg:grid-cols-3">
             {WORK.map((item) => (
-              <article key={item.n} className="v1-cell bg-ink-900 p-7">
-                <span className="font-display text-[12px] font-extrabold tracking-[0.16em] text-brand">{item.n}</span>
+              <button key={item.n} type="button" onClick={() => ask(item.prompt)} className="v1-cell flex h-full cursor-pointer flex-col bg-ink-900 p-7 text-left text-white">
+                <span className="flex items-center justify-between gap-3">
+                  <span className="font-display text-[12px] font-extrabold tracking-[0.16em] text-brand">{item.n}</span>
+                  <span className={`rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] ${item.lead ? 'bg-brand text-black' : 'text-white/40'}`}>
+                    {item.mark}
+                  </span>
+                </span>
                 <h3 className="m-0 mt-5 font-display text-[22px] font-extrabold leading-tight tracking-[-0.03em]">{item.title}</h3>
                 <p className="m-0 mt-3 text-[14.5px] leading-relaxed text-white/60">{item.body}</p>
-              </article>
+                <span className="mt-6 text-[13px] font-bold text-brand">Draw a plan for this →</span>
+              </button>
             ))}
           </div>
+          <p className="m-0 mt-10 text-[11px] font-bold uppercase tracking-[0.18em] text-white/40">Named on the build</p>
+          <ul className="m-0 mt-4 flex list-none flex-wrap gap-2 p-0">
+            {SURFACE.map((name) => (
+              <li key={name} className="rounded-full border border-white/15 px-3 py-1.5 text-[12.5px] font-semibold text-white/70">
+                {name}
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

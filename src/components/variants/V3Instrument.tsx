@@ -1,6 +1,6 @@
 'use client';
 
-import { STALLS } from '@/content/variants';
+import { LINE, STALLS, SURFACE, WORK } from '@/content/variants';
 import { EngineerAsk, usePlanSession, VariantNav } from './planSession';
 
 const TRACE = [
@@ -15,6 +15,12 @@ const TRACE = [
 export function V3Instrument({ siteKey }: { siteKey: string }) {
   const session = usePlanSession(siteKey, 'homepage-v3');
   const live = session.phase === 'shown';
+
+  function ask(text: string) {
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    document.getElementById('prompt')?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    session.reveal(text);
+  }
 
   return (
     <div className="v3 bg-[#070707] text-white">
@@ -171,6 +177,41 @@ export function V3Instrument({ siteKey }: { siteKey: string }) {
               </li>
             ))}
           </ol>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10">
+        <div className="mx-auto max-w-[1200px] px-6 py-[clamp(64px,8vw,100px)] lg:px-10">
+          <p className="m-0 font-mono text-[11px] uppercase tracking-[0.2em] text-brand">The line</p>
+          <h2 className="m-0 mt-4 max-w-[16ch] font-display text-[clamp(28px,3vw,42px)] font-extrabold leading-[1.02] tracking-[-0.04em]">
+            Six services. Two of them open the door.
+          </h2>
+          <p className="m-0 mt-4 max-w-[52ch] text-[15.5px] leading-relaxed text-white/60">{LINE.subhead}</p>
+          <ol className="m-0 mt-10 list-none p-0">
+            {WORK.map((item) => (
+              <li key={item.n} className="border-t border-white/10">
+                <button type="button" onClick={() => ask(item.prompt)} className="grid w-full cursor-pointer grid-cols-[48px_minmax(0,1fr)] gap-4 py-5 text-left text-white">
+                  <span className="font-mono text-[12px] text-brand">{item.n}</span>
+                  <span className="min-w-0">
+                    <span className="flex items-baseline justify-between gap-4">
+                      <span className="font-display text-[18px] font-extrabold tracking-[-0.02em]">{item.title}</span>
+                      <span className={`font-mono text-[11px] uppercase tracking-[0.14em] ${item.lead ? 'text-brand' : 'text-white/40'}`}>{item.mark}</span>
+                    </span>
+                    <span className="mt-2 block max-w-[62ch] text-[14.5px] leading-relaxed text-white/60">{item.body}</span>
+                    <span className="mt-3 block text-[13px] font-bold text-brand">Open a plan →</span>
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ol>
+          <p className="m-0 mt-10 font-mono text-[11px] uppercase tracking-[0.2em] text-white/40">Named on the build</p>
+          <ul className="m-0 mt-4 flex list-none flex-wrap gap-2 p-0">
+            {SURFACE.map((name) => (
+              <li key={name} className="rounded-full border border-white/15 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.06em] text-white/70">
+                {name}
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

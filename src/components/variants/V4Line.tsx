@@ -1,7 +1,7 @@
 'use client';
 
 import { ScrollScene } from '@/components/sections/ScrollScene';
-import { STALLS } from '@/content/variants';
+import { LINE, STALLS, WORK } from '@/content/variants';
 import { EngineerAsk, usePlanSession, VariantNav } from './planSession';
 
 const AUDIENCES = [
@@ -31,65 +31,14 @@ const AUDIENCES = [
   },
 ];
 
-const PILLARS = [
-  {
-    n: '01',
-    lead: true,
-    title: 'Next.js + a CMS',
-    kicker: 'A way in',
-    body: 'An editor on the site you already have, or a new marketing site built so the team can run it. Payload in the repo by default. Sanity when the studio should be hosted.',
-    points: ['Draft previews and scheduled publishing', 'Roles for who can edit and who can ship', 'A handover marketers can follow'],
-  },
-  {
-    n: '02',
-    lead: true,
-    title: 'Vercel Cost Audit',
-    kicker: 'A way in',
-    body: 'The low-risk read of a site that already exists. We start from the bill, not from a new build.',
-    points: ['What is rendering on every request', 'SSR moved to static, cached, or rebuilt on a schedule', 'Fewer function calls, image and bundle fixes, spend limits and alerts'],
-  },
-  {
-    n: '03',
-    lead: false,
-    title: 'AI builds',
-    kicker: 'The work',
-    body: 'Assistants and agents on the AI SDK, grounded on content you already trust, with a ceiling on what they can spend.',
-    points: ['Chat trained on your site, docs, or catalogue', 'Multi-step work: qualification, documents, orders', 'Search over a site, and a pass on model spend'],
-  },
-  {
-    n: '04',
-    lead: false,
-    title: 'MVP to production',
-    kicker: 'The work',
-    body: 'The unglamorous layer under the feature: accounts, data, money, and a deploy that is not a share link.',
-    points: ['Auth, database, and an admin someone can open', 'Stripe, Razorpay, or PayPal, plus the APIs around them', 'A real environment on Vercel'],
-  },
-  {
-    n: '05',
-    lead: false,
-    title: 'Platform ops',
-    kicker: 'After launch',
-    body: 'The move, the guardrails, and the handover. No downtime theatre.',
-    points: ['Domains, DNS, SSL, secrets, and preview links', 'CI checks, firewall, and bot protection', 'Monitoring, upgrades, and a team that can run it'],
-  },
-  {
-    n: '06',
-    lead: true,
-    title: 'AI code rescue',
-    kicker: 'A way in',
-    body: 'For the build that works in the preview and is not safe to put in front of customers. This is how a prototype becomes a system we keep.',
-    points: ['Keys off the client and out of the bundle', 'A single file split into a real Next.js app', 'An OWASP pass, tests, then the weeks after launch'],
-  },
-];
-
 const SURFACE = [
   { name: 'AI SDK', body: 'Chat, agents, and the limits around them.' },
-  { name: 'Firewall & bot protection', body: 'In front of the app before it is public.' },
-  { name: 'Fluid compute', body: 'Where the spend actually comes from.' },
-  { name: 'ISR & cache', body: 'Work that should not run on every visit.' },
-  { name: 'Preview deployments', body: 'A URL the team can click before DNS moves.' },
-  { name: 'Speed Insights', body: 'What the launch did to the page, measured.' },
-  { name: 'Storage', body: 'Postgres, Blob, Edge Config, Redis — named, not implied.' },
+  { name: 'Firewall and Bot Protection', body: 'In front of the app before it is public.' },
+  { name: 'Fluid compute and spend management', body: 'Where the spend actually comes from, and the ceiling on it.' },
+  { name: 'ISR and Cache Components', body: 'Work that should not run on every visit.' },
+  { name: 'Preview Deployments', body: 'A URL the team can click before DNS moves.' },
+  { name: 'Speed Insights and Analytics', body: 'What the launch did to the page, measured.' },
+  { name: 'Vercel storage', body: 'Postgres, Blob, Edge Config, Redis — named, not implied.' },
 ];
 
 export function V4Line({ siteKey }: { siteKey: string }) {
@@ -338,30 +287,29 @@ export function V4Line({ siteKey }: { siteKey: string }) {
                   From a preview to something your team can run.
                 </h2>
               </div>
-              <p className="m-0 max-w-[36ch] text-[15px] leading-relaxed text-black/60">
-                The CMS, the cost read, and the rescue are how people arrive. AI and the MVP are the build. Platform ops is how they stay.
-              </p>
+              <p className="m-0 max-w-[36ch] text-[15px] leading-relaxed text-black/60">{LINE.subhead}</p>
             </div>
             <div className="v4-line-scroller mt-10">
               <div className="v4-line-track">
-                {PILLARS.map((item) => (
-                  <article key={item.n} className="v4-line-card">
-                    <div className="flex items-center justify-between gap-3">
+                {WORK.map((item) => (
+                  <button key={item.n} type="button" onClick={() => ask(item.prompt)} className="v4-line-card cursor-pointer text-left text-black">
+                    <span className="flex items-center justify-between gap-3">
                       <span className="font-display text-[12px] font-extrabold tracking-[0.14em] text-brand-ink">{item.n}</span>
                       <span className={`rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] ${item.lead ? 'bg-brand text-black' : 'bg-black/5 text-black/55'}`}>
-                        {item.kicker}
+                        {item.mark}
                       </span>
-                    </div>
-                    <h3 className="m-0 mt-5 font-display text-[26px] font-extrabold leading-tight tracking-[-0.03em]">{item.title}</h3>
-                    <p className="m-0 mt-3 text-[14.5px] leading-relaxed text-black/65">{item.body}</p>
-                    <ul className="m-0 mt-5 list-none space-y-2 p-0">
+                    </span>
+                    <span className="mt-5 block font-display text-[26px] font-extrabold leading-tight tracking-[-0.03em]">{item.title}</span>
+                    <span className="mt-3 block text-[14.5px] leading-relaxed text-black/65">{item.body}</span>
+                    <span className="m-0 mt-5 list-none space-y-2 p-0">
                       {item.points.map((point) => (
-                        <li key={point} className="border-t border-black/10 pt-2 text-[13.5px] font-semibold leading-snug">
+                        <span key={point} className="block border-t border-black/10 pt-2 text-[13.5px] font-semibold leading-snug">
                           {point}
-                        </li>
+                        </span>
                       ))}
-                    </ul>
-                  </article>
+                    </span>
+                    <span className="mt-auto pt-6 text-[13px] font-bold">Describe this stall →</span>
+                  </button>
                 ))}
               </div>
             </div>

@@ -23,7 +23,7 @@ let mm;
 while ((mm = re.exec(sql))) {
   rows.push({ type: mm[1], sort_order: Number(mm[2]), content: JSON.parse(mm[3]) });
 }
-if (rows.length !== 7) throw new Error(`Expected 7 sections, parsed ${rows.length}`);
+if (rows.length !== 8) throw new Error(`Expected 8 sections, parsed ${rows.length}`);
 
 const headers = {
   apikey: key,
