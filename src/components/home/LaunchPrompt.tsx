@@ -194,7 +194,7 @@ export function LaunchPrompt({ c, siteKey }: { c: any; siteKey: string }) {
 
   return (
     <section id="prompt" className="lp-hero relative -mt-[calc(var(--header-h)+12px)] overflow-hidden bg-ink-900 text-white">
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[min(100svh,960px)] overflow-hidden">
+      <div aria-hidden className="lp-atmosphere pointer-events-none absolute inset-x-0 top-0 h-[min(100svh,960px)] overflow-hidden">
         <div className="lp-glow absolute left-1/2 top-[12%] h-[460px] w-[460px] -translate-x-1/2 rounded-full" />
         <div className="relative h-full opacity-80">
           <HeroCircuit />

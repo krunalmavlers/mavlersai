@@ -25,7 +25,7 @@
  *    still reads after that downscale.
  */
 
-const A1 = '#FFDB2D'; // brand yellow — primary accent
+const A1 = '#FFDD2F'; // brand yellow — primary accent
 const A2 = '#FFA300'; // brand orange — secondary accent
 const A3 = '#111111'; // ink — third accent and structure
 
@@ -96,7 +96,7 @@ function OutCard({ label, dot, size = 13 }: { label: string; dot: string; size?:
 
 /** Incoming signals: scattered start (sx,sy) → clustered hold (dx,dy). */
 const A_SIGNALS: { s: [number, number]; d: [number, number]; el: React.CSSProperties }[] = [
-  { s: [-250, -208], d: [-140, -125], el: { width: 7, height: 7, margin: '-3px 0 0 -3px', borderRadius: '50%', background: A1, boxShadow: `0 0 0 4px rgba(255,219,45,.22)` } },
+  { s: [-250, -208], d: [-140, -125], el: { width: 7, height: 7, margin: '-3px 0 0 -3px', borderRadius: '50%', background: A1, boxShadow: `0 0 0 4px rgba(255,221,47,.22)` } },
   { s: [-196, -58], d: [-104, -96], el: { width: 44, height: 28, margin: '-14px 0 0 -22px', borderRadius: 5, background: CARD, border: `1px solid ${CARD_LINE}`, boxShadow: '0 4px 12px rgba(17,17,17,.06)' } },
   { s: [-262, 88], d: [-136, -84], el: { width: 6, height: 6, margin: '-3px 0 0 -3px', borderRadius: '50%', background: '#B4B4AE' } },
   { s: [-92, -232], d: [-116, -142], el: { width: 34, height: 22, margin: '-11px 0 0 -17px', borderRadius: '11px 11px 11px 3px', border: `1px solid rgba(255,163,0,.5)`, background: 'rgba(255,163,0,.08)' } },
@@ -106,7 +106,7 @@ const A_SIGNALS: { s: [number, number]; d: [number, number]; el: React.CSSProper
   { s: [256, 118], d: [112, -104], el: { width: 6, height: 6, margin: '-3px 0 0 -3px', borderRadius: '50%', background: '#B4B4AE' } },
   { s: [-204, 226], d: [-32, 158], el: { width: 44, height: 24, margin: '-12px 0 0 -22px', borderRadius: 5, background: CARD, border: `1px solid ${CARD_LINE}`, boxShadow: '0 4px 12px rgba(17,17,17,.06)' } },
   { s: [44, 250], d: [10, 140], el: { width: 7, height: 7, margin: '-3px 0 0 -3px', borderRadius: '50%', background: A2, boxShadow: '0 0 0 4px rgba(255,163,0,.16)' } },
-  { s: [222, 228], d: [36, 166], el: { width: 30, height: 20, margin: '-10px 0 0 -15px', borderRadius: '10px 10px 10px 3px', border: `1px solid rgba(255,219,45,.75)`, background: 'rgba(255,219,45,.12)' } },
+  { s: [222, 228], d: [36, 166], el: { width: 30, height: 20, margin: '-10px 0 0 -15px', borderRadius: '10px 10px 10px 3px', border: `1px solid rgba(255,221,47,.75)`, background: 'rgba(255,221,47,.12)' } },
   { s: [-44, -252], d: [-14, 182], el: { width: 6, height: 6, margin: '-3px 0 0 -3px', borderRadius: '50%', background: '#B4B4AE' } },
 ];
 
@@ -114,7 +114,7 @@ const A_SIGNALS: { s: [number, number]; d: [number, number]; el: React.CSSProper
 const A_CLUSTERS = [
   { w: 150, h: 120, m: '-142px 0 0 -196px', border: 'rgba(255,163,0,.5)' },
   { w: 130, h: 106, m: '-140px 0 0 66px', border: 'rgba(17,17,17,.28)' },
-  { w: 150, h: 100, m: '110px 0 0 -76px', border: 'rgba(255,219,45,.85)' },
+  { w: 150, h: 100, m: '110px 0 0 -76px', border: 'rgba(255,221,47,.85)' },
 ];
 
 /** Spokes from the core out to the pentagon vertices. */
@@ -161,7 +161,7 @@ export function HeroSignalLattice() {
           height: 520,
           margin: '-260px 0 0 -260px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle,rgba(255,219,45,.22),transparent 56%)',
+          background: 'radial-gradient(circle,rgba(255,221,47,.22),transparent 56%)',
           animation: 'hc-breathe 7s ease-in-out infinite',
         }}
       />
@@ -248,7 +248,7 @@ export function HeroSignalLattice() {
               position: 'absolute',
               inset: 0,
               borderRadius: '50%',
-              background: 'radial-gradient(circle,rgba(255,219,45,.35),rgba(255,163,0,.14) 55%,transparent 72%)',
+              background: 'radial-gradient(circle,rgba(255,221,47,.35),rgba(255,163,0,.14) 55%,transparent 72%)',
             }}
           />
           <svg width="132" height="132" viewBox="0 0 132 132" style={{ position: 'absolute', inset: 0, animation: 'hc-spin 26s linear infinite' }}>
@@ -302,13 +302,13 @@ export function HeroSignalLattice() {
 /** Fragments sliding in along the two intake lanes. */
 const B_IN: { s: [number, number]; d: [number, number]; w: number; h: number; fill: string; border: string; shadow?: string }[] = [
   { s: [-260, -250], d: [-120, -110], w: 66, h: 44, fill: CARD, border: CARD_LINE, shadow: '0 6px 16px rgba(17,17,17,.08)' },
-  { s: [-160, -300], d: [-70, -140], w: 52, h: 36, fill: 'rgba(255,219,45,.16)', border: 'rgba(255,219,45,.85)' },
+  { s: [-160, -300], d: [-70, -140], w: 52, h: 36, fill: 'rgba(255,221,47,.16)', border: 'rgba(255,221,47,.85)' },
   { s: [-300, -120], d: [-150, -46], w: 58, h: 38, fill: CARD, border: CARD_LINE, shadow: '0 6px 16px rgba(17,17,17,.08)' },
   { s: [250, -270], d: [120, -120], w: 60, h: 40, fill: 'rgba(17,17,17,.05)', border: 'rgba(17,17,17,.28)' },
   { s: [310, -140], d: [150, -58], w: 50, h: 34, fill: CARD, border: CARD_LINE, shadow: '0 6px 16px rgba(17,17,17,.08)' },
   { s: [180, -330], d: [70, -150], w: 44, h: 30, fill: 'rgba(255,163,0,.1)', border: 'rgba(255,163,0,.5)' },
   { s: [-70, -340], d: [-14, -172], w: 38, h: 26, fill: CARD, border: CARD_LINE },
-  { s: [60, -320], d: [22, -176], w: 34, h: 24, fill: 'rgba(255,219,45,.16)', border: 'rgba(255,219,45,.8)' },
+  { s: [60, -320], d: [22, -176], w: 34, h: 24, fill: 'rgba(255,221,47,.16)', border: 'rgba(255,221,47,.8)' },
 ];
 
 /** Floor line work: two intake lanes, five traces out, closing loop. */
@@ -318,7 +318,7 @@ const B_LANES = [
   { d: 'M280 280 L110 190', stroke: 'rgba(255,163,0,.75)', dash: 340, anim: 'hc-b-trace' },
   { d: 'M280 280 L280 100', stroke: 'rgba(17,17,17,.34)', dash: 340, anim: 'hc-b-trace' },
   { d: 'M280 280 L450 190', stroke: 'rgba(255,163,0,.6)', dash: 340, anim: 'hc-b-trace' },
-  { d: 'M280 280 L160 440', stroke: 'rgba(255,219,45,.9)', dash: 340, anim: 'hc-b-trace' },
+  { d: 'M280 280 L160 440', stroke: 'rgba(255,221,47,.9)', dash: 340, anim: 'hc-b-trace' },
   { d: 'M280 280 L410 440', stroke: 'rgba(17,17,17,.26)', dash: 340, anim: 'hc-b-trace' },
   { d: 'M110 190 L280 100 L450 190 L410 440 L160 440 Z', stroke: 'rgba(17,17,17,.18)', dash: 340, anim: 'hc-b-trace' },
 ];
@@ -365,9 +365,9 @@ const B_PANELS: { x: number; y: number; z: number; w: number; label: string; acc
     accent: A1,
     body: (
       <div style={{ display: 'flex', alignItems: 'flex-end', gap: 4, marginTop: 10, height: 24 }}>
-        <div style={{ flex: 1, height: '38%', borderRadius: 2, background: 'rgba(255,219,45,.55)' }} />
-        <div style={{ flex: 1, height: '66%', borderRadius: 2, background: 'rgba(255,219,45,.8)' }} />
-        <div style={{ flex: 1, height: '48%', borderRadius: 2, background: 'rgba(255,219,45,.5)' }} />
+        <div style={{ flex: 1, height: '38%', borderRadius: 2, background: 'rgba(255,221,47,.55)' }} />
+        <div style={{ flex: 1, height: '66%', borderRadius: 2, background: 'rgba(255,221,47,.8)' }} />
+        <div style={{ flex: 1, height: '48%', borderRadius: 2, background: 'rgba(255,221,47,.5)' }} />
         <div style={{ flex: 1, height: '100%', borderRadius: 2, background: A1 }} />
       </div>
     ),
@@ -442,7 +442,7 @@ export function HeroAssemblyFloor() {
               height: 300,
               margin: '-150px 0 0 -150px',
               borderRadius: '50%',
-              background: 'radial-gradient(circle,rgba(255,219,45,.42),transparent 66%)',
+              background: 'radial-gradient(circle,rgba(255,221,47,.42),transparent 66%)',
               animation: 'hc-breathe 7s ease-in-out infinite',
             }}
           />
@@ -500,7 +500,7 @@ export function HeroAssemblyFloor() {
                 position: 'absolute',
                 inset: 0,
                 borderRadius: 14,
-                background: `linear-gradient(135deg,rgba(255,219,45,.55),rgba(255,163,0,.3)),${CARD}`,
+                background: `linear-gradient(135deg,rgba(255,221,47,.55),rgba(255,163,0,.3)),${CARD}`,
                 border: '1px solid rgba(17,17,17,.2)',
                 boxShadow: '0 18px 40px rgba(255,163,0,.34)',
               }}
@@ -560,9 +560,9 @@ const C_STREAMS: { s: [number, number]; m: [number, number]; el: React.CSSProper
   { s: [-330, 40], m: [-140, 20], el: { width: 40, height: 2, margin: '0 0 0 -20px', borderRadius: 1, background: `linear-gradient(90deg,transparent,${A1})` } },
   { s: [330, 60], m: [140, 30], el: { width: 40, height: 2, margin: '0 0 0 -20px', borderRadius: 1, background: `linear-gradient(90deg,${A2},transparent)` } },
   { s: [-250, -280], m: [-100, -120], el: { width: 56, height: 34, margin: '-17px 0 0 -28px', borderRadius: 6, background: CARD, border: `1px solid ${CARD_LINE}`, boxShadow: '0 6px 18px rgba(17,17,17,.07)' } },
-  { s: [250, -290], m: [105, -125], el: { width: 44, height: 28, margin: '-14px 0 0 -22px', borderRadius: 6, background: 'rgba(255,219,45,.16)', border: `1px solid rgba(255,219,45,.85)` } },
+  { s: [250, -290], m: [105, -125], el: { width: 44, height: 28, margin: '-14px 0 0 -22px', borderRadius: 6, background: 'rgba(255,221,47,.16)', border: `1px solid rgba(255,221,47,.85)` } },
   { s: [-180, 210], m: [-80, 100], el: { width: 36, height: 24, margin: '-12px 0 0 -18px', borderRadius: '9px 9px 9px 3px', border: `1px solid rgba(255,163,0,.5)`, background: 'rgba(255,163,0,.09)' } },
-  { s: [200, 220], m: [90, 105], el: { width: 8, height: 8, margin: '-4px 0 0 -4px', borderRadius: '50%', background: A1, boxShadow: '0 0 0 5px rgba(255,219,45,.2)' } },
+  { s: [200, 220], m: [90, 105], el: { width: 8, height: 8, margin: '-4px 0 0 -4px', borderRadius: '50%', background: A1, boxShadow: '0 0 0 5px rgba(255,221,47,.2)' } },
   { s: [-60, -300], m: [-24, -130], el: { width: 7, height: 7, margin: '-3px 0 0 -3px', borderRadius: '50%', background: A3, boxShadow: '0 0 0 5px rgba(17,17,17,.07)' } },
   { s: [90, 280], m: [36, 126], el: { width: 7, height: 7, margin: '-3px 0 0 -3px', borderRadius: '50%', background: A2, boxShadow: '0 0 0 5px rgba(255,163,0,.14)' } },
 ];
@@ -590,7 +590,7 @@ export function HeroEmergence() {
           width: 760,
           height: 760,
           borderRadius: '50%',
-          background: 'radial-gradient(circle,rgba(255,219,45,.17),transparent 60%)',
+          background: 'radial-gradient(circle,rgba(255,221,47,.17),transparent 60%)',
           filter: 'blur(8px)',
           animation: 'hc-breathe 11s ease-in-out infinite',
         }}
@@ -631,7 +631,7 @@ export function HeroEmergence() {
               right: -40,
               top: 431,
               height: 120,
-              background: 'linear-gradient(180deg,rgba(255,219,45,.13),transparent)',
+              background: 'linear-gradient(180deg,rgba(255,221,47,.13),transparent)',
               animation: 'hc-c-horizon var(--loop) cubic-bezier(.3,0,.2,1) infinite',
             }}
           />
@@ -676,7 +676,7 @@ export function HeroEmergence() {
                 borderRadius: 16,
                 overflow: 'hidden',
                 transformOrigin: '50% 100%',
-                background: `linear-gradient(180deg,rgba(255,219,45,.72),rgba(255,163,0,.42) 62%,rgba(255,219,45,.3)),${CARD}`,
+                background: `linear-gradient(180deg,rgba(255,221,47,.72),rgba(255,163,0,.42) 62%,rgba(255,221,47,.3)),${CARD}`,
                 border: '1px solid rgba(17,17,17,.2)',
                 boxShadow: '0 26px 60px rgba(255,163,0,.34)',
                 animation: 'hc-c-monolith var(--loop) cubic-bezier(.4,0,.2,1) infinite',

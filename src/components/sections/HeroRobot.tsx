@@ -11,7 +11,7 @@ function Robot({ scale = 0.78 }: { scale?: number }) {
       <div className="w-[230px] animate-botFloat">
         {/* antenna */}
         <div className="mx-auto h-[26px] w-[3px] rounded bg-[#111]" />
-        <div className="mx-auto -mt-1.5 h-4 w-4 animate-botAntenna rounded-full bg-brand shadow-[0_0_14px_rgba(255,219,45,0.9)]" />
+        <div className="mx-auto -mt-1.5 h-4 w-4 animate-botAntenna rounded-full bg-brand shadow-[0_0_14px_rgba(255,221,47,0.9)]" />
         {/* head */}
         <div className="relative mx-auto mt-2.5 h-[176px] w-[230px] rounded-[40px] shadow-[inset_0_3px_0_rgba(255,255,255,0.08),0_22px_44px_rgba(0,0,0,0.22)] [background:linear-gradient(160deg,#1E1E1E,#050505)]">
           <div className="absolute -left-3.5 top-[58px] h-12 w-4 rounded-lg bg-brand" />
@@ -106,7 +106,7 @@ export function HeroRobot({ compact }: { compact?: boolean }) {
   return (
     <div className="relative mx-auto aspect-square w-full max-w-[560px]">
       {/* glow */}
-      <div className="absolute inset-[6%] rounded-full blur-[6px] [background:radial-gradient(circle_at_50%_42%,rgba(255,219,45,0.32),rgba(255,219,45,0.10)_55%,transparent_72%)]" />
+      <div className="absolute inset-[6%] rounded-full blur-[6px] [background:radial-gradient(circle_at_50%_42%,rgba(255,221,47,0.32),rgba(255,221,47,0.10)_55%,transparent_72%)]" />
       {/* dotted orbit ring */}
       <div className="absolute left-1/2 top-1/2 h-[260px] w-[260px] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed border-black/[0.09]" />
       {/* ground shadow */}
@@ -128,7 +128,7 @@ export function HeroRobot({ compact }: { compact?: boolean }) {
       <Chip label="Integrations" icon="share-2" dark style={{ top: '80%', right: -26, animation: 'heroFloat 4.8s ease-in-out infinite 1.1s' }} />
 
       {/* caption */}
-      <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-brand px-[18px] py-2.5 text-[12.5px] font-extrabold tracking-[-0.01em] text-black shadow-[0_12px_30px_rgba(255,219,45,0.35)]">
+      <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-brand px-[18px] py-2.5 text-[12.5px] font-extrabold tracking-[-0.01em] text-black shadow-[0_12px_30px_rgba(255,221,47,0.35)]">
         One engine for all your AI &amp; automation
       </div>
     </div>

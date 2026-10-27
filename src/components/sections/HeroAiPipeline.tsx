@@ -35,7 +35,7 @@ function Pipe({ delay = 0 }: { delay?: number }) {
   return (
     <div className="relative mx-auto h-[22px] w-px bg-[linear-gradient(180deg,rgba(0,0,0,0.18),rgba(0,0,0,0.05))]">
       <span
-        className="absolute left-1/2 top-0 h-[7px] w-[7px] rounded-full bg-brand shadow-[0_0_9px_2px_rgba(255,219,45,0.65)]"
+        className="absolute left-1/2 top-0 h-[7px] w-[7px] rounded-full bg-brand shadow-[0_0_9px_2px_rgba(255,221,47,0.65)]"
         style={{ animation: `pipeDot 2.4s linear infinite ${delay}s` }}
       />
     </div>
@@ -61,7 +61,7 @@ export function HeroAiPipeline() {
   return (
     <div className="ai-pipeline relative mx-auto w-full max-w-[480px]">
       {/* brand glow behind the stack, mirroring the mascot's halo */}
-      <div className="pointer-events-none absolute inset-[-9%] rounded-full blur-[4px] [background:radial-gradient(circle_at_50%_40%,rgba(255,219,45,0.30),rgba(255,219,45,0.08)_56%,transparent_72%)]" />
+      <div className="pointer-events-none absolute inset-[-9%] rounded-full blur-[4px] [background:radial-gradient(circle_at_50%_40%,rgba(255,221,47,0.30),rgba(255,221,47,0.08)_56%,transparent_72%)]" />
 
       <div className="relative">
         {/* ---- knowledge in ---- */}

@@ -1,3 +1,4 @@
+import { LightWash } from './LightWash';
 import { PromptFill } from './LaunchPrompt';
 
 const H2 =
@@ -96,7 +97,8 @@ export function Offerings({ c }: { c: any }) {
       </div>
 
       {care.length > 0 && (
-        <div id="offer-care" className="scroll-mt-28 bg-ink-900 text-white">
+        <div id="offer-care" className="relative scroll-mt-28 bg-ink-900 text-white">
+          <LightWash dormant />
           <div className="mx-auto max-w-page px-6 py-[clamp(48px,6vw,80px)]">
             <p className="m-0 text-[12px] font-bold uppercase tracking-[0.16em] text-brand">After launch</p>
             <h3 className={`${H2} mt-4 max-w-[16ch] text-white`}>Someone still here, every month.</h3>

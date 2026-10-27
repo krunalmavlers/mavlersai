@@ -226,7 +226,7 @@ export function V4Line({ siteKey }: { siteKey: string }) {
             <p className="m-0 text-[12px] font-bold uppercase tracking-[0.18em] text-brand">The production gap</p>
             <div className="v4-gap-stage relative mt-4">
               <div className="v4-beat v4-beat-a">
-                <p className="m-0 font-display text-[clamp(96px,16vw,200px)] font-extrabold leading-[0.82] tracking-[-0.06em] text-brand">60%</p>
+                <p className="hm m-0 font-display text-[clamp(96px,16vw,200px)] font-extrabold leading-[0.82] tracking-[-0.06em]">60%</p>
                 <p className="m-0 mt-4 max-w-[20ch] text-[clamp(22px,2.6vw,36px)] font-semibold leading-[1.15] tracking-[-0.03em]">
                   of assessed vibe-coded apps leaked keys or credentials.
                 </p>

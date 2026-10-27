@@ -11,10 +11,10 @@ const config: Config = {
       colors: {
         // Mavlers.ai brand — light base, black + yellow accents (per brand guide).
         brand: {
-          DEFAULT: '#FFDB2D', // C-1 M-11 Y-91 K-0
-          300: '#FFE24D', // lighter hover
-          200: '#FFEC85',
-          ink: '#B98D1E', // darker yellow for text on light
+          DEFAULT: '#FFDD2F',
+          300: '#FFE45C', // lighter hover of the same yellow
+          200: '#FFF09A',
+          ink: '#B89612', // darker yellow for text on light
         },
         // Neutral scale used for backgrounds and text on the light theme.
         ink: {

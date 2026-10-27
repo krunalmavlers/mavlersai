@@ -3,7 +3,7 @@
 /**
  * Hero visual for /services/ai-development — a WebGL pipeline scene, ported
  * from the `ai-development-hero.html` / `ai-hero-scene.js` Claude Design
- * project (Mavlers deck design system: yellow #FFDB2D, orange #FFA300).
+ * project (Mavlers deck design system: yellow #FFDD2F, orange #FFA300).
  *
  * Left to right: your knowledge (documents, database, API node) flows as
  * particles into a vector index, through the LLM core, and out into the three
@@ -19,7 +19,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { HeroAiPipeline } from './HeroAiPipeline';
 
-const YELLOW = 0xffdb2d;
+const YELLOW = 0xffdd2f;
 const ORANGE = 0xffa300;
 
 /**
@@ -85,7 +85,7 @@ function build(THREE: Three, canvas: HTMLCanvasElement, wrap: HTMLElement, still
     cv.width = cv.height = s;
     const ctx = cv.getContext('2d')!;
     const g = ctx.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
-    g.addColorStop(0, 'rgba(255,219,45,0.9)');
+    g.addColorStop(0, 'rgba(255,221,47,0.9)');
     g.addColorStop(0.35, 'rgba(255,163,0,0.28)');
     g.addColorStop(1, 'rgba(255,163,0,0)');
     ctx.fillStyle = g;

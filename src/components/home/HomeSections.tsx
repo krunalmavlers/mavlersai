@@ -1,4 +1,5 @@
 import { ScrollScene } from '@/components/sections/ScrollScene';
+import { LightWash } from './LightWash';
 import { PromptFill } from './LaunchPrompt';
 
 const H2 =
@@ -45,7 +46,8 @@ export function LeadDoors({ c }: { c: any }) {
 
 export function PinnedStat({ c }: { c: any }) {
   return (
-    <section className="bg-black text-white">
+    <section className="relative bg-black text-white">
+      <LightWash dormant />
       <ScrollScene className="gap-pin" mode="pin">
         <div className="gap-view mx-auto flex max-w-page flex-col justify-center px-6 py-[clamp(72px,10vw,120px)]">
           {c.eyebrow && (

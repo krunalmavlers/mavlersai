@@ -16,7 +16,7 @@
  * Keyframes live in globals.css under the `hs-` prefix.
  */
 
-const A1 = '#FFDB2D'; // brand yellow
+const A1 = '#FFDD2F'; // brand yellow
 const A2 = '#FFA300'; // brand orange
 const A3 = '#111111'; // ink
 
@@ -145,7 +145,7 @@ export function HeroAutomationFlow() {
           height: 420,
           margin: '-210px 0 0 -210px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle,rgba(255,219,45,.22),transparent 58%)',
+          background: 'radial-gradient(circle,rgba(255,221,47,.22),transparent 58%)',
           animation: 'hs-breathe 7s ease-in-out infinite',
         }}
       />
@@ -298,7 +298,7 @@ export function HeroValidationLoop() {
           height: 440,
           margin: '-220px 0 0 -220px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle,rgba(255,219,45,.2),transparent 58%)',
+          background: 'radial-gradient(circle,rgba(255,221,47,.2),transparent 58%)',
           animation: 'hs-breathe 7s ease-in-out infinite',
         }}
       />
