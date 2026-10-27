@@ -285,7 +285,7 @@ function Hero({ c }: { c: any }) {
               }`}
               style={{ '--i': 0 } as React.CSSProperties}
             >
-              <span className="h-2 w-2 rounded-full bg-brand shadow-[0_0_0_3px_rgba(255,219,45,0.35)]" />
+              <span className="h-2 w-2 rounded-full bg-brand shadow-[0_0_0_3px_rgba(255,221,47,0.35)]" />
               {c.badge}
             </div>
           );
@@ -566,17 +566,17 @@ function ProblemScene({ kind }: { kind: VizKind }) {
         />
         <defs>
           <linearGradient id="gapFill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#FFDB2D" stopOpacity="0.30" />
-            <stop offset="100%" stopColor="#FFDB2D" stopOpacity="0.02" />
+            <stop offset="0%" stopColor="#FFDD2F" stopOpacity="0.30" />
+            <stop offset="100%" stopColor="#FFDD2F" stopOpacity="0.02" />
           </linearGradient>
         </defs>
         <path d="M28 250 C120 244 200 226 312 214" stroke="#3C3C3C" strokeWidth="2.5" strokeLinecap="round" className="pv-line" />
-        <path d="M28 250 C110 244 176 152 312 44" stroke="#FFDB2D" strokeWidth="3" strokeLinecap="round" className="pv-line" />
-        <circle cx="312" cy="44" r="7" fill="#FFDB2D" className="pv-head" />
-        <circle cx="312" cy="44" r="14" fill="#FFDB2D" opacity="0.16" className="pv-head" />
+        <path d="M28 250 C110 244 176 152 312 44" stroke="#FFDD2F" strokeWidth="3" strokeLinecap="round" className="pv-line" />
+        <circle cx="312" cy="44" r="7" fill="#FFDD2F" className="pv-head" />
+        <circle cx="312" cy="44" r="14" fill="#FFDD2F" opacity="0.16" className="pv-head" />
         <circle cx="312" cy="214" r="5" fill="#3C3C3C" className="pv-head" />
         <g className="pv-label">
-          <text x="28" y="36" fill="#FFDB2D" fontSize="13" fontWeight="700" letterSpacing="1.4">DEMAND</text>
+          <text x="28" y="36" fill="#FFDD2F" fontSize="13" fontWeight="700" letterSpacing="1.4">DEMAND</text>
           <text x="28" y="284" fill="#6A6A6A" fontSize="13" fontWeight="700" letterSpacing="1.4">CAPABILITY</text>
         </g>
       </svg>
@@ -599,7 +599,7 @@ function ProblemScene({ kind }: { kind: VizKind }) {
               width="34"
               height={h}
               rx="7"
-              fill={i === bars.length - 1 ? '#FFDB2D' : '#2B2B2B'}
+              fill={i === bars.length - 1 ? '#FFDD2F' : '#2B2B2B'}
               className="pv-bar"
               style={{ '--b': i } as React.CSSProperties}
             />
@@ -618,7 +618,7 @@ function ProblemScene({ kind }: { kind: VizKind }) {
           </g>
         ))}
         <line x1="24" y1="259" x2="316" y2="259" stroke="#3C3C3C" strokeWidth="1.5" strokeLinecap="round" />
-        <text x="28" y="36" fill="#FFDB2D" fontSize="13" fontWeight="700" letterSpacing="1.4" className="pv-label">
+        <text x="28" y="36" fill="#FFDD2F" fontSize="13" fontWeight="700" letterSpacing="1.4" className="pv-label">
           EVERY YEAR, AGAIN
         </text>
       </svg>
@@ -643,11 +643,11 @@ function ProblemScene({ kind }: { kind: VizKind }) {
       )}
       {/* the open slot, and the piece that seats into it exactly */}
       <rect x={152} y={148} width="40" height="40" rx="10" fill="none" stroke="#3C3C3C" strokeWidth="2" strokeDasharray="5 5" className="pv-slot" />
-      <rect x={152} y={148} width="40" height="40" rx="10" fill="#FFDB2D" className="pv-odd" />
+      <rect x={152} y={148} width="40" height="40" rx="10" fill="#FFDD2F" className="pv-odd" />
       <text x="40" y="52" fill="#6A6A6A" fontSize="13" fontWeight="700" letterSpacing="1.4" className="pv-label">
         YOUR DOMAIN
       </text>
-      <text x="40" y="284" fill="#FFDB2D" fontSize="13" fontWeight="700" letterSpacing="1.4" className="pv-label">
+      <text x="40" y="284" fill="#FFDD2F" fontSize="13" fontWeight="700" letterSpacing="1.4" className="pv-label">
         OUR ENGINEERING
       </text>
     </svg>
@@ -679,10 +679,10 @@ function FeatureGridSplit({ c }: { c: any }) {
   // sticky view a scroll container, and `position: sticky` silently stops
   // working. The orb is clipped by its own wrapper instead.
   return (
-    <section className="relative bg-ink-900 text-white [background:radial-gradient(1200px_500px_at_78%_-10%,rgba(255,219,45,0.10),transparent_60%),#0A0A0A]">
+    <section className="relative bg-ink-900 text-white [background:radial-gradient(1200px_500px_at_78%_-10%,rgba(255,221,47,0.10),transparent_60%),#0A0A0A]">
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
         <span
-          className="fg-orb left-[-16%] top-[4%] h-[620px] w-[620px] [background:radial-gradient(circle,rgba(255,219,45,0.15),transparent_66%)]"
+          className="fg-orb left-[-16%] top-[4%] h-[620px] w-[620px] [background:radial-gradient(circle,rgba(255,221,47,0.15),transparent_66%)]"
           style={{ '--par': -1 } as React.CSSProperties}
         />
       </div>
@@ -693,7 +693,7 @@ function FeatureGridSplit({ c }: { c: any }) {
               <div>
                 {c.eyebrow && (
                   <div className="inline-flex items-center gap-2.5 rounded-full border border-brand/40 px-5 py-2 text-[13px] font-bold uppercase tracking-[0.14em] text-brand">
-                    <span className="h-2 w-2 rounded-full bg-brand shadow-[0_0_10px_1px_rgba(255,219,45,0.7)]" />
+                    <span className="h-2 w-2 rounded-full bg-brand shadow-[0_0_10px_1px_rgba(255,221,47,0.7)]" />
                     {c.eyebrow}
                   </div>
                 )}
@@ -773,12 +773,12 @@ function FeatureGridCards({ c }: { c: any }) {
   const cols = Number(c.columns) === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3';
 
   return (
-    <section className="bg-ink-900 text-white [background:radial-gradient(1200px_500px_at_78%_-10%,rgba(255,219,45,0.14),transparent_60%),#0A0A0A]">
+    <section className="bg-ink-900 text-white [background:radial-gradient(1200px_500px_at_78%_-10%,rgba(255,221,47,0.14),transparent_60%),#0A0A0A]">
       <div className={`mx-auto max-w-page px-6 ${PAD}`}>
         <ScrollScene>
         {c.eyebrow && (
           <div className="inline-flex items-center gap-2.5 rounded-full border border-brand/40 px-5 py-2 text-[13px] font-bold uppercase tracking-[0.14em] text-brand">
-            <span className="h-2 w-2 rounded-full bg-brand shadow-[0_0_10px_1px_rgba(255,219,45,0.7)]" />
+            <span className="h-2 w-2 rounded-full bg-brand shadow-[0_0_10px_1px_rgba(255,221,47,0.7)]" />
             {c.eyebrow}
           </div>
         )}
@@ -879,7 +879,7 @@ function Partnership({ c }: { c: any }) {
     <section className="relative overflow-hidden bg-white">
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[520px] w-[820px] -translate-x-1/2 -translate-y-1/2 rounded-full [background:radial-gradient(ellipse,rgba(255,219,45,0.12),transparent_70%)]"
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[520px] w-[820px] -translate-x-1/2 -translate-y-1/2 rounded-full [background:radial-gradient(ellipse,rgba(255,221,47,0.12),transparent_70%)]"
       />
       <div className={`relative mx-auto max-w-page px-6 ${PAD}`}>
         <ScrollScene>
@@ -1011,8 +1011,8 @@ function ConnectGrid({ c }: { c: any }) {
             aria-hidden
             className={`pointer-events-none absolute left-1/2 top-1/2 h-[280px] w-full max-w-[900px] -translate-x-1/2 -translate-y-1/2 ${
               light
-                ? '[background:radial-gradient(ellipse,rgba(255,219,45,0.16),transparent_70%)]'
-                : '[background:radial-gradient(ellipse,rgba(255,219,45,0.10),transparent_70%)]'
+                ? '[background:radial-gradient(ellipse,rgba(255,221,47,0.16),transparent_70%)]'
+                : '[background:radial-gradient(ellipse,rgba(255,221,47,0.10),transparent_70%)]'
             }`}
           />
           <div className="hx-mask relative flex flex-col gap-3.5 overflow-hidden">
@@ -1151,11 +1151,11 @@ function ProcessTimeline({ c }: { c: any }) {
     <section className="relative bg-black text-white [overflow-x:clip]">
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
         <span
-          className="pt-orb left-[-12%] top-[8%] h-[540px] w-[540px] [background:radial-gradient(circle,rgba(255,219,45,0.13),transparent_66%)]"
+          className="pt-orb left-[-12%] top-[8%] h-[540px] w-[540px] [background:radial-gradient(circle,rgba(255,221,47,0.13),transparent_66%)]"
           style={{ '--par': -1 } as React.CSSProperties}
         />
         <span
-          className="pt-orb bottom-[-10%] right-[-8%] h-[460px] w-[460px] [background:radial-gradient(circle,rgba(255,219,45,0.09),transparent_66%)]"
+          className="pt-orb bottom-[-10%] right-[-8%] h-[460px] w-[460px] [background:radial-gradient(circle,rgba(255,221,47,0.09),transparent_66%)]"
           style={{ '--par': 1 } as React.CSSProperties}
         />
       </div>
@@ -1238,7 +1238,7 @@ function Pillars({ c }: { c: any }) {
         <div className={`relative mx-auto max-w-page px-6 ${PAD}`}>
           {c.eyebrow && (
             <div className="inline-flex items-center gap-2.5 rounded-full border border-brand/40 px-5 py-2 text-[13px] font-bold uppercase tracking-[0.14em] text-brand">
-              <span className="h-2 w-2 rounded-full bg-brand shadow-[0_0_10px_1px_rgba(255,219,45,0.7)]" />
+              <span className="h-2 w-2 rounded-full bg-brand shadow-[0_0_10px_1px_rgba(255,221,47,0.7)]" />
               {c.eyebrow}
             </div>
           )}
@@ -1471,7 +1471,7 @@ function Faq({ c }: { c: any }) {
 function ServiceCategories({ c }: { c: any }) {
   const items: any[] = c.items || [];
   return (
-    <section className="relative overflow-hidden bg-ink-900 text-white [background:radial-gradient(1100px_520px_at_12%_-20%,rgba(255,219,45,0.16),transparent_55%),radial-gradient(900px_420px_at_100%_110%,rgba(255,219,45,0.08),transparent_50%),#0A0A0A]">
+    <section className="relative overflow-hidden bg-ink-900 text-white [background:radial-gradient(1100px_520px_at_12%_-20%,rgba(255,221,47,0.16),transparent_55%),radial-gradient(900px_420px_at_100%_110%,rgba(255,221,47,0.08),transparent_50%),#0A0A0A]">
       <div className={`relative mx-auto max-w-page px-6 ${PAD}`}>
         <ScrollScene>
           {/* Two planes at different depths. Real parallax is about rate, not
@@ -1481,7 +1481,7 @@ function ServiceCategories({ c }: { c: any }) {
           <span aria-hidden className="cat-plane cat-plane-near" style={{ '--par': -0.7 } as React.CSSProperties} />
         {c.eyebrow && (
           <div className="inline-flex items-center gap-2.5 rounded-full border border-brand/40 px-5 py-2 text-[13px] font-bold uppercase tracking-[0.14em] text-brand">
-            <span className="h-2 w-2 rounded-full bg-brand shadow-[0_0_10px_1px_rgba(255,219,45,0.7)]" />
+            <span className="h-2 w-2 rounded-full bg-brand shadow-[0_0_10px_1px_rgba(255,221,47,0.7)]" />
             {c.eyebrow}
           </div>
         )}

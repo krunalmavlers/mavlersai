@@ -68,7 +68,7 @@ function Fan({ side }: { side: 'l' | 'r' }) {
         <linearGradient id={grad} x1="0" y1="0" x2="420" y2="0" gradientUnits="userSpaceOnUse">
           <stop offset="0" stopColor="#F0903C" />
           <stop offset="0.34" stopColor="#FFC53A" />
-          <stop offset="1" stopColor="#FFDB2D" />
+          <stop offset="1" stopColor="#FFDD2F" />
         </linearGradient>
       </defs>
       {/* the right fan is the same artwork flipped, so the two read as one net */}

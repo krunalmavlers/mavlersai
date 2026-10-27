@@ -56,7 +56,7 @@ export function Logo({
           <span
             style={{
               color: '#000',
-              background: '#FFDB2D',
+              background: '#FFDD2F',
               padding: '0 5px',
               borderRadius: 4,
               marginLeft: 3,

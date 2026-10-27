@@ -40,7 +40,7 @@ a:not([class]):hover {
 }
 
 ::selection {
-  background: rgba(255, 219, 45, 0.4);
+  background: rgba(255, 221, 47, 0.4);
 }
 
 /* ---- Partnership: two rails ----------------------------------------------
@@ -66,7 +66,7 @@ a:not([class]):hover {
 .pm-rail-fill {
   transform-origin: top;
   transform: scaleY(var(--p, 1));
-  background: linear-gradient(180deg, #FFDB2D, rgba(255, 219, 45, .3));
+  background: linear-gradient(180deg, #FFDD2F, rgba(255, 221, 47, .3));
 }
 
 /* the station marker: a small square that turns to a diamond as it lights up */
@@ -117,7 +117,7 @@ a:not([class]):hover {
   inset: 0 0 auto 0;
   height: 3px;
   border-radius: 18px 18px 0 0;
-  background: linear-gradient(90deg, #FFDB2D, #FFC53A 62%, #F0903C);
+  background: linear-gradient(90deg, #FFDD2F, #FFC53A 62%, #F0903C);
   transform: scaleX(.2);
   transform-origin: left center;
   transition: transform .55s cubic-bezier(.22, .61, .36, 1), opacity .4s ease;
@@ -147,7 +147,7 @@ a:not([class]):hover {
   height: 62%;
   z-index: -1;
   border-radius: 0 0 18px 18px;
-  background: linear-gradient(180deg, transparent, rgba(255, 219, 45, .16));
+  background: linear-gradient(180deg, transparent, rgba(255, 221, 47, .16));
   opacity: 0;
   transition: opacity .42s ease;
 }
@@ -167,13 +167,13 @@ a:not([class]):hover {
 }
 .cs-card:hover,
 .cs-card:focus-visible {
-  border-color: rgba(255, 219, 45, .85);
+  border-color: rgba(255, 221, 47, .85);
   box-shadow: 0 4px 10px rgba(0, 0, 0, .04), 0 26px 52px rgba(31, 28, 18, .16);
 }
 .cs-card:hover .cs-go,
 .cs-card:focus-visible .cs-go {
-  background-color: #FFDB2D;
-  border-color: #FFDB2D;
+  background-color: #FFDD2F;
+  border-color: #FFDD2F;
   transform: translate(2px, -2px);
 }
 .cs-card:hover .cs-chip,
@@ -522,7 +522,7 @@ a:not([class]):hover {
   height: 100%;
   transform-origin: left;
   transform: scaleX(1);
-  background: #FFDB2D;
+  background: #FFDD2F;
 }
 .pm-scene[data-scrub] .fg-seg > span { transform: scaleX(clamp(0, var(--u, 1), 1)); }
 
@@ -577,9 +577,9 @@ a:not([class]):hover {
    --------------------------------------------------------------------------- */
 .fgc-chip { transition: transform .28s cubic-bezier(.22,.61,.36,1), border-color .28s ease, background-color .28s ease; }
 @media (hover: hover) {
-  .fgc-chip:hover { transform: translateY(-3px); border-color: rgba(255,219,45,.55); background-color: #191919; }
+  .fgc-chip:hover { transform: translateY(-3px); border-color: rgba(255,221,47,.55); background-color: #191919; }
 }
-.fgc-chip:hover .fgc-dot { box-shadow: 0 0 12px 2px rgba(255,219,45,.6); }
+.fgc-chip:hover .fgc-dot { box-shadow: 0 0 12px 2px rgba(255,221,47,.6); }
 .fgc-dot { transition: box-shadow .28s ease; }
 
 .pm-scene[data-scrub] .fgc-chip {
@@ -613,10 +613,10 @@ a:not([class]):hover {
   inset: 0;
   transform-origin: top;
   transform: scaleY(1);
-  background: linear-gradient(180deg, #FFDB2D, rgba(255, 219, 45, .25));
+  background: linear-gradient(180deg, #FFDD2F, rgba(255, 221, 47, .25));
 }
 .pm-scene[data-scrub] .pt-fill { transform: scaleY(clamp(0, var(--p, 1), 1)); }
-.pt-prog > span { display: block; height: 100%; transform-origin: left; transform: scaleX(1); background: #FFDB2D; }
+.pt-prog > span { display: block; height: 100%; transform-origin: left; transform: scaleX(1); background: #FFDD2F; }
 .pm-scene[data-scrub] .pt-prog > span { transform: scaleX(clamp(0, var(--p, 1), 1)); }
 
 /* The whole list drifts as one, so it still moves against the sticky heading
@@ -637,13 +637,13 @@ a:not([class]):hover {
   box-shadow: 0 0 0 6px #000;
   transition: box-shadow .3s ease;
 }
-.pt-step:hover .pt-node { box-shadow: 0 0 0 6px #000, 0 0 22px 4px rgba(255, 219, 45, .45); }
+.pt-step:hover .pt-node { box-shadow: 0 0 0 6px #000, 0 0 22px 4px rgba(255, 221, 47, .45); }
 .pt-card { transition: border-color .3s ease, background-color .3s ease, transform .3s cubic-bezier(.22,.61,.36,1); }
 @media (hover: hover) {
-  .pt-step:hover .pt-card { border-color: rgba(255,219,45,.5); background-color: #171717; transform: translateX(6px); }
+  .pt-step:hover .pt-card { border-color: rgba(255,221,47,.5); background-color: #171717; transform: translateX(6px); }
 }
 .pt-ico { transition: background-color .3s ease, color .3s ease, transform .3s ease; }
-.pt-step:hover .pt-ico { background-color: #FFDB2D; color: #000; transform: rotate(-6deg); }
+.pt-step:hover .pt-ico { background-color: #FFDD2F; color: #000; transform: rotate(-6deg); }
 
 @media (prefers-reduced-motion: reduce) {
   .pm-scene[data-scrub] .pt-orb,
@@ -662,7 +662,7 @@ a:not([class]):hover {
    less rather than differently shaped.
    --------------------------------------------------------------------------- */
 .eng-ico { transition: background-color .3s ease, color .3s ease, transform .3s ease; }
-.eng-card:hover .eng-ico { background-color: #FFDB2D; color: #000; transform: rotate(-6deg); }
+.eng-card:hover .eng-ico { background-color: #FFDD2F; color: #000; transform: rotate(-6deg); }
 .eng-card { transition: transform .3s cubic-bezier(.22,.61,.36,1), border-color .3s ease, box-shadow .3s ease; }
 @media (hover: hover) {
   .eng-card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(0,0,0,.10); }
@@ -703,12 +703,12 @@ a:not([class]):hover {
 .cg-ico  { transition: background-color .3s ease, color .3s ease, transform .3s ease; }
 
 @media (hover: hover) {
-  .cg-node:hover { border-color: rgba(255,219,45,.55); background-color: #171717; }
+  .cg-node:hover { border-color: rgba(255,221,47,.55); background-color: #171717; }
   /* on the light ground the tile must not darken — only its edge warms */
   .cg-node.cg-light:hover { background-color: #FFFDF4; }
 }
 .cg-node:hover .cg-ico, .cg-node:focus-within .cg-ico {
-  background-color: #FFDB2D;
+  background-color: #FFDD2F;
   color: #000;
   transform: rotate(-6deg);
 }
@@ -744,13 +744,13 @@ a:not([class]):hover {
    browser without it keeps solid brand yellow instead of invisible text.
    `clone` gives each line its own full sweep if the span ever wraps. */
 .hm {
-  color: #FFDB2D;
+  color: #FFDD2F;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
   .hm {
-    background-image: linear-gradient(90deg, #FFDB2D 0%, #FFC53A 46%, #F09A3C 100%);
+    background-image: linear-gradient(253deg, #ff7a18 20%, #ffa300 25%, #ffdb2d 58%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -902,12 +902,12 @@ a:not([class]):hover {
 /* vector-index tiles lighting up as the query is matched */
 @keyframes ragChunk {
   0%, 62%, 100% { background-color: #F0EEE6; transform: scaleY(1); }
-  30%           { background-color: #FFDB2D; transform: scaleY(1.4); }
+  30%           { background-color: #FFDD2F; transform: scaleY(1.4); }
 }
 /* the retrieved chunk chips that come back top-k */
 @keyframes chunkPop {
   0%, 58%, 100% { border-color: #E6E3DA; background-color: #F7F6F1; color: #333; }
-  26%           { border-color: rgba(255,219,45,0.9); background-color: #FFF6CF; color: #000; }
+  26%           { border-color: rgba(255,221,47,0.9); background-color: #FFF6CF; color: #000; }
 }
 /* answer tokens streaming in line by line */
 @keyframes tokenLine {
@@ -921,7 +921,7 @@ a:not([class]):hover {
 /* each shipped outcome takes its turn being the active one */
 @keyframes outcomeGlow {
   0%, 22%, 100% { border-color: #E6E3DA; box-shadow: 0 10px 26px rgba(0,0,0,0.08); transform: translateY(0); }
-  10%           { border-color: rgba(255,219,45,0.95); box-shadow: 0 14px 30px rgba(255,219,45,0.28); transform: translateY(-4px); }
+  10%           { border-color: rgba(255,221,47,0.95); box-shadow: 0 14px 30px rgba(255,221,47,0.28); transform: translateY(-4px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1019,7 +1019,7 @@ a:not([class]):hover {
 }
 .hs-ring {
   border-radius: 26px;
-  border: 2px solid rgba(255, 219, 45, .7);
+  border: 2px solid rgba(255, 221, 47, .7);
   animation: hs-ring 3.2s ease-out infinite;
   pointer-events: none;
 }
@@ -1035,7 +1035,7 @@ a:not([class]):hover {
 }
 /* each station lights as the marker reaches it — thirds of the same loop */
 @keyframes hs-station {
-  0%, 6% { border-color: rgba(255, 219, 45, .95); box-shadow: 0 10px 26px rgba(17,17,17,.09), 0 0 0 5px rgba(255,219,45,.16); }
+  0%, 6% { border-color: rgba(255, 221, 47, .95); box-shadow: 0 10px 26px rgba(17,17,17,.09), 0 0 0 5px rgba(255,221,47,.16); }
   22%, 100% { border-color: #ECECE8; box-shadow: 0 10px 26px rgba(17,17,17,.09); }
 }
 .hs-station {
@@ -1209,7 +1209,7 @@ a:not([class]):hover {
   top: -30%;
   bottom: -30%;
   pointer-events: none;
-  background-image: radial-gradient(circle, rgba(255, 219, 45, .12) 1.1px, transparent 1.1px);
+  background-image: radial-gradient(circle, rgba(255, 221, 47, .12) 1.1px, transparent 1.1px);
   background-size: 40px 40px;
   -webkit-mask-image: radial-gradient(84% 64% at 50% 45%, #000 8%, transparent 74%);
   mask-image: radial-gradient(84% 64% at 50% 45%, #000 8%, transparent 74%);
@@ -1228,7 +1228,7 @@ a:not([class]):hover {
   inset: 0 0 auto 0;
   height: 3px;
   border-radius: 18px 18px 0 0;
-  background: linear-gradient(90deg, #FFDB2D, #FFC53A 62%, #F0903C);
+  background: linear-gradient(90deg, #FFDD2F, #FFC53A 62%, #F0903C);
   transform: scaleX(.2);
   transform-origin: left center;
   transition: transform .55s cubic-bezier(.22, .61, .36, 1);
@@ -1241,13 +1241,13 @@ a:not([class]):hover {
   .ins-card:hover { transform: translateY(-6px); }
 }
 .ins-card:hover, .ins-card:focus-visible {
-  border-color: rgba(255, 219, 45, .5);
+  border-color: rgba(255, 221, 47, .5);
   box-shadow: 0 24px 50px rgba(0, 0, 0, .5);
 }
 .ins-card:hover::before, .ins-card:focus-visible::before { transform: scaleX(1); }
 .ins-card:hover .ins-go, .ins-card:focus-visible .ins-go {
-  background-color: #FFDB2D;
-  border-color: #FFDB2D;
+  background-color: #FFDD2F;
+  border-color: #FFDD2F;
   color: #000;
   transform: translate(2px, -2px);
 }
@@ -1273,7 +1273,7 @@ a:not([class]):hover {
   position: absolute;
   inset: 0 0 auto 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 219, 45, .5) 22%, rgba(240, 144, 60, .45) 68%, transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 221, 47, .5) 22%, rgba(240, 144, 60, .45) 68%, transparent);
   z-index: 2;
 }
 
@@ -1286,7 +1286,7 @@ a:not([class]):hover {
   pointer-events: none;
 }
 .pl-plane-far {
-  background-image: radial-gradient(circle, rgba(255, 219, 45, .14) 1.1px, transparent 1.1px);
+  background-image: radial-gradient(circle, rgba(255, 221, 47, .14) 1.1px, transparent 1.1px);
   background-size: 40px 40px;
   -webkit-mask-image: radial-gradient(86% 66% at 50% 45%, #000 8%, transparent 74%);
   mask-image: radial-gradient(86% 66% at 50% 45%, #000 8%, transparent 74%);
@@ -1318,7 +1318,7 @@ a:not([class]):hover {
   width: 22px;
   margin-bottom: 18px;
   border-radius: 2px;
-  background: linear-gradient(90deg, #FFDB2D, #F0903C);
+  background: linear-gradient(90deg, #FFDD2F, #F0903C);
 }
 .pm-scene[data-scrub] .pl-mark {
   width: calc(14px + var(--e, 1) * 30px);
@@ -1346,7 +1346,7 @@ a:not([class]):hover {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, #FFDB2D, #FFC53A 55%, #F0903C);
+  background: linear-gradient(90deg, #FFDD2F, #FFC53A 55%, #F0903C);
   transform: scaleX(0);
   transform-origin: left center;
 }
@@ -1357,13 +1357,13 @@ a:not([class]):hover {
     transform .3s cubic-bezier(.22, .61, .36, 1);
 }
 .fgx-cell:hover .fgx-ico {
-  background-color: #FFDB2D;
-  border-color: #FFDB2D;
+  background-color: #FFDD2F;
+  border-color: #FFDD2F;
   color: #000;
   transform: translateY(-2px);
 }
 .fgx-cell h3 { transition: color .3s ease; }
-.fgx-cell:hover h3 { color: #FFDB2D; }
+.fgx-cell:hover h3 { color: #FFDD2F; }
 
 @media (prefers-reduced-motion: reduce) {
   .pm-scene[data-scrub] .fgx-rule::after { transform: scaleX(1); }
@@ -1372,16 +1372,16 @@ a:not([class]):hover {
 .svc-card { transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease, background .28s ease; }
 .svc-card:hover { transform: translateY(-6px); border-color: #000 !important; box-shadow: 0 22px 44px rgba(0,0,0,0.10); }
 .svc-ico { transition: background .28s ease, color .28s ease, transform .28s ease; }
-.svc-card:hover .svc-ico { background: #FFDB2D !important; color: #000 !important; transform: rotate(-6deg); }
+.svc-card:hover .svc-ico { background: #FFDD2F !important; color: #000 !important; transform: rotate(-6deg); }
 .svc-card:hover .svc-arrow { opacity: 1 !important; transform: translateX(0) !important; }
 .conn-tile { transition: transform .25s ease, border-color .25s ease, background .25s ease; }
-.conn-tile:hover { transform: translateY(-4px); border-color: rgba(255,219,45,0.6) !important; background: #171717 !important; }
+.conn-tile:hover { transform: translateY(-4px); border-color: rgba(255,221,47,0.6) !important; background: #171717 !important; }
 .conn-ico { transition: background .25s ease, color .25s ease; }
-.conn-tile:hover .conn-ico { background: #FFDB2D !important; color: #000 !important; }
+.conn-tile:hover .conn-ico { background: #FFDD2F !important; color: #000 !important; }
 .rm-row .rm-card { transition: border-color .25s ease, background .25s ease, transform .25s ease; }
-.rm-row:hover .rm-card { border-color: rgba(255,219,45,0.5); background: #171717; transform: translateX(6px); }
+.rm-row:hover .rm-card { border-color: rgba(255,221,47,0.5); background: #171717; transform: translateX(6px); }
 .rm-node { transition: box-shadow .25s ease; }
-.rm-row:hover .rm-node { box-shadow: 0 0 0 6px rgba(255,219,45,0.14); }
+.rm-row:hover .rm-node { box-shadow: 0 0 0 6px rgba(255,221,47,0.14); }
 .hero-learn-ico { transition: transform .25s ease; }
 .hero-learn:hover .hero-learn-ico { transform: translateX(4px); }
 
@@ -1439,7 +1439,7 @@ a:not([class]):hover {
   height: 0;
   margin-top: 0;
   border-radius: 2px;
-  background: linear-gradient(180deg, #FFDB2D, #F0903C);
+  background: linear-gradient(180deg, #FFDD2F, #F0903C);
   transition: height .26s cubic-bezier(.22, .61, .36, 1), margin-top .26s cubic-bezier(.22, .61, .36, 1);
 }
 .nav-dd-item:hover, .nav-dd-item:focus-visible {
@@ -1482,14 +1482,14 @@ a:not([class]):hover {
   width: 26px;
   height: 3px;
   border-radius: 2px;
-  background: linear-gradient(90deg, #FFDB2D, #F0903C);
+  background: linear-gradient(90deg, #FFDD2F, #F0903C);
   transition: width .45s cubic-bezier(.22, .61, .36, 1);
 }
 .cat-tag { color: #8A8A8A; transition: color .35s ease; }
 
 @keyframes cat-hit {
-  0% { box-shadow: 0 0 0 0 rgba(255, 219, 45, .6); }
-  100% { box-shadow: 0 0 0 22px rgba(255, 219, 45, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(255, 221, 47, .6); }
+  100% { box-shadow: 0 0 0 22px rgba(255, 221, 47, 0); }
 }
 .cat-title { transition: transform .45s cubic-bezier(.22, .61, .36, 1), color .3s ease; }
 .cat-go { transition: background-color .35s ease, border-color .35s ease, color .35s ease, transform .35s cubic-bezier(.22, .61, .36, 1); }
@@ -1510,17 +1510,17 @@ a:not([class]):hover {
 .cat-lane:hover .cat-mark,
 .cat-lane:focus-visible .cat-mark { width: 56px; }
 .cat-lane:hover .cat-tag,
-.cat-lane:focus-visible .cat-tag { color: #FFDB2D; }
+.cat-lane:focus-visible .cat-tag { color: #FFDD2F; }
 .cat-lane:hover .cat-title,
 .cat-lane:focus-visible .cat-title { transform: translateX(6px); }
 .cat-lane:hover .cat-cta,
-.cat-lane:focus-visible .cat-cta { color: #FFDB2D; }
+.cat-lane:focus-visible .cat-cta { color: #FFDD2F; }
 .cat-lane:hover .cat-chip,
 .cat-lane:focus-visible .cat-chip { color: #B4B4B4; }
 .cat-lane:hover .cat-go,
 .cat-lane:focus-visible .cat-go {
-  background-color: #FFDB2D;
-  border-color: #FFDB2D;
+  background-color: #FFDD2F;
+  border-color: #FFDD2F;
   color: #000;
   transform: translateX(5px);
   animation: cat-hit .6s .28s cubic-bezier(.2, .7, .3, 1);
@@ -1547,7 +1547,7 @@ a:not([class]):hover {
   pointer-events: none;
 }
 .cat-plane-far {
-  background-image: radial-gradient(circle, rgba(255, 219, 45, .13) 1.1px, transparent 1.1px);
+  background-image: radial-gradient(circle, rgba(255, 221, 47, .13) 1.1px, transparent 1.1px);
   background-size: 38px 38px;
   -webkit-mask-image: radial-gradient(90% 70% at 50% 45%, #000 10%, transparent 72%);
   mask-image: radial-gradient(90% 70% at 50% 45%, #000 10%, transparent 72%);
@@ -1658,7 +1658,7 @@ a:not([class]):hover {
   bottom: 0;
   height: 2px;
   border-radius: 2px;
-  background: linear-gradient(90deg, #FFDB2D, #F0903C);
+  background: linear-gradient(90deg, #FFDD2F, #F0903C);
   transform: scaleX(0);
   transform-origin: left center;
   transition: transform .26s cubic-bezier(.22, .61, .36, 1);
@@ -1675,13 +1675,13 @@ a:not([class]):hover {
   .jump-seg { transition: none; }
 }
 .svc-detail { transition: border-color .25s ease, box-shadow .25s ease; }
-.svc-detail:hover, .svc-detail:target { border-color: rgba(255,219,45,0.72) !important; box-shadow: 0 12px 32px rgba(0,0,0,0.05), 0 0 0 1px rgba(255,219,45,0.28); outline: none; }
-.svc-detail:target { border-color: rgba(255,219,45,0.88) !important; box-shadow: 0 14px 36px rgba(0,0,0,0.06), 0 0 0 1px rgba(255,219,45,0.42); }
+.svc-detail:hover, .svc-detail:target { border-color: rgba(255,221,47,0.72) !important; box-shadow: 0 12px 32px rgba(0,0,0,0.05), 0 0 0 1px rgba(255,221,47,0.28); outline: none; }
+.svc-detail:target { border-color: rgba(255,221,47,0.88) !important; box-shadow: 0 14px 36px rgba(0,0,0,0.06), 0 0 0 1px rgba(255,221,47,0.42); }
 .svc-stack { transition: border-color .2s ease, background .2s ease, color .2s ease; }
-.svc-stack:hover { border-color: #111 !important; background: #FFDB2D !important; color: #000 !important; }
+.svc-stack:hover { border-color: #111 !important; background: #FFDD2F !important; color: #000 !important; }
 .svc-cta-primary, .svc-cta-secondary { transition: background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease; }
 .svc-cta-primary:hover { background: #fff !important; transform: translateY(-1px); }
-.svc-cta-secondary:hover { background: #FFDB2D !important; transform: translateY(-1px); }
+.svc-cta-secondary:hover { background: #FFDD2F !important; transform: translateY(-1px); }
 .cross-link { transition: gap .2s ease; }
 .cross-link:hover { gap: 10px; }
 
@@ -1748,12 +1748,12 @@ a:not([class]):hover {
   width: 8px;
   height: 8px;
   border-radius: 2px;
-  background: #FFDB2D;
+  background: #FFDD2F;
 }
 .prose-mavlers a {
   color: #111;
   text-decoration: underline;
-  text-decoration-color: #FFDB2D;
+  text-decoration-color: #FFDD2F;
   text-decoration-thickness: 2px;
   text-underline-offset: 3px;
 }
@@ -1764,7 +1764,7 @@ a:not([class]):hover {
   margin: 0.4em 0;
 }
 .prose-mavlers blockquote {
-  border-left: 4px solid #FFDB2D;
+  border-left: 4px solid #FFDD2F;
   padding: 6px 0 6px 22px;
   margin: 1.5em 0;
   color: #000;
@@ -1801,11 +1801,11 @@ a:not([class]):hover {
   margin: 1em auto;
 }
 .tiptap img.ProseMirror-selectednode {
-  outline: 2px solid #FFDB2D;
+  outline: 2px solid #FFDD2F;
   outline-offset: 2px;
 }
 .tiptap .ProseMirror-gapcursor:after {
-  border-top: 2px solid #FFDB2D;
+  border-top: 2px solid #FFDD2F;
 }
 
 /* ---- Homepage prompt ------------------------------------------------------
@@ -1813,7 +1813,7 @@ a:not([class]):hover {
    column and a plan document opens on the right, the way an artifact does.
    --------------------------------------------------------------------------- */
 .lp-glow {
-  background: radial-gradient(circle, rgba(255, 219, 45, 0.16), transparent 68%);
+  background: radial-gradient(circle, rgba(255, 221, 47, 0.16), transparent 68%);
 }
 .lp-scrim {
   background: radial-gradient(ellipse at center, rgba(10, 10, 10, 0.96) 0%, rgba(10, 10, 10, 0.88) 42%, rgba(10, 10, 10, 0.35) 68%, transparent 100%);
@@ -1852,8 +1852,8 @@ a:not([class]):hover {
   border-radius: 28px;
   padding: 2px;
   box-shadow:
-    0 0 0 1px rgba(255, 219, 45, 0.12),
-    0 0 56px -12px rgba(255, 219, 45, 0.55);
+    0 0 0 1px rgba(255, 221, 47, 0.12),
+    0 0 56px -12px rgba(255, 221, 47, 0.55);
 }
 .lp-shell::before {
   content: "";
@@ -1862,19 +1862,19 @@ a:not([class]):hover {
   inset: -140%;
   background: conic-gradient(
     from 0deg,
-    rgba(255, 219, 45, 0) 0deg,
-    rgba(255, 219, 45, 0) 248deg,
+    rgba(255, 221, 47, 0) 0deg,
+    rgba(255, 221, 47, 0) 248deg,
     rgba(255, 236, 150, 0.35) 292deg,
     #fff6c2 322deg,
-    #ffdb2d 342deg,
-    rgba(255, 219, 45, 0) 360deg
+    #ffdd2f 342deg,
+    rgba(255, 221, 47, 0) 360deg
   );
   animation: lpOrbit 4.2s linear infinite;
 }
 .lp-shell:focus-within {
   box-shadow:
-    0 0 0 1px rgba(255, 219, 45, 0.4),
-    0 0 72px -8px rgba(255, 219, 45, 0.7);
+    0 0 0 1px rgba(255, 221, 47, 0.4),
+    0 0 72px -8px rgba(255, 221, 47, 0.7);
 }
 .lp-composer { position: relative; z-index: 1; }
 .lp-stage:not(.is-split) .lp-composer {
@@ -2043,7 +2043,7 @@ a:not([class]):hover {
 .v-prompt { scroll-margin-top: calc(var(--header-h) + 16px); }
 
 .v1-glow {
-  background: radial-gradient(circle, rgba(255, 219, 45, 0.14), transparent 68%);
+  background: radial-gradient(circle, rgba(255, 221, 47, 0.14), transparent 68%);
 }
 .v1-h1 {
   font-size: clamp(52px, 7.2vw, 96px);
@@ -2054,13 +2054,13 @@ a:not([class]):hover {
   font-size: clamp(28px, 3vw, 42px);
   line-height: 1;
   color: transparent;
-  -webkit-text-stroke: 1.25px #ffdb2d;
+  -webkit-text-stroke: 1.25px #ffdd2f;
 }
 .v1-index-item {
   border-left: 2px solid transparent;
   padding: 6px 0 6px 10px;
 }
-.v1-index-item.is-on { border-left-color: #ffdb2d; }
+.v1-index-item.is-on { border-left-color: #ffdd2f; }
 .v1-index-item.is-on span:last-child { color: #fff; }
 .v1-plan { animation: lpRise 0.5s ease both; }
 .v1-wait { animation: lpPulse 1.1s ease-in-out infinite; }
@@ -2112,7 +2112,7 @@ a:not([class]):hover {
   z-index: 5;
   width: 14px;
   height: 14px;
-  border-color: #ffdb2d;
+  border-color: #ffdd2f;
   border-style: solid;
   pointer-events: none;
 }
@@ -2151,8 +2151,8 @@ a:not([class]):hover {
   border-radius: 28px;
   padding: 2px;
   box-shadow:
-    0 0 0 1px rgba(255, 219, 45, 0.14),
-    0 0 64px -10px rgba(255, 219, 45, 0.55);
+    0 0 0 1px rgba(255, 221, 47, 0.14),
+    0 0 64px -10px rgba(255, 221, 47, 0.55);
 }
 .v4-shell::before {
   content: "";
@@ -2161,19 +2161,19 @@ a:not([class]):hover {
   inset: -140%;
   background: conic-gradient(
     from 0deg,
-    rgba(255, 219, 45, 0) 0deg,
-    rgba(255, 219, 45, 0) 248deg,
+    rgba(255, 221, 47, 0) 0deg,
+    rgba(255, 221, 47, 0) 248deg,
     rgba(255, 236, 150, 0.4) 292deg,
     #fff6c2 322deg,
-    #ffdb2d 342deg,
-    rgba(255, 219, 45, 0) 360deg
+    #ffdd2f 342deg,
+    rgba(255, 221, 47, 0) 360deg
   );
   animation: lpOrbit 4.2s linear infinite;
 }
 .v4-shell:focus-within {
   box-shadow:
-    0 0 0 1px rgba(255, 219, 45, 0.45),
-    0 0 80px -8px rgba(255, 219, 45, 0.72);
+    0 0 0 1px rgba(255, 221, 47, 0.45),
+    0 0 80px -8px rgba(255, 221, 47, 0.72);
 }
 .v4-composer { position: relative; z-index: 1; }
 .v4-doc {
@@ -2241,7 +2241,7 @@ a:not([class]):hover {
 }
 .v4-door:hover { transform: translateY(-4px); border-color: #111; }
 .v4-door-dark { background: #0a0a0a; color: #fff; border-color: #0a0a0a; }
-.v4-door-dark:hover { border-color: #ffdb2d; }
+.v4-door-dark:hover { border-color: #ffdd2f; }
 
 .v4-gap-stage { min-height: 0; }
 .v4-beat-b { margin-top: 36px; }
@@ -2319,4 +2319,75 @@ a:not([class]):hover {
   .v4-gap[data-scrub] .v4-beat-b,
   .v4-spec[data-scrub] .v4-spec-card { opacity: 1; transform: none; }
   .v4-gap[data-scrub] .v4-beat-b { position: static; margin-top: 36px; }
+}
+
+/* ---- Light homepage clone (/home-clone) -----------------------------------
+   Same sections as the live homepage. Dark bands become white; the yellow
+   wash is the only new decoration. Rules stay under .home-light so / is unchanged.
+   --------------------------------------------------------------------------- */
+.home-wash { display: none; }
+.home-light .home-wash { display: block; }
+
+.home-light .lp-hero {
+  margin-top: 0;
+  background-color: transparent;
+  color: #0a0a0a;
+}
+.home-light .lp-atmosphere { display: none; }
+.home-light .lp-stage {
+  padding-top: clamp(40px, 7vw, 96px);
+}
+.home-light .lp-sub { color: rgba(10, 10, 10, 0.68); }
+.home-light .lp-composer {
+  background-color: #fff;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+.home-light .lp-composer textarea { color: #0a0a0a; }
+.home-light .lp-composer textarea::placeholder { color: rgba(10, 10, 10, 0.42); }
+.home-light .lp-chips button {
+  border-color: rgba(0, 0, 0, 0.12);
+  color: rgba(10, 10, 10, 0.72);
+}
+.home-light .lp-chips button:hover {
+  border-color: #ffdd2f;
+  color: #0a0a0a;
+}
+
+.home-light section.bg-black,
+.home-light #offer-care {
+  background-color: #fff;
+  color: #0a0a0a;
+}
+.home-light .lp-hero .text-white,
+.home-light section.bg-black .text-white,
+.home-light #offer-care .text-white { color: #0a0a0a; }
+.home-light .lp-hero .text-white\/90,
+.home-light .lp-hero .text-white\/80,
+.home-light .lp-hero .text-white\/70,
+.home-light .lp-hero .text-white\/55,
+.home-light section.bg-black .text-white\/90,
+.home-light section.bg-black .text-white\/70,
+.home-light #offer-care .text-white\/70,
+.home-light #offer-care .text-white\/45,
+.home-light #offer-care .text-white\/40 { color: rgba(10, 10, 10, 0.62); }
+.home-light section.bg-black .text-body-onDark { color: #4a4a4a; }
+.home-light .lp-hero .border-white\/15,
+.home-light #offer-care .border-white\/10 { border-color: rgba(0, 0, 0, 0.1); }
+.home-light .lp-hero .text-brand,
+.home-light section.bg-black .text-brand,
+.home-light #offer-care .text-brand { color: #B89612; }
+
+.home-light .stat-cell .font-display,
+.home-light #offer-care .font-display.text-brand {
+  background-image: linear-gradient(253deg, #ff7a18 20%, #ffa300 25%, #ffdb2d 58%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.home-light #offer-care {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+.home-light #offer-care button {
+  background-color: #f6f5f1;
 }

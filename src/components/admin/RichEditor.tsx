@@ -47,8 +47,8 @@ export function RichEditor({
             body { font-family: Montserrat, system-ui, sans-serif; font-size: 16px; color: #111; line-height: 1.7; padding: 12px 16px; }
             h2 { font-weight: 800; letter-spacing: -0.03em; font-size: 30px; }
             h3 { font-weight: 700; letter-spacing: -0.015em; font-size: 21px; }
-            a { color: #111; text-decoration: underline; text-decoration-color: #FFDB2D; text-decoration-thickness: 2px; }
-            blockquote { border-left: 4px solid #FFDB2D; margin: 1.4em 0; padding: 4px 0 4px 20px; font-weight: 700; }
+            a { color: #111; text-decoration: underline; text-decoration-color: #FFDD2F; text-decoration-thickness: 2px; }
+            blockquote { border-left: 4px solid #FFDD2F; margin: 1.4em 0; padding: 4px 0 4px 20px; font-weight: 700; }
             img { max-width: 100%; height: auto; border-radius: 12px; }
           `,
           images_upload_handler: async (blobInfo: any) => {

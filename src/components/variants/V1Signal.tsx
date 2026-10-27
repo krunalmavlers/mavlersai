@@ -41,7 +41,7 @@ export function V1Signal({ siteKey }: { siteKey: string }) {
             <p className="m-0 text-[12px] font-bold uppercase tracking-[0.22em] text-brand">Signal 01 — Next.js on Vercel</p>
             <h1 className={`v1-h1 m-0 mt-4 max-w-[12ch] font-display font-extrabold leading-[0.9] tracking-[-0.05em] ${open ? 'is-open' : ''}`}>
               Name the stall.
-              <span className="mt-1 block text-brand">We draw the way through it.</span>
+              <span className="hm mt-1 block">We draw the way through it.</span>
             </h1>
             <p className="m-0 mt-6 max-w-[42ch] text-[16px] leading-relaxed text-white/65">
               A plan for the problem you actually have. Then a Mavlers engineer, usually the same week — the same partnership agencies have used for fifteen years.
@@ -146,7 +146,7 @@ export function V1Signal({ siteKey }: { siteKey: string }) {
         <ScrollScene className="v1-gap" mode="enter">
           <div className="mx-auto max-w-[1440px] px-6 py-[clamp(72px,12vw,140px)] lg:px-10">
             <p className="m-0 text-[12px] font-bold uppercase tracking-[0.2em] text-brand">The production gap</p>
-            <p className="v1-figure m-0 mt-3 font-display text-[clamp(120px,22vw,280px)] font-extrabold leading-[0.8] tracking-[-0.07em] text-brand">
+            <p className="v1-figure hm m-0 mt-3 font-display text-[clamp(120px,22vw,280px)] font-extrabold leading-[0.8] tracking-[-0.07em]">
               60%
             </p>
             <p className="m-0 mt-4 max-w-[18ch] text-[clamp(26px,3vw,44px)] font-semibold leading-[1.1] tracking-[-0.03em]">

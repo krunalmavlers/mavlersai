@@ -37,7 +37,7 @@ function SignalBoard({ onAsk }: { onAsk: Ask }) {
                   {String(i + 1).padStart(2, '0')}
                 </span>
               </span>
-              <span className="mt-8 font-display text-[clamp(32px,3vw,44px)] font-extrabold leading-none tracking-[-0.045em] text-brand">
+              <span className="hm mt-8 font-display text-[clamp(32px,3vw,44px)] font-extrabold leading-none tracking-[-0.045em]">
                 {item.timeline}
               </span>
               <h3 className="m-0 mt-4 font-display text-[22px] font-extrabold leading-tight tracking-[-0.03em]">{item.name}</h3>
@@ -59,7 +59,7 @@ function SignalBoard({ onAsk }: { onAsk: Ask }) {
               className="v1-cell flex cursor-pointer flex-col bg-ink-900 p-7 text-left text-white md:p-9"
             >
               <span className="font-display text-[12px] font-extrabold tracking-[0.16em] text-brand">After launch</span>
-              <span className="mt-4 font-display text-[clamp(72px,8vw,104px)] font-extrabold leading-none tracking-[-0.06em] text-brand">
+              <span className="hm mt-4 font-display text-[clamp(72px,8vw,104px)] font-extrabold leading-none tracking-[-0.06em]">
                 {item.hours}
               </span>
               <span className="mt-2 text-[11px] font-bold uppercase tracking-[0.16em] text-white/40">hours a month</span>
@@ -123,7 +123,7 @@ function FieldBoard({ onAsk }: { onAsk: Ask }) {
           <div className="mt-8 grid gap-10 md:grid-cols-2">
             {CARE.map((item) => (
               <button key={item.name} type="button" onClick={() => onAsk(item.prompt)} className="cursor-pointer text-left">
-                <span className="block font-display text-[clamp(64px,7vw,88px)] font-extrabold leading-none tracking-[-0.06em] text-brand">
+                <span className="hm block font-display text-[clamp(64px,7vw,88px)] font-extrabold leading-none tracking-[-0.06em]">
                   {item.hours}
                 </span>
                 <span className="mt-2 block text-[11px] font-bold uppercase tracking-[0.16em] text-white/45">hours a month</span>
@@ -288,7 +288,7 @@ function LineBoard({ onAsk }: { onAsk: Ask }) {
               <button key={item.name} type="button" onClick={() => onAsk(item.prompt)} className="cursor-pointer text-left">
                 <span className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-brand">After launch</span>
                 <span className="mt-3 flex items-end gap-3">
-                  <span className="font-display text-[64px] font-extrabold leading-none tracking-[-0.05em] text-brand">{item.hours}</span>
+                  <span className="hm font-display text-[64px] font-extrabold leading-none tracking-[-0.05em]">{item.hours}</span>
                   <span className="mb-2 text-[11px] font-bold uppercase tracking-[0.14em] text-white/45">hours a month</span>
                 </span>
                 <span className="mt-2 block font-display text-[20px] font-extrabold">{item.name}</span>
