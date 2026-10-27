@@ -16,6 +16,7 @@ import { HeroCircuit } from './HeroCircuit';
 import { HeroHeading } from './HeroHeading';
 import { LaunchPrompt } from '@/components/home/LaunchPrompt';
 import { LeadDoors, PackageGrid, PillarRail, PinnedStat } from '@/components/home/HomeSections';
+import { Offerings } from '@/components/home/Offerings';
 
 /* ----------------------------- shared bits ------------------------------ */
 
@@ -1871,6 +1872,8 @@ export async function SectionRenderer({
       return <PinnedStat c={c} />;
     case 'pillar_rail':
       return <PillarRail c={c} />;
+    case 'offerings':
+      return <Offerings c={c} />;
     case 'stats_bar':
       return <StatsBar c={c} />;
     case 'feature_grid':

@@ -1,6 +1,7 @@
 'use client';
 
 import { LINE, STALLS, SURFACE, WORK } from '@/content/variants';
+import { PackageBoard } from './PackageBoard';
 import { EngineerAsk, usePlanSession, VariantNav } from './planSession';
 
 const TRACE = [
@@ -179,6 +180,8 @@ export function V3Instrument({ siteKey }: { siteKey: string }) {
           </ol>
         </div>
       </section>
+
+      <PackageBoard tone="instrument" onAsk={ask} />
 
       <section className="border-t border-white/10">
         <div className="mx-auto max-w-[1200px] px-6 py-[clamp(64px,8vw,100px)] lg:px-10">

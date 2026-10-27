@@ -1,6 +1,7 @@
 'use client';
 
 import { LINE, STALLS, SURFACE, WORK } from '@/content/variants';
+import { PackageBoard } from './PackageBoard';
 import { EngineerAsk, usePlanSession, VariantNav } from './planSession';
 
 export function V2Field({ siteKey }: { siteKey: string }) {
@@ -130,6 +131,8 @@ export function V2Field({ siteKey }: { siteKey: string }) {
           </p>
         </div>
       </section>
+
+      <PackageBoard tone="field" onAsk={ask} />
 
       <section className="bg-[#F4F1EA]">
         <div className="mx-auto max-w-[1240px] px-6 py-[clamp(64px,8vw,110px)]">

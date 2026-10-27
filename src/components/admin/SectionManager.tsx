@@ -31,6 +31,7 @@ const SECTION_TYPES = [
   'lead_doors',
   'pinned_stat',
   'pillar_rail',
+  'offerings',
 ];
 
 const TEMPLATES: Record<string, any> = {
@@ -84,6 +85,14 @@ const TEMPLATES: Record<string, any> = {
   lead_doors: { eyebrow: '', heading: '', items: [{ kicker: '', title: 'Offer', body: '', price: '', time: '', prompt: '' }] },
   pinned_stat: { eyebrow: '', figure: '60%', sentence: '' },
   pillar_rail: { eyebrow: '', heading: '', subhead: '', items: [{ n: '01', kicker: 'Lead', title: 'Pillar', body: '', prompt: '' }], features: [] },
+  offerings: {
+    eyebrow: 'Offerings',
+    heading: '',
+    subhead: '',
+    groups: [{ id: 'cost', label: 'Cost', items: [{ name: 'Offer', summary: '', hours: '', timeline: '', prompt: '' }] }],
+    care: [{ name: 'Care', hours: '', summary: '', prompt: '' }],
+    footnote: '',
+  },
   newsletter: { heading: 'Subscribe', body: '', placeholder: 'you@agency.com', button: 'Subscribe' },
 };
 

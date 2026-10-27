@@ -2,6 +2,7 @@
 
 import { ScrollScene } from '@/components/sections/ScrollScene';
 import { LINE, PROOF, STALLS, SURFACE, WORK } from '@/content/variants';
+import { PackageBoard } from './PackageBoard';
 import { EngineerAsk, usePlanSession, VariantNav } from './planSession';
 
 export function V1Signal({ siteKey }: { siteKey: string }) {
@@ -157,6 +158,8 @@ export function V1Signal({ siteKey }: { siteKey: string }) {
           </div>
         </ScrollScene>
       </section>
+
+      <PackageBoard tone="signal" onAsk={ask} />
 
       <section className="bg-ink-900">
         <div className="mx-auto max-w-[1440px] px-6 py-[clamp(64px,8vw,110px)] lg:px-10">

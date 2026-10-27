@@ -1,192 +1,304 @@
-import { PACKAGES, hoursLabel, packageGroups } from '@/content/packages';
+'use client';
 
-const INTRO = 'Hours, the price in USD, and how long it takes. The bill check is free.';
+import { useState } from 'react';
+import { CARE, OFFERING_NOTE, PACKAGES, hoursLabel, packageGroups } from '@/content/packages';
 
-export function PackageBoard({ tone }: { tone: 'signal' | 'field' | 'instrument' | 'line' }) {
-  if (tone === 'signal') return <SignalBoard />;
-  if (tone === 'field') return <FieldBoard />;
-  if (tone === 'instrument') return <InstrumentBoard />;
-  return <LineBoard />;
+type Ask = (text: string) => void;
+
+export function PackageBoard({ tone, onAsk }: { tone: 'signal' | 'field' | 'instrument' | 'line'; onAsk: Ask }) {
+  if (tone === 'signal') return <SignalBoard onAsk={onAsk} />;
+  if (tone === 'field') return <FieldBoard onAsk={onAsk} />;
+  if (tone === 'instrument') return <InstrumentBoard onAsk={onAsk} />;
+  return <LineBoard onAsk={onAsk} />;
 }
 
-function SignalBoard() {
+function SignalBoard({ onAsk }: { onAsk: Ask }) {
   return (
-    <section id="packages" className="bg-black text-white">
+    <section id="offerings" className="bg-black text-white">
       <div className="mx-auto max-w-[1440px] px-6 py-[clamp(64px,8vw,110px)] lg:px-10">
-        <p className="m-0 text-[12px] font-bold uppercase tracking-[0.2em] text-brand">Packages and pricing</p>
-        <h2 className="m-0 mt-4 max-w-[16ch] font-display text-[clamp(32px,4vw,56px)] font-extrabold leading-[0.98] tracking-[-0.045em]">
-          The work, with a number on it.
+        <p className="m-0 text-[12px] font-bold uppercase tracking-[0.2em] text-brand">The slate</p>
+        <h2 className="m-0 mt-4 max-w-[14ch] font-display text-[clamp(32px,4vw,56px)] font-extrabold leading-[0.98] tracking-[-0.045em]">
+          Nine ways through. Two ways to stay.
         </h2>
-        <p className="m-0 mt-4 max-w-[42ch] text-[16px] leading-relaxed text-white/60">{INTRO}</p>
+        <p className="m-0 mt-4 max-w-[46ch] text-[16px] leading-relaxed text-white/60">
+          Each engagement is a fixed scope. Pick one and the plan draws at the top of the page.
+        </p>
         <div className="mt-12 grid gap-px bg-white/10 sm:grid-cols-2 xl:grid-cols-3">
-          {PACKAGES.map((item) => (
-            <article key={item.name} className="v1-cell flex flex-col bg-ink-900 p-7">
-              <span className="font-display text-[12px] font-extrabold tracking-[0.16em] text-brand">{item.pillar}</span>
-              <h3 className="m-0 mt-5 font-display text-[22px] font-extrabold leading-tight tracking-[-0.03em]">{item.name}</h3>
-              <p className="m-0 mt-4 font-display text-[28px] font-extrabold leading-none tracking-[-0.04em] text-brand">{item.price}</p>
-              {item.priceNote && <p className="m-0 mt-2 text-[12px] font-bold uppercase tracking-[0.12em] text-white/45">{item.priceNote}</p>}
-              <p className="m-0 mt-4 text-[14.5px] leading-relaxed text-white/60">{item.included}</p>
-              <p className="m-0 mt-auto pt-6 text-[13px] font-semibold text-white/45">
-                {hoursLabel(item.hours)}
-                <span aria-hidden className="px-2 text-white/25">/</span>
+          {PACKAGES.map((item, i) => (
+            <button
+              key={item.name}
+              type="button"
+              onClick={() => onAsk(item.prompt)}
+              className="v1-cell flex h-full cursor-pointer flex-col bg-ink-900 p-7 text-left text-white"
+            >
+              <span className="flex items-center justify-between gap-3">
+                <span className="font-display text-[12px] font-extrabold tracking-[0.16em] text-brand">{item.pillar}</span>
+                <span className="font-display text-[12px] font-extrabold tracking-[0.16em] text-white/35">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+              </span>
+              <span className="mt-8 font-display text-[clamp(32px,3vw,44px)] font-extrabold leading-none tracking-[-0.045em] text-brand">
                 {item.timeline}
-              </p>
-            </article>
+              </span>
+              <h3 className="m-0 mt-4 font-display text-[22px] font-extrabold leading-tight tracking-[-0.03em]">{item.name}</h3>
+              <p className="m-0 mt-3 text-[14.5px] leading-relaxed text-white/60">{item.included}</p>
+              <span className="mt-auto flex items-center justify-between gap-4 pt-6 text-[13px] font-bold">
+                <span className="text-white/45">{hoursLabel(item.hours)}</span>
+                <span className="text-brand">Draw this →</span>
+              </span>
+            </button>
           ))}
         </div>
+
+        <div className="mt-px grid gap-px bg-white/10 md:grid-cols-2">
+          {CARE.map((item) => (
+            <button
+              key={item.name}
+              type="button"
+              onClick={() => onAsk(item.prompt)}
+              className="v1-cell flex cursor-pointer flex-col bg-ink-900 p-7 text-left text-white md:p-9"
+            >
+              <span className="font-display text-[12px] font-extrabold tracking-[0.16em] text-brand">After launch</span>
+              <span className="mt-4 font-display text-[clamp(72px,8vw,104px)] font-extrabold leading-none tracking-[-0.06em] text-brand">
+                {item.hours}
+              </span>
+              <span className="mt-2 text-[11px] font-bold uppercase tracking-[0.16em] text-white/40">hours a month</span>
+              <h3 className="m-0 mt-5 font-display text-[24px] font-extrabold tracking-[-0.03em]">{item.name}</h3>
+              <p className="m-0 mt-2 max-w-[36ch] text-[14.5px] leading-relaxed text-white/60">{item.summary}</p>
+              <span className="mt-6 text-[13px] font-bold text-brand">Draw this →</span>
+            </button>
+          ))}
+        </div>
+        <p className="m-0 mt-8 max-w-[72ch] text-[13px] leading-relaxed text-white/40">{OFFERING_NOTE}</p>
       </div>
     </section>
   );
 }
 
-function FieldBoard() {
+function FieldBoard({ onAsk }: { onAsk: Ask }) {
   return (
-    <section id="packages" className="border-t border-black/10 bg-[#F4F1EA] text-black">
+    <section id="offerings" className="border-t border-black/10 bg-[#F4F1EA] text-black">
       <div className="mx-auto max-w-[1240px] px-6 py-[clamp(64px,8vw,110px)]">
-        <p className="m-0 text-[12px] font-bold uppercase tracking-[0.2em]">Packages and pricing</p>
-        <div className="mt-4 flex flex-wrap items-end justify-between gap-6">
-          <h2 className="m-0 max-w-[14ch] font-display text-[clamp(32px,4vw,52px)] font-extrabold leading-[0.98] tracking-[-0.04em]">
-            What it costs to take it on.
-          </h2>
-          <p className="m-0 max-w-[32ch] text-[15px] leading-relaxed text-black/60">{INTRO}</p>
-        </div>
-        <div className="mt-14 space-y-12">
-          {packageGroups().map((group) => (
-            <div key={group.pillar}>
-              <h3 className="m-0 font-display text-[12px] font-extrabold uppercase tracking-[0.18em] text-brand-ink">{group.pillar}</h3>
-              <div className="mt-2">
+        <p className="m-0 text-[12px] font-bold uppercase tracking-[0.2em]">
+          Contents <span className="text-black/35">/ what we take on</span>
+        </p>
+        <h2 className="m-0 mt-5 max-w-[16ch] font-display text-[clamp(32px,4vw,52px)] font-extrabold leading-[0.98] tracking-[-0.04em]">
+          The engagement, written out.
+        </h2>
+        <div className="mt-14 space-y-14">
+          {packageGroups().map((group, gi) => (
+            <div key={group.pillar} className="grid gap-6 lg:grid-cols-[140px_1fr] lg:gap-10">
+              <p className="m-0 font-display text-[12px] font-extrabold uppercase tracking-[0.18em] text-brand-ink lg:pt-6">
+                {String(gi + 1).padStart(2, '0')} {group.pillar}
+              </p>
+              <div>
                 {group.items.map((item) => (
-                  <article key={item.name} className="grid gap-3 border-t border-black/15 py-6 md:grid-cols-[1fr_auto] md:items-start md:gap-10">
-                    <div>
-                      <h4 className="m-0 font-display text-[22px] font-extrabold tracking-[-0.03em]">{item.name}</h4>
-                      <p className="m-0 mt-2 max-w-[62ch] text-[15px] leading-relaxed text-black/65">{item.included}</p>
-                      <p className="m-0 mt-3 text-[13px] font-semibold text-black/45">
-                        {hoursLabel(item.hours)} · {item.timeline}
-                      </p>
-                    </div>
-                    <p className="m-0 font-display text-[26px] font-extrabold tracking-[-0.03em] md:text-right">
-                      {item.price}
-                      {item.priceNote && (
-                        <span className="mt-1 block text-[12px] font-bold uppercase tracking-[0.12em] text-black/45">{item.priceNote}</span>
-                      )}
-                    </p>
-                  </article>
+                  <button
+                    key={item.name}
+                    type="button"
+                    onClick={() => onAsk(item.prompt)}
+                    className="group block w-full cursor-pointer border-t border-black/15 py-6 text-left"
+                  >
+                    <span className="flex items-baseline gap-3">
+                      <span className="font-display text-[clamp(20px,2vw,26px)] font-extrabold tracking-[-0.03em]">{item.name}</span>
+                      <span aria-hidden className="mb-1 hidden h-px flex-1 border-b border-dotted border-black/30 sm:block" />
+                      <span className="shrink-0 text-[13px] font-bold underline decoration-brand decoration-[3px] underline-offset-[5px]">
+                        {item.timeline}
+                      </span>
+                    </span>
+                    <span className="mt-3 block max-w-[68ch] text-[15px] leading-relaxed text-black/65">{item.included}</span>
+                    <span className="mt-3 flex items-center justify-between gap-4 text-[13px] font-bold">
+                      <span className="text-black/45">{hoursLabel(item.hours)}</span>
+                      <span className="transition-transform group-hover:translate-x-0.5">Start from this →</span>
+                    </span>
+                  </button>
                 ))}
               </div>
             </div>
           ))}
         </div>
+
+        <div className="mt-16 bg-black px-6 py-10 text-white sm:px-10">
+          <p className="m-0 text-[12px] font-bold uppercase tracking-[0.18em] text-brand">After the last page</p>
+          <div className="mt-8 grid gap-10 md:grid-cols-2">
+            {CARE.map((item) => (
+              <button key={item.name} type="button" onClick={() => onAsk(item.prompt)} className="cursor-pointer text-left">
+                <span className="block font-display text-[clamp(64px,7vw,88px)] font-extrabold leading-none tracking-[-0.06em] text-brand">
+                  {item.hours}
+                </span>
+                <span className="mt-2 block text-[11px] font-bold uppercase tracking-[0.16em] text-white/45">hours a month</span>
+                <span className="mt-4 block font-display text-[22px] font-extrabold">{item.name}</span>
+                <span className="mt-2 block max-w-[36ch] text-[15px] leading-relaxed text-white/70">{item.summary}</span>
+                <span className="mt-4 block text-[13px] font-bold text-brand">Start from this →</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        <p className="m-0 mt-8 max-w-[72ch] text-[13.5px] leading-relaxed text-black/45">{OFFERING_NOTE}</p>
       </div>
     </section>
   );
 }
 
-function InstrumentBoard() {
+function InstrumentBoard({ onAsk }: { onAsk: Ask }) {
+  const groups = packageGroups();
+  const modes = ['All', ...groups.map((group) => group.pillar), 'Care'];
+  const [mode, setMode] = useState('All');
+  const visible = mode === 'All' || mode === 'Care' ? groups : groups.filter((group) => group.pillar === mode);
+  const showCare = mode === 'All' || mode === 'Care';
+
   return (
-    <section id="packages" className="border-t border-white/10 bg-[#070707] text-white">
+    <section id="offerings" className="border-t border-white/10 bg-[#070707] text-white">
       <div className="mx-auto max-w-[1200px] px-6 py-[clamp(64px,8vw,100px)] lg:px-10">
-        <p className="m-0 font-mono text-[11px] uppercase tracking-[0.2em] text-brand">Packages and pricing</p>
-        <h2 className="m-0 mt-4 max-w-[16ch] font-display text-[clamp(28px,3vw,42px)] font-extrabold leading-[1.02] tracking-[-0.04em]">
-          Scope, hours, price.
-        </h2>
-        <p className="m-0 mt-4 max-w-[46ch] text-[15.5px] leading-relaxed text-white/60">{INTRO}</p>
-
-        <div className="mt-10 space-y-3 lg:hidden">
-          {PACKAGES.map((item) => (
-            <article key={item.name} className="border border-white/15 p-4">
-              <p className="m-0 font-mono text-[10px] uppercase tracking-[0.16em] text-brand">{item.pillar}</p>
-              <h3 className="m-0 mt-2 font-display text-[18px] font-extrabold tracking-[-0.02em]">{item.name}</h3>
-              <p className="m-0 mt-2 text-[14px] leading-relaxed text-white/65">{item.included}</p>
-              <dl className="m-0 mt-4 grid grid-cols-3 gap-3 border-t border-white/10 pt-3 font-mono text-[11px] uppercase tracking-[0.08em]">
-                <div>
-                  <dt className="text-white/35">Hrs</dt>
-                  <dd className="m-0 mt-1 text-white">{item.hours}</dd>
-                </div>
-                <div>
-                  <dt className="text-white/35">USD</dt>
-                  <dd className="m-0 mt-1 text-brand">
-                    {item.price}
-                    {item.priceNote && <span className="mt-1 block normal-case tracking-normal text-white/45">{item.priceNote}</span>}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-white/35">Time</dt>
-                  <dd className="m-0 mt-1 text-white">{item.timeline}</dd>
-                </div>
-              </dl>
-            </article>
-          ))}
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <p className="m-0 font-mono text-[11px] uppercase tracking-[0.2em] text-brand">Manifest</p>
+            <h2 className="m-0 mt-4 max-w-[16ch] font-display text-[clamp(28px,3vw,42px)] font-extrabold leading-[1.02] tracking-[-0.04em]">
+              Scope, on the instrument.
+            </h2>
+          </div>
+          <p className="m-0 font-mono text-[11px] uppercase tracking-[0.16em] text-white/40">
+            {String(PACKAGES.length).padStart(2, '0')} engagements / {String(CARE.length).padStart(2, '0')} care
+          </p>
         </div>
 
-        <div className="mt-10 hidden overflow-x-auto lg:block">
-          <table className="w-full min-w-[860px] border-collapse text-left">
-            <caption className="sr-only">Packages and pricing</caption>
-            <thead>
-              <tr className="border-b border-white/15 font-mono text-[10px] uppercase tracking-[0.16em] text-white/40">
-                <th className="py-3 pr-4 font-medium">Package</th>
-                <th className="py-3 pr-4 font-medium">Pillar</th>
-                <th className="py-3 pr-4 font-medium">What’s included</th>
-                <th className="py-3 pr-4 font-medium">Hours</th>
-                <th className="py-3 pr-4 font-medium">Price (USD)</th>
-                <th className="py-3 font-medium">Timeline</th>
-              </tr>
-            </thead>
-            <tbody>
-              {PACKAGES.map((item) => (
-                <tr key={item.name} className="border-b border-white/10 align-top">
-                  <th className="py-4 pr-4 font-display text-[15px] font-extrabold tracking-[-0.02em]">{item.name}</th>
-                  <td className="py-4 pr-4 font-mono text-[11px] uppercase tracking-[0.12em] text-brand">{item.pillar}</td>
-                  <td className="max-w-[36ch] py-4 pr-6 text-[14px] leading-relaxed text-white/65">{item.included}</td>
-                  <td className="py-4 pr-4 font-mono text-[13px]">{item.hours}</td>
-                  <td className="py-4 pr-4 font-mono text-[13px] text-brand">
-                    {item.price}
-                    {item.priceNote && <span className="mt-1 block font-sans text-[11px] normal-case tracking-normal text-white/45">{item.priceNote}</span>}
-                  </td>
-                  <td className="py-4 font-mono text-[13px] text-white/80">{item.timeline}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="mt-8 flex flex-wrap gap-2" role="tablist" aria-label="Offering groups">
+          {modes.map((name) => {
+            const on = mode === name;
+            return (
+              <button
+                key={name}
+                type="button"
+                role="tab"
+                aria-selected={on}
+                onClick={() => setMode(name)}
+                className={`rounded-full border px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.08em] ${
+                  on ? 'border-brand text-brand' : 'border-white/15 text-white/60 hover:border-white/40 hover:text-white'
+                }`}
+              >
+                {name}
+              </button>
+            );
+          })}
         </div>
+
+        {mode !== 'Care' && (
+          <div className="mt-8">
+            {visible.map((group) => (
+              <div key={group.pillar}>
+                {group.items.map((item) => (
+                  <button
+                    key={item.name}
+                    type="button"
+                    onClick={() => onAsk(item.prompt)}
+                    className="grid w-full cursor-pointer grid-cols-1 gap-3 border-t border-white/10 py-5 text-left hover:bg-white/[0.03] sm:grid-cols-[88px_minmax(0,1fr)_auto] sm:items-start sm:gap-6"
+                  >
+                    <span className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-brand">
+                      <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-brand" />
+                      {item.pillar}
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block font-display text-[18px] font-extrabold tracking-[-0.02em]">{item.name}</span>
+                      <span className="mt-1.5 block max-w-[68ch] text-[14.5px] leading-relaxed text-white/60">{item.included}</span>
+                    </span>
+                    <span className="grid grid-cols-2 gap-4 font-mono text-[11px] uppercase tracking-[0.08em] sm:text-right">
+                      <span>
+                        <span className="block text-white/35">Hrs</span>
+                        <span className="mt-1 block text-white">{item.hours}</span>
+                      </span>
+                      <span>
+                        <span className="block text-white/35">Window</span>
+                        <span className="mt-1 block text-white">{item.timeline}</span>
+                      </span>
+                    </span>
+                  </button>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {showCare && (
+          <div className={`grid gap-3 md:grid-cols-2 ${mode === 'Care' ? 'mt-8' : 'mt-3'}`}>
+            {CARE.map((item) => (
+              <button
+                key={item.name}
+                type="button"
+                onClick={() => onAsk(item.prompt)}
+                className="cursor-pointer border border-white/15 p-5 text-left hover:border-brand"
+              >
+                <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-brand">Care / monthly</span>
+                <span className="mt-4 flex items-end gap-3">
+                  <span className="font-display text-[64px] font-extrabold leading-none tracking-[-0.05em]">{item.hours}</span>
+                  <span className="mb-2 font-mono text-[11px] uppercase tracking-[0.14em] text-white/45">hours a month</span>
+                </span>
+                <span className="mt-3 block font-display text-[18px] font-extrabold">{item.name}</span>
+                <span className="mt-2 block text-[14px] leading-relaxed text-white/60">{item.summary}</span>
+              </button>
+            ))}
+          </div>
+        )}
+        <p className="m-0 mt-8 max-w-[72ch] font-mono text-[11px] uppercase leading-relaxed tracking-[0.06em] text-white/35">
+          {OFFERING_NOTE}
+        </p>
       </div>
     </section>
   );
 }
 
-function LineBoard() {
+function LineBoard({ onAsk }: { onAsk: Ask }) {
   return (
-    <section id="packages" className="border-t border-black/10 bg-white text-black">
-      <div className="mx-auto max-w-[1440px] px-6 py-[clamp(64px,8vw,104px)] lg:px-10">
-        <p className="m-0 text-[12px] font-bold uppercase tracking-[0.18em]">Packages and pricing</p>
-        <div className="mt-3 flex flex-wrap items-end justify-between gap-6">
-          <h2 className="m-0 max-w-[14ch] font-display text-[clamp(32px,4vw,56px)] font-extrabold leading-[0.98] tracking-[-0.045em]">
-            The line, with a number on it.
-          </h2>
-          <p className="m-0 max-w-[36ch] text-[15.5px] leading-relaxed text-black/60">{INTRO}</p>
+    <section id="offerings" className="bg-[#070708] text-black">
+      <div className="mx-auto max-w-[1100px] px-6 py-[clamp(64px,8vw,104px)] lg:px-10">
+        <p className="m-0 text-[12px] font-bold uppercase tracking-[0.18em] text-brand">Engagements</p>
+        <h2 className="m-0 mt-3 max-w-[16ch] font-display text-[clamp(32px,4vw,52px)] font-extrabold leading-[0.98] tracking-[-0.04em] text-white">
+          The scope, opened like the plan.
+        </h2>
+        <div className="mt-10 overflow-hidden rounded-[22px] bg-[#F6F5F1] text-[#0A0A0A] shadow-[0_40px_80px_-36px_rgba(0,0,0,0.65)]">
+          <header className="flex items-center justify-between gap-3 border-b border-black/10 px-6 py-3.5 sm:px-8">
+            <span className="text-[11px] font-extrabold uppercase tracking-[0.14em]">Fixed scope</span>
+            <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-black/40">Nine engagements</span>
+          </header>
+          <div>
+            {packageGroups().map((group) =>
+              group.items.map((item) => (
+                <button
+                  key={item.name}
+                  type="button"
+                  onClick={() => onAsk(item.prompt)}
+                  className="grid w-full cursor-pointer gap-3 border-b border-black/10 px-6 py-5 text-left last:border-b-0 hover:bg-black/[0.03] sm:px-8 lg:grid-cols-[110px_minmax(0,1fr)_120px] lg:items-start lg:gap-6"
+                >
+                  <span className="w-fit rounded-full bg-black/[0.05] px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-black/55">
+                    {item.pillar}
+                  </span>
+                  <span>
+                    <span className="block font-display text-[20px] font-extrabold leading-tight tracking-[-0.03em]">{item.name}</span>
+                    <span className="mt-2 block max-w-[62ch] text-[14.5px] leading-relaxed text-black/65">{item.included}</span>
+                  </span>
+                  <span className="text-[13px] font-semibold leading-relaxed text-black/55 lg:text-right">
+                    <span className="block text-brand-ink">{item.timeline}</span>
+                    <span className="mt-1 block">{hoursLabel(item.hours)}</span>
+                  </span>
+                </button>
+              )),
+            )}
+          </div>
+          <footer className="grid gap-8 border-t border-black/10 bg-[#111] px-6 py-8 text-white sm:px-8 md:grid-cols-2">
+            {CARE.map((item) => (
+              <button key={item.name} type="button" onClick={() => onAsk(item.prompt)} className="cursor-pointer text-left">
+                <span className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-brand">After launch</span>
+                <span className="mt-3 flex items-end gap-3">
+                  <span className="font-display text-[64px] font-extrabold leading-none tracking-[-0.05em] text-brand">{item.hours}</span>
+                  <span className="mb-2 text-[11px] font-bold uppercase tracking-[0.14em] text-white/45">hours a month</span>
+                </span>
+                <span className="mt-2 block font-display text-[20px] font-extrabold">{item.name}</span>
+                <span className="mt-2 block text-[14.5px] leading-relaxed text-white/70">{item.summary}</span>
+                <span className="mt-4 block text-[13px] font-bold text-brand">Open this in the plan →</span>
+              </button>
+            ))}
+          </footer>
         </div>
-        <div className="mt-12 border-t border-black/10">
-          {PACKAGES.map((item) => (
-            <article key={item.name} className="grid gap-4 border-b border-black/10 py-6 lg:grid-cols-[140px_minmax(0,1fr)_150px_180px] lg:items-start lg:gap-8 lg:py-7">
-              <span className="w-fit rounded-full bg-black/[0.05] px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-black/60">
-                {item.pillar}
-              </span>
-              <div>
-                <h3 className="m-0 font-display text-[22px] font-extrabold leading-tight tracking-[-0.03em]">{item.name}</h3>
-                <p className="m-0 mt-2 max-w-[62ch] text-[15px] leading-relaxed text-black/65">{item.included}</p>
-              </div>
-              <p className="m-0 text-[13.5px] font-semibold leading-relaxed text-black/55">
-                {hoursLabel(item.hours)}
-                <span className="mt-1 block">{item.timeline}</span>
-              </p>
-              <p className="m-0 font-display text-[26px] font-extrabold leading-none tracking-[-0.03em] lg:text-right">
-                {item.price}
-                {item.priceNote && (
-                  <span className="mt-2 block text-[11px] font-bold uppercase tracking-[0.12em] text-brand-ink">{item.priceNote}</span>
-                )}
-              </p>
-            </article>
-          ))}
-        </div>
+        <p className="m-0 mt-6 max-w-[72ch] text-[13px] leading-relaxed text-white/40">{OFFERING_NOTE}</p>
       </div>
     </section>
   );

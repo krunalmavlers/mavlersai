@@ -1,4 +1,4 @@
-/** Fixed-scope offers. Shared by the homepage rate card and every homepage study. */
+/** Fixed-scope offers for the homepage studies. The pages show scope and timeline. */
 
 export type ServicePackage = {
   name: string;
@@ -8,6 +8,14 @@ export type ServicePackage = {
   price: string;
   priceNote?: string;
   timeline: string;
+  prompt: string;
+};
+
+export type CarePlan = {
+  name: string;
+  hours: string;
+  summary: string;
+  prompt: string;
 };
 
 export const PACKAGES: ServicePackage[] = [
@@ -18,6 +26,7 @@ export const PACKAGES: ServicePackage[] = [
     hours: '1',
     price: 'Free',
     timeline: 'Same week',
+    prompt: 'The Vercel bill jumped and we need the top savings named.',
   },
   {
     name: 'Vercel Cost Audit',
@@ -27,6 +36,7 @@ export const PACKAGES: ServicePackage[] = [
     price: '$420',
     priceNote: 'Credited to the fix',
     timeline: '3 days',
+    prompt: 'The Vercel bill jumped and we need a written fix plan.',
   },
   {
     name: 'CMS Add-on',
@@ -35,6 +45,7 @@ export const PACKAGES: ServicePackage[] = [
     hours: '40–60',
     price: '$1,500–2,500',
     timeline: '2 weeks',
+    prompt: 'Marketing can’t edit the Next.js site. We need a CMS they can run.',
   },
   {
     name: 'Next.js + CMS Site',
@@ -43,6 +54,7 @@ export const PACKAGES: ServicePackage[] = [
     hours: '80–100',
     price: '$2,000–3,000',
     timeline: '2–3 weeks',
+    prompt: 'We need a new Next.js marketing site with a CMS the team can run.',
   },
   {
     name: 'AI Assistant',
@@ -51,6 +63,7 @@ export const PACKAGES: ServicePackage[] = [
     hours: '30–40',
     price: '$800–1,000',
     timeline: '4–5 days',
+    prompt: 'Add an AI assistant trained on our content.',
   },
   {
     name: 'AI Search',
@@ -59,6 +72,7 @@ export const PACKAGES: ServicePackage[] = [
     hours: '100–140',
     price: '$3,500–4,900',
     timeline: '3 weeks',
+    prompt: 'We need AI search over the site or catalogue.',
   },
   {
     name: 'AI Cost Tune-up',
@@ -67,6 +81,7 @@ export const PACKAGES: ServicePackage[] = [
     hours: '30–40',
     price: '$800–1,200',
     timeline: '1 week',
+    prompt: 'The AI feature is costing more than it should.',
   },
   {
     name: 'MVP Launch',
@@ -75,6 +90,7 @@ export const PACKAGES: ServicePackage[] = [
     hours: '100–120',
     price: '$2,500–3,000',
     timeline: '2–3 weeks',
+    prompt: 'We need to launch the MVP',
   },
   {
     name: 'Vercel Launch Kit',
@@ -83,8 +99,27 @@ export const PACKAGES: ServicePackage[] = [
     hours: '8–12',
     price: '$400',
     timeline: '2 days',
+    prompt: 'Move the site onto Vercel',
   },
 ];
+
+export const CARE: CarePlan[] = [
+  {
+    name: 'Care 10',
+    hours: '10',
+    summary: 'Version upgrades and security patches, uptime alerts, and a monthly speed and cost report.',
+    prompt: 'We need someone on the site after launch.',
+  },
+  {
+    name: 'Care 20',
+    hours: '20',
+    summary: 'Everything in Care 10, plus firewall tuning, small feature work, and a quarterly cost review.',
+    prompt: 'We need someone on the site after launch, including small feature work.',
+  },
+];
+
+export const OFFERING_NOTE =
+  'Third-party costs sit with you: the Vercel plan and usage, AI model and API usage, CMS licences, and payment gateway fees.';
 
 export function hoursLabel(hours: string) {
   return hours === '1' ? '1 hour' : `${hours} hours`;
