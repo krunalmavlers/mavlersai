@@ -393,6 +393,32 @@ export const SECTION_SCHEMAS: Record<string, FieldDesc[]> = {
     { key: 'figure', label: 'Figure', kind: 'text' },
     { key: 'sentence', label: 'Sentence', kind: 'textarea' },
   ],
+  offerings: [
+    eyebrow,
+    heading,
+    { key: 'subhead', label: 'Subhead', kind: 'textarea' },
+    {
+      key: 'groups',
+      label: 'Groups',
+      kind: 'objectList',
+      itemFields: [
+        { key: 'id', label: 'Anchor id', kind: 'text' },
+        { key: 'label', label: 'Group', kind: 'text' },
+      ],
+    },
+    {
+      key: 'care',
+      label: 'Care',
+      kind: 'objectList',
+      itemFields: [
+        { key: 'name', label: 'Name', kind: 'text' },
+        { key: 'hours', label: 'Hours a month', kind: 'text' },
+        { key: 'summary', label: 'What’s included', kind: 'textarea' },
+        { key: 'prompt', label: 'Prompt text', kind: 'textarea' },
+      ],
+    },
+    { key: 'footnote', label: 'Footnote', kind: 'textarea' },
+  ],
   pillar_rail: [
     eyebrow,
     heading,

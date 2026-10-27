@@ -2,6 +2,7 @@
 
 import { ScrollScene } from '@/components/sections/ScrollScene';
 import { LINE, STALLS, WORK } from '@/content/variants';
+import { PackageBoard } from './PackageBoard';
 import { EngineerAsk, usePlanSession, VariantNav } from './planSession';
 
 const AUDIENCES = [
@@ -245,6 +246,8 @@ export function V4Line({ siteKey }: { siteKey: string }) {
           </div>
         </ScrollScene>
       </section>
+
+      <PackageBoard tone="line" onAsk={ask} />
 
       <section className="border-t border-white/10 bg-white text-black">
         <div className="mx-auto max-w-[1440px] px-6 py-[clamp(64px,8vw,104px)] lg:px-10">
