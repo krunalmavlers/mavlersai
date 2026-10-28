@@ -23,7 +23,7 @@ function nest(items: MenuItem[]) {
 export function Header({ settings, items }: { settings: SiteSettings; items: MenuItem[] }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
-  const darkLead = pathname === '/' || pathname === '/v1' || pathname === '/v3' || pathname === '/v4';
+  const darkLead = pathname === '/home-clone' || pathname === '/v1' || pathname === '/v3' || pathname === '/v4';
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {

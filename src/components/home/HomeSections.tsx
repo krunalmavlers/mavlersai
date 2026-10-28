@@ -1,5 +1,4 @@
 import { ScrollScene } from '@/components/sections/ScrollScene';
-import { LightWash } from './LightWash';
 import { PromptFill } from './LaunchPrompt';
 
 const H2 =
@@ -46,23 +45,67 @@ export function LeadDoors({ c }: { c: any }) {
 
 export function PinnedStat({ c }: { c: any }) {
   return (
-    <section className="relative bg-black text-white">
-      <LightWash dormant />
+    <section className="gap-band relative bg-black text-white">
       <ScrollScene className="gap-pin" mode="pin">
-        <div className="gap-view mx-auto flex max-w-page flex-col justify-center px-6 py-[clamp(72px,10vw,120px)]">
-          {c.eyebrow && (
-            <p className="m-0 text-[12px] font-bold uppercase tracking-[0.16em] text-brand">{c.eyebrow}</p>
-          )}
-          {c.figure && (
-            <p className="gap-figure m-0 mt-4 font-display text-[clamp(96px,18vw,220px)] font-extrabold leading-[0.85] tracking-[-0.06em]">
-              <span className="hm">{c.figure}</span>
-            </p>
-          )}
-          {c.sentence && (
-            <p className="m-0 mt-6 max-w-[22ch] text-[clamp(22px,2.6vw,36px)] font-semibold leading-[1.15] tracking-[-0.03em] text-white/90">
-              {c.sentence}
-            </p>
-          )}
+        <div className="gap-view mx-auto grid max-w-page items-center gap-10 px-6 py-[clamp(56px,8vw,100px)] lg:grid-cols-[minmax(0,1.05fr)_minmax(300px,0.88fr)] lg:gap-x-16">
+          <div>
+            {c.eyebrow && (
+              <p className="m-0 text-[12px] font-bold uppercase tracking-[0.16em] text-brand">{c.eyebrow}</p>
+            )}
+            {c.figure && (
+              <p className="gap-figure m-0 mt-4 font-display text-[clamp(88px,14vw,200px)] font-extrabold leading-[0.85] tracking-[-0.06em]">
+                <span className="hm">{c.figure}</span>
+              </p>
+            )}
+            {c.sentence && (
+              <p className="m-0 mt-6 max-w-[22ch] text-[clamp(22px,2.4vw,34px)] font-semibold leading-[1.15] tracking-[-0.03em] text-white/90">
+                {c.sentence}
+              </p>
+            )}
+          </div>
+
+          <aside className="gap-aside" aria-label="Where that figure shows up">
+            <div className="gap-sheet">
+              <div className="flex items-center gap-2 border-b border-white/10 px-4 py-3">
+                <span className="flex gap-1.5" aria-hidden>
+                  <span className="h-2 w-2 rounded-full bg-white/25" />
+                  <span className="h-2 w-2 rounded-full bg-white/25" />
+                  <span className="h-2 w-2 rounded-full bg-[#ff7a18]" />
+                </span>
+                <span className="ml-1 font-mono text-[11px] tracking-[0.06em] text-white/45">app/client.tsx</span>
+                <span className="ml-auto text-[10px] font-extrabold uppercase tracking-[0.16em] text-brand">In the bundle</span>
+              </div>
+              <div className="px-4 py-5" aria-hidden>
+                <div className="h-2 w-[72%] rounded-full bg-white/10" />
+                <div className="mt-2.5 h-2 w-[48%] rounded-full bg-white/10" />
+                <div className="mt-3 flex items-center gap-2.5 rounded-xl bg-white/[0.05] px-3 py-3 ring-1 ring-[#ffdd2f]/70">
+                  <span className="font-mono text-[12.5px] font-bold text-[#ffdd2f]">API_KEY</span>
+                  <span className="font-mono text-[12.5px] text-white/35">=</span>
+                  <span className="font-mono text-[12.5px] text-white/85">&quot;sk_live_••••••••&quot;</span>
+                </div>
+                <div className="mt-3 h-2 w-[61%] rounded-full bg-white/10" />
+                <div className="mt-2.5 h-2 w-[34%] rounded-full bg-white/10" />
+              </div>
+              <div className="border-t border-white/10 px-5 py-5">
+                <p className="m-0 text-[11px] font-bold uppercase tracking-[0.16em] text-white/40">May 2025 study</p>
+                <p className="m-0 mt-2 font-display text-[clamp(40px,4.4vw,56px)] font-extrabold leading-none tracking-[-0.045em]">
+                  <span className="hm">170</span>
+                  <span className="mx-2 text-[0.42em] font-semibold text-white/35">of</span>
+                  1,645
+                </p>
+                <p className="m-0 mt-3 max-w-[34ch] text-[14.5px] leading-relaxed text-white/65">
+                  These had personal data in the open. The preview worked. The boundary did not.
+                </p>
+              </div>
+            </div>
+            <PromptFill
+              text="The prototype isn’t safe to launch"
+              className="mt-4 flex w-full items-center justify-between rounded-full border border-white/15 px-5 py-3.5 text-left text-[14px] font-bold text-white transition-colors hover:border-brand"
+            >
+              <span>This is the rescue</span>
+              <span className="text-brand">→</span>
+            </PromptFill>
+          </aside>
         </div>
       </ScrollScene>
     </section>

@@ -1984,6 +1984,17 @@ a:not([class]):hover {
   opacity: calc(0.4 + var(--p, 1) * 0.6);
   transform: translateY(calc((1 - var(--p, 1)) * 36px));
 }
+.gap-sheet {
+  border-radius: 28px;
+  background:
+    radial-gradient(120% 80% at 100% 0%, rgba(255, 122, 24, 0.16), transparent 46%),
+    #121212;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+.gap-pin[data-scrub] .gap-aside {
+  opacity: calc(0.2 + var(--p, 1) * 0.8);
+  transform: translateY(calc((1 - var(--p, 1)) * 28px));
+}
 
 /* Pillar rail. Phones scroll the row sideways. From the tablet breakpoint up,
    vertical scroll drives the row while the section is pinned. */
@@ -2029,7 +2040,8 @@ a:not([class]):hover {
   .lp-shell::before { transform: rotate(320deg); }
   .gap-pin[data-scrub] { height: auto; }
   .gap-pin[data-scrub] > .gap-view { position: static; min-height: 0; }
-  .gap-pin[data-scrub] .gap-figure { opacity: 1; transform: none; }
+  .gap-pin[data-scrub] .gap-figure,
+  .gap-pin[data-scrub] .gap-aside { opacity: 1; transform: none; }
   .pillar-pin[data-scrub] { height: auto; }
   .pillar-pin[data-scrub] > .pillar-view {
     position: static;
@@ -2321,9 +2333,9 @@ a:not([class]):hover {
   .v4-gap[data-scrub] .v4-beat-b { position: static; margin-top: 36px; }
 }
 
-/* ---- Light homepage clone (/home-clone) -----------------------------------
-   Same sections as the live homepage. Dark bands become white; the yellow
-   wash is the only new decoration. Rules stay under .home-light so / is unchanged.
+/* ---- Light homepage (/) ----------------------------------------------------
+   Dark bands become white; the yellow wash is the decoration. The previous
+   dark homepage is /home-clone and does not use .home-light.
    --------------------------------------------------------------------------- */
 .home-wash { display: none; }
 .home-light .home-wash { display: block; }
@@ -2353,28 +2365,28 @@ a:not([class]):hover {
   color: #0a0a0a;
 }
 
-.home-light section.bg-black,
+.home-light section.bg-black:not(.gap-band),
 .home-light #offer-care {
   background-color: #fff;
   color: #0a0a0a;
 }
 .home-light .lp-hero .text-white,
-.home-light section.bg-black .text-white,
+.home-light section.bg-black:not(.gap-band) .text-white,
 .home-light #offer-care .text-white { color: #0a0a0a; }
 .home-light .lp-hero .text-white\/90,
 .home-light .lp-hero .text-white\/80,
 .home-light .lp-hero .text-white\/70,
 .home-light .lp-hero .text-white\/55,
-.home-light section.bg-black .text-white\/90,
-.home-light section.bg-black .text-white\/70,
+.home-light section.bg-black:not(.gap-band) .text-white\/90,
+.home-light section.bg-black:not(.gap-band) .text-white\/70,
 .home-light #offer-care .text-white\/70,
 .home-light #offer-care .text-white\/45,
 .home-light #offer-care .text-white\/40 { color: rgba(10, 10, 10, 0.62); }
-.home-light section.bg-black .text-body-onDark { color: #4a4a4a; }
+.home-light section.bg-black:not(.gap-band) .text-body-onDark { color: #4a4a4a; }
 .home-light .lp-hero .border-white\/15,
 .home-light #offer-care .border-white\/10 { border-color: rgba(0, 0, 0, 0.1); }
 .home-light .lp-hero .text-brand,
-.home-light section.bg-black .text-brand,
+.home-light section.bg-black:not(.gap-band) .text-brand,
 .home-light #offer-care .text-brand { color: #B89612; }
 
 .home-light .stat-cell .font-display,

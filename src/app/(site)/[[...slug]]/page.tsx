@@ -17,6 +17,7 @@ import {
   storedSchema,
 } from '@/lib/schema';
 import { AccentTitle, SectionRenderer } from '@/components/sections/Sections';
+import { LightWash } from '@/components/home/LightWash';
 import { JsonLd } from '@/components/site/JsonLd';
 import { ImplementationsList } from '@/components/blog/ImplementationsList';
 import { InsightsList } from '@/components/blog/InsightsList';
@@ -210,9 +211,17 @@ export default async function CatchAllPage({ params }: { params: Params }) {
           // page without one (the legal pages) promotes its first section
           // instead, so the outline never opens at H2.
           const hasHero = r.page.sections.some((s) => s.type === 'hero' || s.type === 'launch_prompt');
-          return r.page.sections.map((s, i) => (
+          const sections = r.page.sections.map((s, i) => (
             <SectionRenderer key={s.id} section={s} primary={!hasHero && i === 0} />
           ));
+          // The live homepage is the light theme. The dark version lives at /home-clone.
+          if (!isHome) return sections;
+          return (
+            <div className="home-light relative bg-white">
+              <LightWash />
+              {sections}
+            </div>
+          );
         })()}
       </>
     );
