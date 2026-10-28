@@ -1,4 +1,4 @@
-/** Yellow wash used on the light homepage clone. Hidden until a `.home-light` ancestor is present. */
+/** Yellow wash on the live homepage. Hidden until a `.home-light` ancestor is present. */
 export function LightWash({ dormant = false }: { dormant?: boolean }) {
   return (
     <div
