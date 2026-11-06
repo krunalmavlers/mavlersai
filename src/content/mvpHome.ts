@@ -3,9 +3,9 @@
 
 export const BOOK_URL = 'https://calendly.com/mavlers-ai/30min';
 
-export const MVP_TITLE = 'MVP Development in 6 Weeks — $4,999 Fixed Price';
+export const MVP_TITLE = 'MVP Development in 6 Weeks — Starts from $4,999';
 export const MVP_DESCRIPTION =
-  'Strategy, design, development, launch and 12 months of hosting for a fixed $4,999. A dedicated PM and a working MVP in about 6 weeks.';
+  'Strategy, design, development, launch and 12 months of hosting, starting from $4,999 in about 6 weeks. A dedicated PM and a working MVP.';
 
 export const INCLUDED = [
   {
@@ -130,8 +130,8 @@ export const WORK = [
 
 export const FAQS: { q: string; a: string }[] = [
   {
-    q: 'What does $4,999 really include?',
-    a: 'Strategy, planning, design, development, launch, 15 business days of support and 12 months of hosting, all run by a dedicated PM. No hidden fees.',
+    q: 'What does a project starting from $4,999 in 6 weeks include?',
+    a: 'Strategy, planning, design, development, launch, 15 business days of support and 12 months of hosting, all run by a dedicated PM. The price starts from $4,999.',
   },
   {
     q: 'How long does it take?',
