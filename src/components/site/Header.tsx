@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { ChevronDown, Menu, X } from 'lucide-react';
 import type { MenuItem, SiteSettings } from '@/lib/types';
 import { Logo } from './Logo';
+import { BOOK_URL } from '@/content/mvpHome';
 
 // The menu is stored flat; `parent_id` turns an item into a dropdown group.
 function nest(items: MenuItem[]) {
@@ -24,15 +25,16 @@ export function Header({ settings, items }: { settings: SiteSettings; items: Men
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const darkLead = pathname === '/home-clone' || pathname === '/v1' || pathname === '/v3' || pathname === '/v4';
+  const offerHome = pathname === '/v5';
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    if (!darkLead) return;
+    if (!darkLead && !offerHome) return;
     const onScroll = () => setScrolled(window.scrollY > 12);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, [darkLead]);
+  }, [darkLead, offerHome]);
 
   // Dark first screens: the bar sits over them until the page moves
   // or the mobile menu opens.
@@ -131,12 +133,25 @@ export function Header({ settings, items }: { settings: SiteSettings; items: Men
           )}
         </nav>
 
-        <Link
-          href="/book-a-call"
-          className="hidden whitespace-nowrap rounded-full bg-brand px-[22px] py-[11px] text-[14.5px] font-bold text-black transition-colors hover:bg-brand-300 md:inline-block"
-        >
-          Book a Call
-        </Link>
+        {offerHome ? (
+          scrolled && (
+            <a
+              href={BOOK_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden whitespace-nowrap rounded-full bg-brand px-[22px] py-[11px] text-[14.5px] font-bold text-black transition-colors hover:bg-brand-300 sm:inline-flex"
+            >
+              Book a free call
+            </a>
+          )
+        ) : (
+          <Link
+            href="/book-a-call"
+            className="hidden whitespace-nowrap rounded-full bg-brand px-[22px] py-[11px] text-[14.5px] font-bold text-black transition-colors hover:bg-brand-300 md:inline-block"
+          >
+            Book a Call
+          </Link>
+        )}
 
         <button
           onClick={() => setOpen((v) => !v)}
@@ -181,13 +196,25 @@ export function Header({ settings, items }: { settings: SiteSettings; items: Men
                 ))}
               </div>
             ))}
-            <Link
-              href="/book-a-call"
-              onClick={() => setOpen(false)}
-              className="mt-2 rounded-full bg-brand px-5 py-3 text-center text-[15px] font-bold text-black"
-            >
-              Book a Call
-            </Link>
+            {offerHome ? (
+              <a
+                href={BOOK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                className="mt-2 rounded-full bg-brand px-5 py-3 text-center text-[15px] font-bold text-black"
+              >
+                Book a free call
+              </a>
+            ) : (
+              <Link
+                href="/book-a-call"
+                onClick={() => setOpen(false)}
+                className="mt-2 rounded-full bg-brand px-5 py-3 text-center text-[15px] font-bold text-black"
+              >
+                Book a Call
+              </Link>
+            )}
           </nav>
         </div>
       )}

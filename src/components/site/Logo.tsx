@@ -24,7 +24,7 @@ export function Logo({
   const size = height * 0.92;
 
   return (
-    <Link href={href} aria-label={settings.site_name} style={{ display: 'inline-flex', alignItems: 'baseline' }}>
+    <Link href={href} aria-label={settings.site_name} className="inline-flex shrink-0 items-baseline">
       {settings.logo_url ? (
         // The brand logo asset is white-on-transparent. On light surfaces we
         // invert it to solid black (brightness(0)); on dark it stays white —

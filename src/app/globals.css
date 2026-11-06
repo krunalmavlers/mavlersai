@@ -2051,6 +2051,34 @@ a:not([class]):hover {
   .pillar-pin[data-scrub] .pillar-track { transform: none; }
 }
 
+/* Idea → sketch → live, inside the /v5 laptop mock. */
+.mvp-beat {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  animation: mvpBeat 12s infinite;
+}
+.mvp-beat:nth-child(2) { animation-delay: 4s; }
+.mvp-beat:nth-child(3) { animation-delay: 8s; }
+@keyframes mvpBeat {
+  0%, 30% { opacity: 1; }
+  36%, 100% { opacity: 0; }
+}
+.mvp-phone { animation: mvpFloat 5.5s ease-in-out infinite; }
+@keyframes mvpFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+html:has(.mvp-home) { scroll-behavior: smooth; }
+.mvp-home > section { scroll-margin-top: var(--header-h); }
+
+@media (prefers-reduced-motion: reduce) {
+  .mvp-beat { animation: none; opacity: 0; }
+  .mvp-beat:last-child { opacity: 1; }
+  .mvp-phone { animation: none; }
+  html:has(.mvp-home) { scroll-behavior: auto; }
+}
+
 /* ---- Homepage studies (/v1, /v2, /v3) ------------------------------------ */
 .v-prompt { scroll-margin-top: calc(var(--header-h) + 16px); }
 
