@@ -248,9 +248,10 @@ const STUDIES = [
   { href: '/v2', id: 'v2', label: '02 Field' },
   { href: '/v3', id: 'v3', label: '03 Instrument' },
   { href: '/v4', id: 'v4', label: '04 Line' },
+  { href: '/v5', id: 'v5', label: '05 MVP' },
 ] as const;
 
-export function VariantNav({ current }: { current: 'v1' | 'v2' | 'v3' | 'v4' }) {
+export function VariantNav({ current }: { current: 'v1' | 'v2' | 'v3' | 'v4' | 'v5' }) {
   const pathname = usePathname();
   return (
     <nav
