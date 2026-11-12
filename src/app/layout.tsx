@@ -4,6 +4,7 @@ import './globals.css';
 import { getSettings } from '@/lib/queries';
 import { Scripts } from '@/components/site/Scripts';
 import { JsonLd } from '@/components/site/JsonLd';
+import { RouteTransition } from '@/components/site/RouteTransition';
 import { siteUrl } from '@/lib/seo';
 import { organizationSchema, websiteSchema } from '@/lib/schema';
 
@@ -33,6 +34,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" className={montserrat.variable}>
       <body>
+        <RouteTransition />
         <Scripts settings={settings} position="body-start" />
         {children}
         <JsonLd data={[organizationSchema(settings), websiteSchema(settings)]} />

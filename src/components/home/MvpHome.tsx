@@ -111,10 +111,10 @@ export function MvpHome({ email }: { email?: string }) {
           <div>
             <p className="text-[12px] font-bold uppercase tracking-[0.18em] text-brand-ink">MVP development · 6 weeks</p>
             <h1 className="mt-3 max-w-[12em] text-[clamp(36px,4.4vw,60px)] font-extrabold leading-[0.98] tracking-[-0.04em]">
-              Your app, live in 6 weeks. Starts from <span className="hm">$4,999.</span>
+              Turn your idea into a launched app <br /> in 6 weeks, <br /> from <span className="hm">$4,999.</span>
             </h1>
             <p className="mt-4 max-w-[46ch] text-[16px] leading-relaxed text-body-muted">
-              Strategy, design, development, launch and a full year of hosting, all run by a dedicated PM who gets your idea from day one.
+              Strategy, design, development, launch and a full year of hosting*, all run by a dedicated PM who gets your idea from day one.
             </p>
             <div className="mt-5 flex flex-wrap items-center gap-2.5">
               <Book />
@@ -136,14 +136,7 @@ export function MvpHome({ email }: { email?: string }) {
           </div>
           <ProductMock />
         </div>
-        <div id="trust" className="scroll-mt-[var(--header-h)] border-t border-black/10 bg-[#F6F5F1]">
-          <div className={`${frame} flex flex-col gap-2 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:gap-8`}>
-          <p className="text-[13.5px] font-semibold text-body-soft">
-            Built by Mavlers, part of Uplers. Trusted by agencies and brands worldwide.
-          </p>
-          <p className="shrink-0 text-[13px] font-bold tracking-[-0.01em]">{STACK.join('  ·  ')}</p>
-          </div>
-        </div>
+         
       </section>
 
       <section id="problem">
@@ -399,27 +392,7 @@ export function MvpHome({ email }: { email?: string }) {
           </div>
           <Book dark>Book a free call</Book>
         </div>
-        <div className={`${frame} flex flex-col gap-4 border-t border-black/15 py-5 sm:flex-row sm:items-end sm:justify-between`}>
-          <div>
-            <p className="text-[14px] font-bold">Mavlers.ai — complete MVPs, from idea to launch.</p>
-            <p className="mt-1 text-[13px] text-black/70">
-              {email ? (
-                <a href={`mailto:${email}`} className="font-semibold text-black">
-                  {email}
-                </a>
-              ) : null}
-              {email ? ' · ' : null}
-              A Mavlers brand, part of Uplers
-            </p>
-          </div>
-          <nav aria-label="Page" className="flex flex-wrap gap-x-5 gap-y-1 text-[13.5px] font-semibold">
-            <a href="#included">What&apos;s included</a>
-            <a href="#pricing">Pricing</a>
-            <a href="#faq">FAQ</a>
-            <Link href="/book-a-call">Contact</Link>
-            <Link href="/privacy-policy">Privacy</Link>
-          </nav>
-        </div>
+        
       </section>
     </div>
   );
