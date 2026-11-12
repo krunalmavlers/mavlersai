@@ -299,27 +299,27 @@ export function MvpHome({ email }: { email?: string }) {
         </div>
       </section>
 
-      <section id="scope" className="border-t border-white/15 bg-black text-white">
+      <section id="scope" className="bg-white text-black">
         <div className={`${frame} flex flex-col gap-8 py-12 lg:flex-row lg:items-start lg:gap-16 lg:py-14`}>
-          <h2 className="text-[clamp(32px,3.4vw,46px)] font-extrabold leading-[1.05] tracking-[-0.03em] text-white lg:w-[30%] lg:shrink-0">
+          <h2 className="text-[clamp(32px,3.4vw,46px)] font-extrabold leading-[1.05] tracking-[-0.03em] lg:w-[30%] lg:shrink-0">
             What fits in an MVP.
           </h2>
           <div className="grid flex-1 gap-8 sm:grid-cols-2">
             <div>
-              <h3 className="text-[12px] font-bold uppercase tracking-[0.16em] text-brand">Included</h3>
+              <h3 className="text-[12px] font-bold uppercase tracking-[0.16em] text-brand-ink">Included</h3>
               <ul className="mt-3">
                 {SCOPE_IN.map((item) => (
-                  <li key={item} className="border-t border-white/15 py-2.5 text-[15px] leading-snug">
+                  <li key={item} className="border-t border-black/10 py-2.5 text-[15px] leading-snug">
                     {item}
                   </li>
                 ))}
               </ul>
             </div>
             <div>
-              <h3 className="text-[12px] font-bold uppercase tracking-[0.16em] text-brand">Available as add-ons</h3>
+              <h3 className="text-[12px] font-bold uppercase tracking-[0.16em] text-brand-ink">Available as add-ons</h3>
               <ul className="mt-3">
                 {SCOPE_ADD.map((item) => (
-                  <li key={item} className="border-t border-white/15 py-2.5 text-[15px] leading-snug text-white/80">
+                  <li key={item} className="border-t border-black/10 py-2.5 text-[15px] leading-snug text-body-muted">
                     {item}
                   </li>
                 ))}
@@ -329,12 +329,12 @@ export function MvpHome({ email }: { email?: string }) {
         </div>
       </section>
 
-      <section id="hosting" className="border-t border-white/15 bg-black text-white">
+      <section id="hosting" className="border-t border-black/10 bg-[#F6F5F1] text-black">
         <div className={`${frame} flex flex-col-reverse gap-6 py-12 lg:flex-row lg:items-center lg:justify-between lg:gap-16 lg:py-14`}>
-          <p className="max-w-[58ch] text-[16px] leading-relaxed text-white/75">
+          <p className="max-w-[58ch] text-[16px] leading-relaxed text-body-muted">
             We set up, monitor and pay for Vercel and Supabase hosting for 12 months from launch. That covers secure, fast global hosting, a managed database, daily backups and room for up to 100,000 monthly active users. After the first year, keep it with us on a care plan or move it to your own account. It&apos;s your call.
           </p>
-          <h2 className="text-[clamp(32px,3.4vw,46px)] font-extrabold leading-[1.05] tracking-[-0.03em] text-white lg:max-w-[9em] lg:text-right">
+          <h2 className="text-[clamp(32px,3.4vw,46px)] font-extrabold leading-[1.05] tracking-[-0.03em] lg:max-w-[9em] lg:text-right">
             Your first year of hosting is on us.
           </h2>
         </div>

@@ -2686,7 +2686,7 @@ html:has(.v6-home) { scroll-behavior: smooth; }
     margin-top: -14px;
     margin-left: -14px;
     border-radius: 999px;
-    background: #000;
+    background: #f6f5f1;
   }
   .v6-notch.bottom-0 { margin-top: 0; margin-bottom: -14px; }
 }
