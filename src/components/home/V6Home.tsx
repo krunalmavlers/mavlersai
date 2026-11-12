@@ -140,7 +140,7 @@ function LaunchStage() {
         </div>
       </div>
       <p className="v6-chip v6-chip-a absolute -left-2 top-14 hidden rounded-2xl bg-brand px-3 py-2 text-[12px] font-extrabold text-black shadow-[0_12px_30px_rgba(0,0,0,0.28)] sm:block">
-        From $4,999
+        From $5,000
       </p>
       <p className="v6-chip v6-chip-b absolute -right-1 bottom-14 hidden rounded-2xl bg-white px-3 py-2 text-[12px] font-extrabold text-black shadow-[0_12px_30px_rgba(0,0,0,0.28)] sm:block">
         Preview every week
@@ -180,7 +180,7 @@ function MobileDock() {
   return (
     <div className="v6-dock fixed inset-x-3 bottom-3 z-40 flex items-center justify-between gap-3 rounded-full bg-black py-1.5 pl-4 pr-1.5 text-white shadow-[0_16px_40px_rgba(0,0,0,0.35)] lg:hidden">
       <p className="min-w-0 text-[13px] font-bold leading-tight">
-        From $4,999
+        From $5,000
         <span className="mt-0.5 block text-[11px] font-semibold text-white/55">Live in about 6 weeks</span>
       </p>
       <a
@@ -244,7 +244,7 @@ export function V6Home() {
             </h1>
             <p className="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
               <span className="text-[13px] font-bold uppercase tracking-[0.16em] text-black/45">Starts from</span>
-              <span className="hm text-[clamp(40px,4.5vw,56px)] font-extrabold leading-none tracking-[-0.045em]">$4,999</span>
+              <span className="price-hot text-[clamp(40px,4.5vw,56px)] font-extrabold leading-none tracking-[-0.045em]">$5,000</span>
             </p>
             <p className="mt-4 max-w-[46ch] text-[16.5px] leading-relaxed text-body-muted">
               One team plans it, designs it, builds it and launches it. A Next.js app, a project manager who stays on it, and twelve months of hosting. The code is yours from day one.
@@ -262,7 +262,7 @@ export function V6Home() {
               Free, 30 minutes. You leave with a yes, a no, or a tighter scope.
             </p>
             <ul className="mt-7 flex flex-col gap-2 text-[14px] font-semibold sm:flex-row sm:flex-wrap sm:gap-x-5">
-              {['Starts from $4,999', 'Weekly preview links', 'You own the code'].map((item) => (
+              {['Starts from $5,000', 'Weekly preview links', 'You own the code'].map((item) => (
                 <li key={item} className="flex items-center gap-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-brand" />
                   {item}
@@ -355,7 +355,7 @@ export function V6Home() {
           </div>
           <dl className="mt-12 grid border-t border-black/10 sm:grid-cols-3">
             {[
-              ['From $4,999', 'Milestone billing. The number is the floor, not a surprise.'],
+              ['From $5,000', 'Milestone billing. The number is the floor, not a surprise.'],
               ['About 6 weeks', 'Kickoff to a product on your domain.'],
               ['Every week', 'A preview link, so you are never waiting on a reveal.'],
             ].map(([title, body], i) => (
@@ -512,7 +512,7 @@ export function V6Home() {
                   <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-black/45">Starts from</p>
                   <span className="v6-stamp">Cleared</span>
                 </div>
-                <p className="mt-3 text-[clamp(52px,6vw,76px)] font-extrabold leading-none tracking-[-0.05em]">$4,999</p>
+                <p className="mt-3 text-[clamp(52px,6vw,76px)] font-extrabold leading-none tracking-[-0.05em]">$5,000</p>
                 <p className="mt-3 text-[15px] font-bold">About 6 weeks</p>
                 <p className="text-[15px] font-semibold text-black/60">12 months of hosting included</p>
               </div>
@@ -645,7 +645,7 @@ export function V6Home() {
             </Rise>
             <Rise delay={80}>
               <p className="max-w-[40ch] text-[16px] leading-relaxed text-black/75">
-                Starts from $4,999, live in about six weeks. Thirty minutes on a call, and you leave knowing whether it fits, what it will take, and the week it could go live.
+                Starts from $5,000, live in about six weeks. Thirty minutes on a call, and you leave knowing whether it fits, what it will take, and the week it could go live.
               </p>
             </Rise>
           </div>
