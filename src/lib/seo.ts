@@ -43,6 +43,36 @@ export function siteOrigin(): string {
   return 'http://localhost:3000';
 }
 
+/**
+ * Turn a menu href into a site path. External, mail, and phone links are
+ * dropped. The homepage and these paths are the only URLs allowed to be indexed.
+ */
+export function menuPath(url: string): string | null {
+  const raw = (url || '').trim();
+  if (!raw || raw.startsWith('#') || /^(mailto|tel):/i.test(raw)) return null;
+  let pathname = raw;
+  if (/^https?:\/\//i.test(raw)) {
+    try {
+      const parsed = new URL(raw);
+      const host = parsed.hostname.replace(/^www\./, '');
+      const siteHost = new URL(siteOrigin()).hostname.replace(/^www\./, '');
+      if (host !== siteHost && host !== 'mavlers.ai') return null;
+      pathname = parsed.pathname;
+    } catch {
+      return null;
+    }
+  }
+  pathname = pathname.split('?')[0].split('#')[0];
+  if (!pathname.startsWith('/')) pathname = `/${pathname}`;
+  if (pathname.length > 1 && pathname.endsWith('/')) pathname = pathname.slice(0, -1);
+  return pathname || '/';
+}
+
+/** Home and menu destinations stay indexable. Everything else is hidden. */
+export function indexRobots(pathname: string, allowed: Set<string>): 'index,follow' | 'noindex,nofollow' {
+  return allowed.has(pathname) ? 'index,follow' : 'noindex,nofollow';
+}
+
 export function siteUrl(path = ''): string {
   const base = siteOrigin();
   const clean = path.startsWith('/') ? path : `/${path}`;
