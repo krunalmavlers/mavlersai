@@ -2,9 +2,9 @@
 
 export { BOOK_URL } from '@/content/mvpHome';
 
-export const V6_TITLE = 'Ship an MVP in 6 Weeks — Starts from $4,999';
+export const V6_TITLE = 'Ship an MVP in 6 Weeks — Starts from $5,000';
 export const V6_DESCRIPTION =
-  'One team takes your idea from a sentence to a launched Next.js product in about 6 weeks, starting from $4,999, with 12 months of hosting included.';
+  'One team takes your idea from a sentence to a launched Next.js product in about 6 weeks, starting from $5,000, with 12 months of hosting included.';
 
 export const TICKER = [
   'Strategy',
@@ -13,7 +13,7 @@ export const TICKER = [
   'Weekly previews',
   'You own the code',
   '6 weeks',
-  'From $4,999',
+  'From $5,000',
   '12 months of hosting',
   'Dedicated PM',
 ] as const;
@@ -39,7 +39,7 @@ export const FAST = [
     body: 'A single person learns the idea, writes the plan with you, and is your only point of contact.',
   },
   {
-    title: 'Starts from $4,999.',
+    title: 'Starts from $5,000.',
     body: 'The scope is signed before design starts. You are not buying a blank estimate.',
   },
   {
@@ -185,8 +185,8 @@ export const CALL_STEPS = [
 
 export const FAQS: { q: string; a: string }[] = [
   {
-    q: 'What does a project starting from $4,999 actually include?',
-    a: 'Strategy, planning, design, development, launch, 15 business days of support, and 12 months of hosting, run by a dedicated PM. The price starts from $4,999.',
+    q: 'What does a project starting from $5,000 actually include?',
+    a: 'Strategy, planning, design, development, launch, 15 business days of support, and 12 months of hosting, run by a dedicated PM. The price starts from $5,000.',
   },
   {
     q: 'Is six weeks a real timeline?',

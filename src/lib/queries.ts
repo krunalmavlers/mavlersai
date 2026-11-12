@@ -1,4 +1,5 @@
 import { cache } from 'react';
+import { menuPath } from '@/lib/seo';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import type {
   Author,
@@ -52,6 +53,21 @@ export const getMenu = cache(async (location: MenuItem['location']): Promise<Men
     .eq('is_visible', true)
     .order('sort_order', { ascending: true });
   return (data ?? []) as MenuItem[];
+});
+
+/** Paths search engines may index: the homepage plus every visible menu link. */
+export const getIndexablePaths = cache(async (): Promise<Set<string>> => {
+  const [header, footer, legal] = await Promise.all([
+    getMenu('header'),
+    getMenu('footer'),
+    getMenu('footer_legal'),
+  ]);
+  const paths = new Set<string>(['/']);
+  for (const item of [...header, ...footer, ...legal]) {
+    const path = menuPath(item.url);
+    if (path) paths.add(path);
+  }
+  return paths;
 });
 
 export const getPageBySlug = cache(

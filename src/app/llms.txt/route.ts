@@ -1,5 +1,5 @@
 import { createSupabaseServerClient } from '@/lib/supabase/server';
-import { getSettings } from '@/lib/queries';
+import { getIndexablePaths, getSettings } from '@/lib/queries';
 import { siteUrl } from '@/lib/seo';
 
 // Regenerate on every request so new content appears without a redeploy.
@@ -7,11 +7,12 @@ export const dynamic = 'force-dynamic';
 
 /**
  * /llms.txt — an LLM-friendly map of the site (see https://llmstxt.org).
- * Auto-generated from the CMS: brand summary + links to every published page,
- * insight and implementation. All AI models are explicitly welcome to use it.
+ * Lists the homepage and the pages linked from the menus. Other routes are
+ * noindex and are left out.
  */
 export async function GET() {
   const settings = await getSettings();
+  const allowed = await getIndexablePaths();
   const db = createSupabaseServerClient();
   const implBase = settings.url_config?.implementations_base || 'implementations';
   const insBase = settings.url_config?.insights_base || 'insights';
@@ -29,15 +30,15 @@ export async function GET() {
     `- [${title}](${url})${note ? `: ${note}` : ''}`;
 
   const corePages = (pages || [])
-    .filter((p) => p.slug !== '')
+    .filter((p) => p.slug && allowed.has(`/${p.slug}`))
     .map((p) => line(p.title, siteUrl(`/${p.slug}`), p.meta_description || undefined));
 
   const insights = (posts || [])
-    .filter((p) => p.content_type === 'insight')
+    .filter((p) => p.content_type === 'insight' && allowed.has(`/${insBase}/${p.slug}`))
     .map((p) => line(p.title, siteUrl(`/${insBase}/${p.slug}`), p.excerpt || undefined));
 
   const implementations = (posts || [])
-    .filter((p) => p.content_type === 'implementation')
+    .filter((p) => p.content_type === 'implementation' && allowed.has(`/${implBase}/${p.slug}`))
     .map((p) => line(p.title, siteUrl(`/${implBase}/${p.slug}`), p.excerpt || undefined));
 
   const body = [

@@ -5,9 +5,10 @@ import {
   getPageBySlug,
   getPosts,
   getPostBySlug,
+  getIndexablePaths,
 } from '@/lib/queries';
 import type { Page, PageSection, Post } from '@/lib/types';
-import { buildMetadata } from '@/lib/seo';
+import { buildMetadata, indexRobots } from '@/lib/seo';
 import {
   articleSchema,
   breadcrumbSchema,
@@ -78,7 +79,9 @@ async function resolve(slugArr: string[] | undefined): Promise<Resolved> {
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const settings = await getSettings();
+  const allowed = await getIndexablePaths();
   const r = await resolve(params.slug);
+  const robots = (pathname: string) => indexRobots(pathname, allowed);
   switch (r.kind) {
     case 'offer-home':
       return buildMetadata(
@@ -86,6 +89,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
           title: V6_TITLE,
           description: V6_DESCRIPTION,
           pathname: '/',
+          robots: robots('/'),
         },
         settings,
       );
@@ -96,9 +100,9 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
           description: r.page.meta_description,
           ogImage: r.page.og_image,
           canonical: r.page.canonical_url,
-          robots: r.page.robots,
           keywords: r.page.meta_keywords,
           pathname: r.page.slug ? `/${r.page.slug}` : '/',
+          robots: robots(r.page.slug ? `/${r.page.slug}` : '/'),
         },
         settings,
       );
@@ -110,8 +114,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
           description: r.post.meta_description || r.post.excerpt,
           ogImage: r.post.og_image || r.post.cover_image,
           canonical: r.post.canonical_url,
-          robots: r.post.robots,
           pathname: `${r.base}/${r.post.slug}`,
+          robots: robots(`${r.base}/${r.post.slug}`),
           type: 'article',
           imageAlt: r.post.title,
           article: {
@@ -131,6 +135,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
           title: 'AI Use Cases',
           description: 'AI use cases across industries and the digital lifecycle.',
           pathname: r.base,
+          robots: robots(r.base),
         },
         settings,
       );
@@ -140,11 +145,12 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
           title: 'Insights',
           description: 'Practical AI thinking for agencies and brands.',
           pathname: r.base,
+          robots: robots(r.base),
         },
         settings,
       );
     default:
-      return buildMetadata({ title: 'Not found', robots: 'noindex,follow' }, settings);
+      return buildMetadata({ title: 'Not found', robots: 'noindex,nofollow' }, settings);
   }
 }
 

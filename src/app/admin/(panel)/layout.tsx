@@ -3,7 +3,7 @@ import { getCurrentAdmin } from '@/lib/auth';
 import { getSettings } from '@/lib/queries';
 import { Sidebar } from '@/components/admin/Sidebar';
 
-export const metadata = { title: 'Admin', robots: { index: false } };
+export const metadata = { title: 'Admin', robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 export default async function PanelLayout({ children }: { children: React.ReactNode }) {

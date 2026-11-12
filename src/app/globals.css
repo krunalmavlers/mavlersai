@@ -743,6 +743,19 @@ a:not([class]):hover {
    transparent for it to show through; `background-clip: text` is guarded so a
    browser without it keeps solid brand yellow instead of invisible text.
    `clone` gives each line its own full sweep if the span ever wraps. */
+/* Hero price. A clipped yellow gradient disappears into the cream wash, so the
+   number stays black and the brand yellow sits behind it as a marker. */
+.price-hot {
+  color: #111;
+  background-image: linear-gradient(#ffdd2f, #ffdd2f);
+  background-repeat: no-repeat;
+  background-size: 100% 0.42em;
+  background-position: 0 78%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding: 0 0.08em;
+}
+
 .hm {
   color: #FFDD2F;
   -webkit-box-decoration-break: clone;

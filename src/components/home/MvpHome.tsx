@@ -111,7 +111,7 @@ export function MvpHome({ email }: { email?: string }) {
           <div>
             <p className="text-[12px] font-bold uppercase tracking-[0.18em] text-brand-ink">MVP development · 6 weeks</p>
             <h1 className="mt-3 max-w-[12em] text-[clamp(36px,4.4vw,60px)] font-extrabold leading-[0.98] tracking-[-0.04em]">
-              Turn your idea into a launched app <br /> in 6 weeks, <br /> from <span className="hm">$4,999.</span>
+              Turn your idea into a launched app <br /> in 6 weeks, <br /> from <span className="price-hot">$5,000.</span>
             </h1>
             <p className="mt-4 max-w-[46ch] text-[16px] leading-relaxed text-body-muted">
               Strategy, design, development, launch and a full year of hosting*, all run by a dedicated PM who gets your idea from day one.
@@ -126,7 +126,7 @@ export function MvpHome({ email }: { email?: string }) {
               </a>
             </div>
             <ul className="mt-5 flex flex-col gap-1.5 text-[14px] font-semibold sm:flex-row sm:flex-wrap sm:gap-x-5">
-              {['Starts from $4,999 · 6 weeks', '12 months of hosting included', 'You own the code'].map((item) => (
+              {['Starts from $5,000 · 6 weeks', '12 months of hosting included', 'You own the code'].map((item) => (
                 <li key={item} className="flex items-center gap-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-brand" />
                   {item}
@@ -173,7 +173,7 @@ export function MvpHome({ email }: { email?: string }) {
         <div className={`${frame} flex flex-col gap-10 py-16 lg:flex-row lg:items-stretch lg:gap-0 lg:py-20`}>
           <div className="flex flex-col justify-between lg:w-[44%] lg:pr-14">
             <h2 className="max-w-[10em] text-[clamp(36px,4vw,58px)] font-extrabold leading-[0.98] tracking-[-0.035em]">
-              One team. Starts from $4,999. Live in 6 weeks.
+              One team. Starts from $5,000. Live in 6 weeks.
             </h2>
             <div className="mt-8">
               <Book />
@@ -181,10 +181,10 @@ export function MvpHome({ email }: { email?: string }) {
           </div>
           <div className="flex flex-1 flex-col justify-between lg:border-l lg:border-black/10 lg:pl-14">
             <p className="text-[17px] leading-relaxed text-body-muted">
-              Mavlers MVP Launch takes your idea from first call to a working product your users can sign up for, in about 6 weeks, starting from $4,999. A dedicated PM researches your market, plans the build with you and keeps everything on track. You get weekly preview links, so you always see where things stand.
+              Mavlers MVP Launch takes your idea from first call to a working product your users can sign up for, in about 6 weeks, starting from $5,000. A dedicated PM researches your market, plans the build with you and keeps everything on track. You get weekly preview links, so you always see where things stand.
             </p>
             <ul className="mt-8 grid gap-4 border-t border-black/10 pt-6 sm:grid-cols-3">
-              {['Starts from $4,999', '6 weeks', 'Weekly preview links'].map((item) => (
+              {['Starts from $5,000', '6 weeks', 'Weekly preview links'].map((item) => (
                 <li key={item} className={`text-[17px] font-extrabold tracking-[-0.03em] ${item.includes('$') ? 'hm' : ''}`}>
                   {item}
                 </li>
@@ -278,7 +278,7 @@ export function MvpHome({ email }: { email?: string }) {
             <h2 className="mt-2 text-[clamp(32px,3.4vw,44px)] font-extrabold leading-[1.05] tracking-[-0.03em] text-white">
               Starts from
             </h2>
-            <p className="hm mt-3 text-[clamp(56px,6vw,76px)] font-extrabold leading-none tracking-[-0.045em]">$4,999</p>
+            <p className="price-hot mt-3 text-[clamp(56px,6vw,76px)] font-extrabold leading-none tracking-[-0.045em]">$5,000</p>
             <p className="mt-2 text-[15px] font-semibold text-white">6 weeks</p>
             <p className="text-[15px] font-semibold">Includes 12 months of hosting</p>
             <div className="mt-6 lg:flex lg:justify-end">

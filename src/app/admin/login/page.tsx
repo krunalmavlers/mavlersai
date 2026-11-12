@@ -4,7 +4,7 @@ import { getSettings } from '@/lib/queries';
 import { LoginForm } from './LoginForm';
 import { logoImageProps } from '@/lib/utils';
 
-export const metadata = { title: 'Admin Login', robots: { index: false } };
+export const metadata = { title: 'Admin Login', robots: { index: false, follow: false } };
 
 export default async function LoginPage() {
   const admin = await getCurrentAdmin();
