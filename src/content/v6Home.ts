@@ -1,4 +1,4 @@
-/** Copy for the /v6 MVP offer page. Same offer as /v5, written to be read faster. */
+/** Copy for the live homepage. Same offer as /v5, written to be read faster. */
 
 export { BOOK_URL } from '@/content/mvpHome';
 

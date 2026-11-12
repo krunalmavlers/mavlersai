@@ -16,9 +16,10 @@ import {
   faqSchema,
   storedSchema,
 } from '@/lib/schema';
+import { V6Home } from '@/components/home/V6Home';
 import { AccentTitle, SectionRenderer } from '@/components/sections/Sections';
-import { LightWash } from '@/components/home/LightWash';
 import { JsonLd } from '@/components/site/JsonLd';
+import { FAQS, V6_DESCRIPTION, V6_TITLE } from '@/content/v6Home';
 import { ImplementationsList } from '@/components/blog/ImplementationsList';
 import { InsightsList } from '@/components/blog/InsightsList';
 import { FeaturedInsights, pickFeatured } from '@/components/blog/FeaturedInsights';
@@ -28,6 +29,7 @@ import { InsightDetail } from '@/components/blog/InsightDetail';
 type Params = { slug?: string[] };
 
 type Resolved =
+  | { kind: 'offer-home' }
   | { kind: 'page'; page: Page & { sections: PageSection[] } }
   | { kind: 'impl-list'; base: string }
   | { kind: 'impl-detail'; base: string; post: Post; related: Post | null }
@@ -41,11 +43,8 @@ async function resolve(slugArr: string[] | undefined): Promise<Resolved> {
   const insBase = settings.url_config?.insights_base || 'insights';
   const parts = slugArr || [];
 
-  // Home
-  if (parts.length === 0) {
-    const page = await getPageBySlug('');
-    return page ? { kind: 'page', page } : { kind: '404' };
-  }
+  // Home is the MVP offer. The previous marketing homepage lives at /v6.
+  if (parts.length === 0) return { kind: 'offer-home' };
 
   // Implementations
   if (parts[0] === implBase) {
@@ -81,6 +80,15 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const settings = await getSettings();
   const r = await resolve(params.slug);
   switch (r.kind) {
+    case 'offer-home':
+      return buildMetadata(
+        {
+          title: V6_TITLE,
+          description: V6_DESCRIPTION,
+          pathname: '/',
+        },
+        settings,
+      );
     case 'page':
       return buildMetadata(
         {
@@ -191,6 +199,15 @@ export default async function CatchAllPage({ params }: { params: Params }) {
 
   if (r.kind === '404') notFound();
 
+  if (r.kind === 'offer-home') {
+    return (
+      <>
+        <JsonLd data={faqSchema(FAQS)} />
+        <V6Home />
+      </>
+    );
+  }
+
   if (r.kind === 'page') {
     const isHome = !r.page.slug;
     const schemas = [
@@ -211,17 +228,9 @@ export default async function CatchAllPage({ params }: { params: Params }) {
           // page without one (the legal pages) promotes its first section
           // instead, so the outline never opens at H2.
           const hasHero = r.page.sections.some((s) => s.type === 'hero' || s.type === 'launch_prompt');
-          const sections = r.page.sections.map((s, i) => (
+          return r.page.sections.map((s, i) => (
             <SectionRenderer key={s.id} section={s} primary={!hasHero && i === 0} />
           ));
-          // The live homepage is the light theme. The dark version lives at /home-clone.
-          if (!isHome) return sections;
-          return (
-            <div className="home-light relative bg-white">
-              <LightWash />
-              {sections}
-            </div>
-          );
         })()}
       </>
     );
