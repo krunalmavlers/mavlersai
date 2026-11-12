@@ -1,17 +1,19 @@
 import type { Metadata } from 'next';
-import { V6Home } from '@/components/home/V6Home';
+import { notFound } from 'next/navigation';
+import { LightWash } from '@/components/home/LightWash';
+import { SectionRenderer } from '@/components/sections/Sections';
 import { JsonLd } from '@/components/site/JsonLd';
-import { FAQS, V6_DESCRIPTION, V6_TITLE } from '@/content/v6Home';
-import { getSettings } from '@/lib/queries';
-import { faqSchema } from '@/lib/schema';
+import { getPageBySlug, getSettings } from '@/lib/queries';
+import { faqFromSections, faqSchema, storedSchema } from '@/lib/schema';
 import { buildMetadata } from '@/lib/seo';
 
+/** The previous marketing homepage, kept at /v6 after the MVP offer took /. */
 export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSettings();
+  const [settings, page] = await Promise.all([getSettings(), getPageBySlug('')]);
   return buildMetadata(
     {
-      title: V6_TITLE,
-      description: V6_DESCRIPTION,
+      title: page?.seo_title || page?.title || 'Home',
+      description: page?.meta_description,
       pathname: '/v6',
       robots: 'noindex,nofollow',
     },
@@ -19,11 +21,21 @@ export async function generateMetadata(): Promise<Metadata> {
   );
 }
 
-export default async function V6Page() {
+export default async function PreviousHomePage() {
+  const page = await getPageBySlug('');
+  if (!page) notFound();
+  const hasHero = page.sections.some((s) => s.type === 'hero' || s.type === 'launch_prompt');
+  const sections = page.sections.map((section, i) => (
+    <SectionRenderer key={section.id} section={section} primary={!hasHero && i === 0} />
+  ));
+
   return (
     <>
-      <JsonLd data={faqSchema(FAQS)} />
-      <V6Home />
+      <JsonLd data={[storedSchema(page), faqSchema(faqFromSections(page.sections))].filter(Boolean)} />
+      <div className="home-light relative bg-white">
+        <LightWash />
+        {sections}
+      </div>
     </>
   );
 }

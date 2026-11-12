@@ -25,7 +25,7 @@ export function Header({ settings, items }: { settings: SiteSettings; items: Men
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const darkLead = pathname === '/home-clone' || pathname === '/v1' || pathname === '/v3' || pathname === '/v4';
-  const offerHome = pathname === '/v5' || pathname === '/v6';
+  const offerHome = pathname === '/' || pathname === '/v5';
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
