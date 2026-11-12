@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { ArrowUpRight, Code2, Compass, LifeBuoy, ListChecks, PenLine, Rocket, Server } from 'lucide-react';
+import { LightWash } from './LightWash';
 import {
   AUDIENCE,
   BOOK_URL,
@@ -228,38 +229,36 @@ export function V6Home() {
 
   return (
     <div ref={rootRef} className="v6-home bg-white text-black">
-      <section id="hero" className="relative -mt-[var(--header-h)] overflow-hidden bg-black text-white lg:min-h-[100svh]">
-        <div className="v6-grid pointer-events-none absolute inset-0" aria-hidden />
-        <div className="pointer-events-none absolute -left-24 top-20 h-72 w-72 rounded-full bg-brand/25 blur-[110px]" aria-hidden />
-        <div className="pointer-events-none absolute -right-16 bottom-0 h-64 w-64 rounded-full bg-brand/10 blur-[90px]" aria-hidden />
-        <div className={`${FRAME} relative grid items-center gap-12 pb-16 pt-[calc(var(--header-h)+2.75rem)] lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:pb-20 lg:pt-[calc(var(--header-h)+3.5rem)]`}>
+      <section id="hero" className="relative overflow-hidden bg-white text-black">
+        <LightWash />
+        <div className={`${FRAME} relative grid items-center gap-12 py-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:py-16`}>
           <div className="v6-hero-copy">
             <div className="flex flex-wrap items-center gap-3">
               <span className="rounded-full bg-brand px-2.5 py-1 text-[11px] font-extrabold uppercase tracking-[0.14em] text-black">
                 6 weeks
               </span>
-              <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-white/55">MVP development</p>
+              <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-black/45">MVP development</p>
             </div>
-            <h1 className="mt-5 max-w-[11em] text-[clamp(40px,5vw,68px)] font-extrabold leading-[0.96] tracking-[-0.045em] text-white">
-              Six weeks from a sentence to a product <span className="text-brand">people can use.</span>
+            <h1 className="mt-5 max-w-[11em] text-[clamp(40px,5vw,68px)] font-extrabold leading-[0.96] tracking-[-0.045em] text-black">
+              Six weeks from a sentence to a product people can use.
             </h1>
             <p className="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <span className="text-[13px] font-bold uppercase tracking-[0.16em] text-white/50">Starts from</span>
-              <span className="text-[clamp(40px,4.5vw,56px)] font-extrabold leading-none tracking-[-0.045em] text-brand">$4,999</span>
+              <span className="text-[13px] font-bold uppercase tracking-[0.16em] text-black/45">Starts from</span>
+              <span className="hm text-[clamp(40px,4.5vw,56px)] font-extrabold leading-none tracking-[-0.045em]">$4,999</span>
             </p>
-            <p className="mt-4 max-w-[46ch] text-[16.5px] leading-relaxed text-white/70">
+            <p className="mt-4 max-w-[46ch] text-[16.5px] leading-relaxed text-body-muted">
               One team plans it, designs it, builds it and launches it. A Next.js app, a project manager who stays on it, and twelve months of hosting. The code is yours from day one.
             </p>
             <div className="mt-7 flex flex-wrap items-center gap-3">
               <Book arrow>Book a free call</Book>
               <a
                 href="#runway"
-                className="inline-flex items-center justify-center rounded-full border border-white/20 px-5 py-3 text-[14.5px] font-bold text-white transition-colors hover:border-white/50 hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                className="inline-flex items-center justify-center rounded-full border border-black/10 bg-white px-5 py-3 text-[14.5px] font-bold text-black transition-colors hover:border-black/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
               >
                 See the six weeks
               </a>
             </div>
-            <p className="mt-3 text-[13px] font-medium text-white/45">
+            <p className="mt-3 text-[13px] font-medium text-black/45">
               Free, 30 minutes. You leave with a yes, a no, or a tighter scope.
             </p>
             <ul className="mt-7 flex flex-col gap-2 text-[14px] font-semibold sm:flex-row sm:flex-wrap sm:gap-x-5">
@@ -275,13 +274,13 @@ export function V6Home() {
         </div>
       </section>
 
-      <div className="overflow-hidden bg-brand text-black motion-reduce:hidden" aria-hidden>
+      <div className="overflow-hidden border-y border-black/10 bg-[#F6F5F1] text-black motion-reduce:hidden" aria-hidden>
         <div className="v6-marquee flex w-max">
           {[0, 1].map((copy) => (
             <ul key={copy} className="flex shrink-0 items-center">
               {TICKER.map((item) => (
                 <li key={`${copy}-${item}`} className="flex items-center px-4 py-3 text-[12.5px] font-extrabold uppercase tracking-[0.16em]">
-                  <span className="mr-4 h-1.5 w-1.5 rounded-full bg-black" />
+                  <span className="mr-4 h-1.5 w-1.5 rounded-full bg-brand" />
                   {item}
                 </li>
               ))}
@@ -289,7 +288,7 @@ export function V6Home() {
           ))}
         </div>
       </div>
-      <ul className="hidden flex-wrap justify-center gap-x-4 bg-brand px-6 py-3 text-[12px] font-extrabold uppercase tracking-[0.14em] motion-reduce:flex">
+      <ul className="hidden flex-wrap justify-center gap-x-4 border-y border-black/10 bg-[#F6F5F1] px-6 py-3 text-[12px] font-extrabold uppercase tracking-[0.14em] motion-reduce:flex">
         {TICKER.map((item) => (
           <li key={item}>{item}</li>
         ))}
@@ -319,17 +318,17 @@ export function V6Home() {
                 ))}
               </ul>
             </div>
-            <div className="relative bg-black p-6 text-white sm:p-8">
+            <div className="relative bg-white p-6 text-black sm:p-8">
               <span className="v6-draw absolute inset-x-0 top-0 h-[3px] bg-brand" aria-hidden />
               <Rise>
-                <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-brand">The six-week way</p>
+                <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-brand-ink">The six-week way</p>
               </Rise>
               <ul className="mt-6 space-y-5">
                 {FAST.map((item, i) => (
                   <li key={item.title}>
                     <Rise delay={140 + i * 80}>
-                      <h3 className="text-[18px] font-extrabold tracking-[-0.02em] text-white">{item.title}</h3>
-                      <p className="mt-1.5 text-[14.5px] leading-relaxed text-white/65">{item.body}</p>
+                      <h3 className="text-[18px] font-extrabold tracking-[-0.02em]">{item.title}</h3>
+                      <p className="mt-1.5 text-[14.5px] leading-relaxed text-body-muted">{item.body}</p>
                     </Rise>
                   </li>
                 ))}
@@ -362,7 +361,7 @@ export function V6Home() {
             ].map(([title, body], i) => (
               <div key={title} className="border-b border-black/10 py-6 sm:border-b-0 sm:px-6 sm:first:pl-0 sm:last:pr-0">
                 <Rise delay={i * 70}>
-                  <dt className={`text-[clamp(26px,3vw,36px)] font-extrabold tracking-[-0.04em] ${title.includes('$') ? 'hm' : ''}`}>
+                  <dt className="text-[clamp(26px,3vw,36px)] font-extrabold tracking-[-0.04em]">
                     {title}
                   </dt>
                   <dd className="mt-2 max-w-[28ch] text-[14.5px] leading-relaxed text-body-muted">{body}</dd>
@@ -387,17 +386,15 @@ export function V6Home() {
               return (
                 <Rise key={item.title} delay={i * 45} className={lead ? 'sm:col-span-2' : ''}>
                   <article
-                    className={`v6-card h-full rounded-[22px] p-5 sm:p-6 ${
-                      lead ? 'bg-black text-white' : 'bg-[#F6F5F1]'
-                    }`}
+                    className="v6-card h-full rounded-[22px] bg-[#F6F5F1] p-5 sm:p-6"
                   >
                     <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand text-black">
                       <Icon size={16} strokeWidth={2.2} aria-hidden />
                     </span>
-                    <h3 className={`mt-5 font-extrabold tracking-[-0.03em] ${lead ? 'text-[26px] text-white' : 'text-[17px]'}`}>
+                    <h3 className={`mt-5 font-extrabold tracking-[-0.03em] ${lead ? 'text-[26px]' : 'text-[17px]'}`}>
                       {item.title}
                     </h3>
-                    <p className={`mt-2 text-[14.5px] leading-relaxed ${lead ? 'max-w-[36ch] text-white/70' : 'text-body-muted'}`}>
+                    <p className={`mt-2 text-[14.5px] leading-relaxed text-body-muted ${lead ? 'max-w-[36ch]' : ''}`}>
                       {item.body}
                     </p>
                   </article>
@@ -406,7 +403,7 @@ export function V6Home() {
             })}
           </div>
           <Rise delay={120}>
-            <p className="mt-3 rounded-[22px] bg-black px-6 py-5 text-[15.5px] font-semibold leading-relaxed text-white sm:px-8">
+            <p className="mt-3 rounded-[22px] border border-black/10 bg-[#F6F5F1] px-6 py-5 text-[15.5px] font-semibold leading-relaxed text-black sm:px-8">
               A dedicated project manager learns the goal on day one and stays the only person you have to chase.
             </p>
           </Rise>
@@ -472,19 +469,19 @@ export function V6Home() {
         </div>
       </section>
 
-      <section id="pricing" className="bg-black text-white">
+      <section id="pricing" className="bg-[#F6F5F1] text-black">
         <div className={`${FRAME} py-16 lg:py-20`}>
           <div data-v6>
             <Rise>
-              <h2 className="max-w-[12em] text-[clamp(32px,3.8vw,52px)] font-extrabold leading-[1.02] tracking-[-0.04em] text-white">
+              <h2 className="max-w-[12em] text-[clamp(32px,3.8vw,52px)] font-extrabold leading-[1.02] tracking-[-0.04em]">
                 One fare. The whole path.
               </h2>
-              <p className="mt-3 max-w-[42ch] text-[15px] leading-relaxed text-white/55">
+              <p className="mt-3 max-w-[42ch] text-[15px] leading-relaxed text-body-muted">
                 Paid in milestones. Domain registration, AI model usage, and payment-gateway fees are billed by those providers.
               </p>
             </Rise>
           </div>
-          <div className="v6-pass relative mt-8 grid overflow-visible rounded-[28px] bg-white text-black shadow-[0_30px_80px_rgba(0,0,0,0.35)] lg:grid-cols-[1.45fr_0.8fr]" data-v6>
+          <div className="v6-pass relative mt-8 grid overflow-visible rounded-[28px] border border-black/10 bg-white text-black shadow-[0_24px_60px_rgba(0,0,0,0.06)] lg:grid-cols-[1.45fr_0.8fr]" data-v6>
             <div className="v6-pass-main relative p-6 sm:p-8 lg:p-10">
               <p className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-black/45">Boarding pass · MVP Launch</p>
               <div className="mt-6 grid items-end gap-4 sm:grid-cols-[1fr_auto_1fr]">
@@ -515,7 +512,7 @@ export function V6Home() {
                   <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-black/45">Starts from</p>
                   <span className="v6-stamp">Cleared</span>
                 </div>
-                <p className="hm mt-3 text-[clamp(52px,6vw,76px)] font-extrabold leading-none tracking-[-0.05em]">$4,999</p>
+                <p className="mt-3 text-[clamp(52px,6vw,76px)] font-extrabold leading-none tracking-[-0.05em]">$4,999</p>
                 <p className="mt-3 text-[15px] font-bold">About 6 weeks</p>
                 <p className="text-[15px] font-semibold text-black/60">12 months of hosting included</p>
               </div>
@@ -541,34 +538,34 @@ export function V6Home() {
         </div>
       </section>
 
-      <section id="scope" className="border-t border-white/10 bg-black text-white">
+      <section id="scope" className="bg-white text-black">
         <div className={`${FRAME} grid gap-10 py-14 lg:grid-cols-[0.7fr_1.3fr] lg:py-16`} data-v6>
           <Rise>
-            <h2 className="max-w-[8em] text-[clamp(32px,3.6vw,48px)] font-extrabold leading-[1.02] tracking-[-0.04em] text-white">
+            <h2 className="max-w-[8em] text-[clamp(32px,3.6vw,48px)] font-extrabold leading-[1.02] tracking-[-0.04em]">
               What fits in the box.
             </h2>
           </Rise>
           <div className="grid gap-10 sm:grid-cols-2">
             <Rise>
-              <h3 className="text-[12px] font-bold uppercase tracking-[0.16em] text-brand">In the six weeks</h3>
+              <h3 className="text-[12px] font-bold uppercase tracking-[0.16em] text-brand-ink">In the six weeks</h3>
               <ul className="mt-3">
                 {SCOPE_IN.map((item) => (
-                  <li key={item} className="border-t border-white/15 py-2.5 text-[15px] leading-snug">
+                  <li key={item} className="border-t border-black/10 py-2.5 text-[15px] leading-snug">
                     {item}
                   </li>
                 ))}
               </ul>
             </Rise>
             <Rise delay={80}>
-              <h3 className="text-[12px] font-bold uppercase tracking-[0.16em] text-brand">Quoted separately</h3>
+              <h3 className="text-[12px] font-bold uppercase tracking-[0.16em] text-brand-ink">Quoted separately</h3>
               <ul className="mt-3">
                 {SCOPE_ADD.map((item) => (
-                  <li key={item} className="border-t border-white/15 py-2.5 text-[15px] leading-snug text-white/75">
+                  <li key={item} className="border-t border-black/10 py-2.5 text-[15px] leading-snug text-body-muted">
                     {item}
                   </li>
                 ))}
               </ul>
-              <p className="mt-4 text-[14px] leading-relaxed text-white/50">
+              <p className="mt-4 text-[14px] leading-relaxed text-body-muted">
                 Bigger than this? We say so on the call, then quote it plainly.
               </p>
             </Rise>
@@ -576,10 +573,10 @@ export function V6Home() {
         </div>
       </section>
 
-      <section id="hosting">
+      <section id="hosting" className="border-t border-black/10 bg-[#F6F5F1]">
         <div className={`${FRAME} grid items-center gap-6 py-16 lg:grid-cols-[auto_1fr] lg:gap-12 lg:py-20`} data-v6>
           <Rise>
-            <p className="hm text-[clamp(96px,14vw,168px)] font-extrabold leading-none tracking-[-0.07em]">12</p>
+            <p className="text-[clamp(96px,14vw,168px)] font-extrabold leading-none tracking-[-0.07em]">12</p>
           </Rise>
           <Rise delay={80}>
             <h2 className="max-w-[14em] text-[clamp(32px,3.6vw,48px)] font-extrabold leading-[1.02] tracking-[-0.04em]">
@@ -590,7 +587,7 @@ export function V6Home() {
         </div>
       </section>
 
-      <section id="work" className="bg-[#F6F5F1]">
+      <section id="work" className="bg-white">
         <div className={`${FRAME} py-16 lg:py-20`} data-v6>
           <Rise>
             <h2 className="max-w-[14em] text-[clamp(32px,3.6vw,48px)] font-extrabold leading-[1.02] tracking-[-0.04em]">
@@ -598,18 +595,15 @@ export function V6Home() {
             </h2>
           </Rise>
           <div className="mt-8 grid gap-3 md:grid-cols-3">
-            {WORK.map((item, i) => {
-              const mid = i === 1;
-              return (
+            {WORK.map((item, i) => (
                 <Rise key={item.name} delay={i * 70}>
-                  <article className={`v6-card h-full rounded-[24px] p-6 ${mid ? 'bg-black text-white' : 'bg-white'}`}>
-                    <p className={`text-[12px] font-extrabold tracking-[0.14em] ${mid ? 'text-brand' : 'text-brand-ink'}`}>0{i + 1}</p>
-                    <h3 className={`mt-8 text-[20px] font-extrabold tracking-[-0.03em] ${mid ? 'text-white' : ''}`}>{item.name}</h3>
-                    <p className={`mt-2 text-[14.5px] leading-relaxed ${mid ? 'text-white/70' : 'text-body-muted'}`}>{item.body}</p>
+                  <article className="v6-card h-full rounded-[24px] bg-[#F6F5F1] p-6">
+                    <p className="text-[12px] font-extrabold tracking-[0.14em] text-brand-ink">0{i + 1}</p>
+                    <h3 className="mt-8 text-[20px] font-extrabold tracking-[-0.03em]">{item.name}</h3>
+                    <p className="mt-2 text-[14.5px] leading-relaxed text-body-muted">{item.body}</p>
                   </article>
                 </Rise>
-              );
-            })}
+            ))}
           </div>
         </div>
       </section>
