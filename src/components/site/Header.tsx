@@ -25,7 +25,7 @@ export function Header({ settings, items }: { settings: SiteSettings; items: Men
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const darkLead = pathname === '/home-clone' || pathname === '/v1' || pathname === '/v3' || pathname === '/v4';
-  const offerHome = pathname === '/' || pathname === '/v5';
+  const offerHome = pathname === '/v5';
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -141,7 +141,7 @@ export function Header({ settings, items }: { settings: SiteSettings; items: Men
               rel="noopener noreferrer"
               className="hidden whitespace-nowrap rounded-full bg-brand px-[22px] py-[11px] text-[14.5px] font-bold text-black transition-colors hover:bg-brand-300 sm:inline-flex"
             >
-              Book a free call
+              Book a call
             </a>
           )
         ) : (
@@ -204,7 +204,7 @@ export function Header({ settings, items }: { settings: SiteSettings; items: Men
                 onClick={() => setOpen(false)}
                 className="mt-2 rounded-full bg-brand px-5 py-3 text-center text-[15px] font-bold text-black"
               >
-                Book a free call
+                Book a call
               </a>
             ) : (
               <Link
