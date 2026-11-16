@@ -17,6 +17,11 @@ const nextConfig = {
         destination: '/services/ai-development',
         permanent: true,
       },
+      {
+        source: '/v6',
+        destination: '/ai-services',
+        permanent: true,
+      },
     ];
   },
   async headers() {

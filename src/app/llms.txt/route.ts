@@ -33,6 +33,18 @@ export async function GET() {
     .filter((p) => p.slug && allowed.has(`/${p.slug}`))
     .map((p) => line(p.title, siteUrl(`/${p.slug}`), p.meta_description || undefined));
 
+  const listed = new Set((pages || []).filter((p) => p.slug).map((p) => `/${p.slug}`));
+  for (const path of allowed) {
+    if (path === '/' || listed.has(path) || path === `/${implBase}` || path === `/${insBase}`) continue;
+    if (path.startsWith(`/${implBase}/`) || path.startsWith(`/${insBase}/`)) continue;
+    const title = path === '/ai-services' ? 'AI services' : path.slice(1).replace(/-/g, ' ');
+    const note =
+      path === '/ai-services'
+        ? 'Production engineering for agencies and brands: Next.js on Vercel, CMS, AI features, MVP launch and care.'
+        : undefined;
+    corePages.push(line(title, siteUrl(path), note));
+  }
+
   const insights = (posts || [])
     .filter((p) => p.content_type === 'insight' && allowed.has(`/${insBase}/${p.slug}`))
     .map((p) => line(p.title, siteUrl(`/${insBase}/${p.slug}`), p.excerpt || undefined));

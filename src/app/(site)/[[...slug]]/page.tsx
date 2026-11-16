@@ -44,7 +44,7 @@ async function resolve(slugArr: string[] | undefined): Promise<Resolved> {
   const insBase = settings.url_config?.insights_base || 'insights';
   const parts = slugArr || [];
 
-  // Home is the MVP offer. The previous marketing homepage lives at /v6.
+  // Home is the MVP offer. The previous marketing homepage lives at /ai-services.
   if (parts.length === 0) return { kind: 'offer-home' };
 
   // Implementations
