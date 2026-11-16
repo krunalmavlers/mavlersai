@@ -49,5 +49,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   }
 
+  // Menu destinations that are not CMS records, such as /ai-services.
+  for (const path of allowed) add(path, { changeFrequency: 'weekly', priority: 0.8 });
+
   return entries;
 }
